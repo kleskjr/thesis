@@ -1,0 +1,149 @@
+\chapter{Embedding assembly sequences in balanced recurrent networks}
+
+\section{Summary}
+\section{Introduction}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Methods}
+  All numerical computations were performed in a Python environment (www.python.org) using standard Python libraries such as NumPy, SciPy, SymPy and Matplotlib. For the network simulation I used the spiking neural network simulator Brian \citep{Goodman2009}.
+
+  \subsection{Neuron model}
+  %___________________________
+  \label{sec:neuronmodel}
+    The simulated spiking neurons are described by a conductance-based leaky integrate-and-fire model where the subthreshold membrane potential $V_i(t)$ of cell $i$ obeys the differential equation:
+    \begin{equation}
+      C\frac{{\rm d}V_i}{{\rm d}t} = G^{\rm leak}(V^{\rm rest}-V_i) + G_i^E(V^E-V_i) + G_i^I(V^I-V_i)  + I^{\rm ext} .
+      \label{eq:if_neuron}
+    \end{equation}
+    The cells' resting potential is $V^{\rm rest}=-60\, {\rm mV}$, its capacitance is $C = 200 \, {\rm pF}$, and the leak conductance is $G^{\rm leak}=10{\rm\, nS}$, resulting in a membrane time constant of 20~ms in the absence of synaptic stimulation. The variables $G_i^E$ and $G_i^I$ are the total excitatory and inhibitory time-dependent synaptic inputs to neuron $i$. The excitatory and inhibitory reversal potentials are $V^E = 0\, {\rm mV}$ and $V^I=-80\, {\rm mV}$, respectively. $I^{\rm ext}=200 \rm\, pA$ is a constant external current applied to each neuron to evoke activity in the network and. Only if stated explicitly, in some experiments the current injected to certain populations or groups might differ. As the membrane potential $V_i$ reaches the threshold $V^{\rm thresh}=-50\, {\rm mV}$, neuron $i$ emits an action potential, and $V_i$ is reset to the resting potential $V^{\rm rest}=-60$~mV for a refractory period of 2~ms.%$2 \, {\rm ms}$.
+
+    The dynamics of the conductances $G_i^E$ and $G_i^I$ are determined by the activity of the presynaptic excitatory and inhibitory neurons, respectively. The dynamics of the total excitatory conductance is described by
+    \begin{equation}
+      \frac{{\rm d} G_i^E(t)}{{\rm d} t} = -\frac{G_i^E(t)}{\tau^E} + \sum_{j,f} g_{ij}^{E} \, \delta(t-t_{j}^{(f)}) .
+      \label{eq:conductance}
+    \end{equation}
+
+    Here, the sum is over the presynaptic projections $j$ and over the sequence of spikes $f$ from each projection. The time of the $f^{\rm th}$ spike from neuron $j$ is denoted by $t_{j}^{(f)}$. Each time a presynaptic cell $j$ fires, the synaptic input conductance of the postsynaptic cell $i$ is increased by $g_{ij}^E$. The input conductances decay exponentially with a time constant $\tau^E = 5\, {\rm ms}$. The inhibitory conductance $G^I_i$ is described analogously and has a time constant $\tau^I = 10\, {\rm ms}$.
+  
+    If not stated otherwise, all excitatory conductance amplitudes are fixed and equal ($g_{ij}^E = g_{ij}^{IE} = g^E = 0.1\, {\rm nS}$), which results in EPSPs with amplitudes of $\approx 0.1\, {\rm mV}$ at resting potential. The inhibitory-to-inhibitory synapses are constant as well ($g_{ij}^I =0.4\, {\rm nS}$), while the inhibitory-to-excitatory conductances $g_{ij}^{EI}$ are plastic, and thus, change over time (see Section~\ref{sec:balancing}). Irrespectively of the synaptic type, the delay between a presynaptic spike and a postsynaptic response onset is always $2\, {\rm ms}$.
+
+  \subsection{Network model}
+  %____________________________
+    For the network model, I used the spiking neural network simulator Brian \citep{Goodman2009}. The network consists of $N^E$ excitatory and $N^I$ inhibitory neurons. All neurons are defined by equation~\ref{eq:if_neuron} and have the same parameters as described in Neuron Model (Section~\ref{sec:neuronmodel}). Typical number of neurons used in the simulations are $N^E=20,000$ and $N^I=5,000$. The results do not critically depend on the network size (see Section `Scaling the network size' below).
+
+    Initially, all neurons are sparsely connected with random probability $p_{\rm rand}=0.01$. Then $K$ assemblies are defined as groups of $M$ excitatory and $M/4$ inhibitory neurons, where every pair of pre- and post-synaptic neurons within an assembly is randomly connected with probability $p_{\rm rc}$ (see Figure~\ref{fig:ASsketch}a). These assemblies are, then, wired in a feedforward fashion, where excitatory neurons from assembly $i$ are projecting to the excitatory neurons of assembly $i+1$ ($i+1 \le K$) with probability $p_{\rm ff}$ (see Figure~\ref{fig:ASsketch}b).
+
+    The assembly connections are created independently and in addition to the already existing ones. Thus, if by chance two neurons are connected due to the background connectivity and also form a connection due to the participation in an assembly sequence, then the synaptic weight between them is simply doubled. No autosynapses are created, i.e., a neuron can not project to itself. To give the reader an idea of typical parameter values, I used sequences with length $K=10$, assembly size $M=500$, and connectivities $p_{\rm rc}=p_{\rm ff}=0.06$. The role of these parameters is studied in detail. Various connectivity values $p_{\rm rc}$ and $p_{\rm ff}$, can lead to different network structures (Figure~\ref{fig:net_sketch}C). In the limiting case where feedforward connections are absent ($ p_{\rm rc}>0,\, p_{\rm ff}=0$) the network contains only largely disconnected Hebbian assemblies. In contrast, in the absence of recurrent connections ($p_{\rm rc}=0,\, p_{\rm ff}>0$) the network is reduced to a classical SFC. Structures with both recurrent and feedforward connections correspond to assembly sequences.
+
+    The assembly sequence described above has a feedforward connectivity structure that is reminiscent of a SFC. However, I choose the particular term ``assembly sequence'' instead of ``synfire chain'' mainly because of two reasons. First, the classical SFCs \citep{Abeles91, Diesmann99} have convergent-divergent feedforward connectivity between groups of unconnected neurons ($p_{\rm rc}=0$, $p_{\rm ff}=1$). While in this work, the recurrent connections between neurons within groups are explicitly embraced, and therefore, each group forms a Hebbian assembly. Moreover, such networks of neuronal assemblies were proposed in Hebb's seminal work and termed as ``phase sequences'' \citep{Hebb49}. This term, however, did not gain very positive response in the computational neuroscience community, therefore, I decided on a term that manifest more clearly the phenomenon behind. A second reason is the fact that inhibitory neurons are also connected with connection probability $p_{\rm rc}$ and thus, take part in the assemblies. Such assumptions distinguishes the assembly sequence from the previous models and to some degree justify the usage of the new terminology here.
+    
+  \subsection{Balancing the network}
+  %____________________________________
+  \label{sec:balancing}
+    A common problem that arises when dealing with spiking neural network models is how to adjust various parameters (e.g., connectivity, conductance, input) such that the network dynamics resembles that of a biological neural network, i.e., sparse and irregular firing.
+    For the vast majority of possible parameters a modeled network would be either silent or will show pathological firing patterns.
+    The network activity can be quantified according to two measures: synchrony measures whether neurons fire synchronously or asynchronously; and regularity quantifies whether single neurons fire regularly (periodically) or irregularly (Poisson-like processes).
+    Thus, according to this classification, there are four different dynamical states that a network can reside.
+    In particular interest for this study is the asynchronous-irregular (AI) state.
+
+    A naive implementation of the heterogeneous network as described above leads, in general, to dynamics characterized by large population bursts of activity.
+    To overcome this epileptiform activity and ensure that neurons fire asynchronously and irregularly (AI network state), the network should operate in a balanced regime.
+    In the balanced state, large excitatory currents are compensated by large inhibitory currents, as shown \textit{in vivo} \citep{Okun2008, Cafaro2010} and \textit{in vitro} \citep{Xue2014}.
+    In this regime, fluctuations of the input lead to highly irregular firing \citep{vanVreeswijk96,vanVreeswijk98}.
+    
+    Several mechanisms were proposed to balance numerically simulated neural networks.
+    One method involves structurally modifying the network connectivity to ensure that neurons receive balanced excitatory and inhibitory inputs \citep{Renart2007, Roudi2007}.
+    \cite{Barbieri2008} showed that a short-term plasticity rule \citep{Tsodyks97} in a fully connected network can also adjust the irregularity of neuronal firing.
+
+    Here the network is balanced by the inhibitory-plasticity rule proposed by \cite{Vogels2011}.
+    All inhibitory-to-excitatory synapses are subject to a spike-timing-dependent plasticity (STDP) rule where near-coincident pre- and postsynaptic firing potentiates the inhibitory synapse while presynaptic spikes alone cause depression.
+    A similar STDP rule with a symmetric temporal window was recently reported in the layer 5 of the auditory cortex \citep{Damour2015}.
+
+    To implement the plasticity rule in a synapse, I first assign a synaptic trace variable $x_i$ to every neuron $i$ such that $x_i$ is incremented with each spike of the neuron and decays with a time constant $\tau_{\rm STDP}=20\,{\rm ms}$:
+
+    \begin{align*}
+      x_i \rightarrow x_i+1 {\text{ , if neuron $i$ fires}}\text{,} \\
+      \tau_{\rm STDP}\frac{{\rm d}x_i }{{\rm d}t}=-x_i \, {\text{, otherwise}}.
+    \end{align*}
+    The synaptic conductance $g_{ij}^{EI}(t)$ from inhibitory neuron $j$ to excitatory neuron $i$ is initialized with value $g_0^I=0.4$~nS and is updated at the times of pre/post-synaptic events:
+
+    \begin{align*}
+      g_{ij}^{EI} = g_{ij}^{EI} + \eta(x_i-\alpha) &{\text{    , for a presynaptic spike in neuron $j$,}}\\
+      g_{ij}^{EI} = g_{ij}^{EI} + \eta x_j  &{\text{    , for a postsynaptic spike in neuron $i$}}
+    \end{align*}
+    where $0< \eta \ll 1$ is the learning-rate parameter, and the bias $\alpha=2\rho_0\tau_{\rm STDP}$ is determined by the desired firing rate $\rho_0$ of the excitatory postsynaptic neurons.
+    In all simulations, $\rho_0$ has been set to $5 {\text{ spikes/second}}$, which is at the upper bound of the wide range of rates that were reported in the literature: e.g., $1-3$~spikes/sec in \cite{Csicsvari2000}; $1-76$~spikes/sec in \cite{Felsen2005}; $0.43-3.60$~spikes/sec in \cite{Cheng2013}; $1-11$~spikes/sec in \cite{English2014}.
+    
+    An implementation of the described STDP rule drives the majority of networks into a balanced state.
+    The excitatory and the inhibitory input currents balance each other and keep the membrane potential just below threshold while random fluctuations drive the firing (Figure~\ref{fig:raster_ccv}A, B).
+    The specific conditions to be met for a successful balance are discussed in the result sections.
+
+    In the AI network regime, any perturbation to the input of an assembly will lead to a transient perturbation in the firing rate of the neurons within it.
+    Moreover, because of the recurrent connections, even small perturbations can lead to large responses.
+    This phenomenon of transient pattern completion is known as balanced amplification \citep{Murphy2009} where it is essential thta each assembly has excitatory and inhibitory neurons.
+    Another advantage of the inhibitory subpopulations is the rapid negative feedback that can lead to enhanced memory capacity of the network \citep{Kammerer2013}.
+
+  \subsection{Simulations and data analysis}
+  %__________________________________________
+    Each network simulation consists of 3 main phases:\\
+    \textbf{1. Balancing the network.}
+      Initially, the population activity is characterized by massive population bursts with varying sizes (avalanches).
+      During a first phase, the network (random network with embedded phase sequence) is balanced for 50 seconds with decreasing learning rate ($0.005 \geq \eta \geq 0.00001$) for the plasticity on the inhibitory-to-excitatory synapses.
+      During this learning, the inhibitory plasticity shapes the activity, finally leading to AI firing of the excitatory population.
+      Individual excitatory neurons then fire roughly with the target firing rate of 5 spikes/second while inhibitory neurons have higher firing rates of around 20 spikes/second, which is close to rates reported in the hippocampus \citep{Csicsvari2000, Cheng2013}.
+      After 50 seconds simulation time, the network is typically balanced.\\\\
+      %After 50 seconds simulation time, the network is presumably balanced and the plasticity is switched off.\\\\
+    \textbf{2. Relibility and quality of replay.}
+      In a second phase, the plasticity is switched off to be able to probe an unchanging network with external cue stimulations.
+      All neurons from the first group/assembly are simultaneously stimulated by an external input so that all neurons fire once.
+      %To avoid any interference of the repetitive stimulations on the network structure, from this phase on the plasticity is switched off.
+      The stimulation is mimicked by adding an excitatory conductance in Equation~\ref{eq:conductance} ($g_{max}= 3 \rm nS$) that is sufficient to evoke a spike in each neuron.
+      For large enough connectivities ($p_{\rm rc}$ and $p_{\rm ff}$), the generated pulse packet of activity propagates through the sequence of assemblies, resulting in a replay.
+      For too small connectivities, the activity does not propagate.
+      For excessively high connectivities, the transient response of one group results in a burst in the next group and even larger responses in the subsequent groups, finally leading to epileptiform population bursts of activity (Figure~\ref{fig:evoked}).
+
+      To quantify the propagation from group to group and to account for abnormal activity, a quality measure of replay is introduced.
+      The activity of a group is measured by calculating the population firing rate of the underlying neurons smoothed with a Gaussian window of 2 ms width.
+      I extract peaks of the smoothed firing rate that exceed a threshold of 30 spikes/second.
+      A group is considered to be activated at the time at which its population firing rate hits its maximum and is above the threshold rate.
+      Activity propagation from one group to the next is considered to be successful if one group activates the next one within a delay of 2 to 15 ms.
+      However, if the activation of one group leads to a very strong activation of the next group where neurons are firing multiple times within 30 ms, the propagation is considered as not successful.
+      Moreover, a ``dummy group'' from the background neurons is used as a proxy for detecting activations of the whole network.
+      In case that the dummy group is activated during propagation, the replay is considered as failed.
+      Thus, for each stimulation the ``quality of replay'' has a value of 1 for successful and a value of 0 for unsuccessful replays.
+      The quality of replay for each set of parameters (Figure~\ref{fig:evoked}) is an average from multiple stimulations of 5 identical networks.
+
+      Additionally, I test the ability of the assembly sequence to complete a pattern by stimulating only a fraction of the neurons in the first group (Figure~\ref{fig:cue}).
+      Analogously to the full stimulation, the quality of replay is measured.\\\\
+    \textbf{3. Spontaneous activity.}
+      In the last phase of the simulations, no specific input is applied to the assemblies.
+      As during the first phase of the simulation, the network is driven solely by the constant-current input $I^{ \rm const}=200 \,\rm pA$ applied to each neuron.
+
+      During this state, quantify spontaneous replay is quantified (Figure~\ref{fig:spontan}).
+      Whenever the last assembly is activated and if this activation has propagated through at least three previous assemblies, this event is considered as a spontaneous replay.
+      Here, the quality measure of replay is applied, where bursty replays are disregarded.
+      Additionally, the dynamic state of the network is quantified by measuring the firing rate, the irregularity of firing, and the synchrony of a few selected groups from the sequence.
+      The irregularity is measured as the average coefficient of variation of inter-spike intervals of the neurons within a group.
+      As a measure of synchrony between 2 neurons, I use the cross-correlation coefficient of their spike trains binned in 5-ms windows.
+      The group synchrony is the average synchrony between all pairs of neurons in a group.
+
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Results}
+\section{Discussion}
+
+\section{todo}
+
+new Figure of balanced currents!
+
+ps replay for high prc, low pff is much slower (e.g. prc~.3, pff~.01) ~ 150ms
+
+capacity?
+
+broad todo:
+
+study the transients in BA, can they be expressed analytically?
+
+have something on continuous groups!!!
+
+
+
+

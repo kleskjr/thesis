@@ -1,0 +1,40 @@
+\documentclass[12pt, a4]{report}
+%\documentclass[12pt, a4]{article}
+\usepackage[round]{natbib}
+\usepackage{amsmath} 
+
+% for deeper sectioning
+\usepackage{titlesec}
+\setcounter{secnumdepth}{4}
+\titleformat{\paragraph}
+{\normalfont\normalsize\bfseries}{\theparagraph}{1em}{}
+\titlespacing*{\paragraph}
+{0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
+
+\usepackage{graphicx}
+\graphicspath{{figs/}}
+
+\begin{document}
+\title{Memory replay in balanced recurrent networks}
+
+\maketitle
+\newpage
+
+\section*{Abstract}
+
+Complex patterns of neural activity appear during up-states in the neocortex and sharp waves in the hippocampus, including sequences that resemble those during prior behavioral experience. The mechanisms underlying this replay are not well understood. How can small synaptic footprints engraved by experience control large-scale network activity during memory retrieval and consolidation? We hypothesize that sparse and weak synaptic connectivity between Hebbian assemblies are boosted by pre-existing recurrent connectivity within them. To investigate this idea, we connect sequences of assemblies in randomly connected spiking neuronal networks with a balance of excitation and inhibition. Simulations and analytical calculations show that recurrent connections within assemblies allow for a fast amplification of signals that indeed reduces the required number of inter-assembly connections. Replay can be evoked by small sensory-like cues or emerge spontaneously by activity fluctuations. Global---potentially neuromodulatory---alterations of neuronal excitability can switch between network states that favor retrieval and consolidation.
+
+\newpage
+
+\tableofcontents
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\include{intro}
+%\include{ass_sequences}
+\include{modulationofswrs2}
+%\include{serialcorrelationsbetweenevents}
+\include{summ}
+
+\include{refs}
+
+\end{document}
+

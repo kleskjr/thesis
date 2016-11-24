@@ -1,0 +1,212 @@
+\section{who is $c$?}
+
+This pages make an attempt to describe how we can calculate the constant $c$ fitted in the manuscript by eye.
+It was fitted in such a way that the linear model of assembly sequences corresponds to the numerical results obtained from the network simulations.
+
+\subsection{linear model}
+  This subsection is a brief reminder of what is $c$ and why do we care about it.
+
+  The linear model is summarized by the following system DE:
+
+  \begin{equation}
+  \tau \frac{\text{d} \boldsymbol{r}_{i}}{\text{d}t} =  \begin{pmatrix} -1+w_{\rm rc} &-kw_{\rm rc} \\ w_{\rm rc} &-1-kw_{\rm rc}\\ \end{pmatrix}\boldsymbol{r_{i}} + \begin{pmatrix} w_{\rm ff} \, r_{i-1}^E \\ 0 \end{pmatrix} \text{, for $i>1$}
+    \label{eq:EI_coupled}
+  \end{equation}
+
+  where $\boldsymbol{r}_i = \begin{pmatrix} r_i^E \\ r_i^I \end{pmatrix}$ is the 2-dimensional vector of firing rates in group $i$.
+  $r_{i}^E$ and $r_{i}^I$ are the deviations of the population firing rates of the excitatory (E) and inhibitory (I) populations from the spontaneous firing rates $r_0^E$ and $r_0^I$, respectively.
+  Activities $r_{i}^E$ and $r_{i}^I$ are assumed to approach the steady state $0$ with a time constant $\tau$.
+  The parameter $w_{\rm rc}$ and the term $-kw_{\rm rc}$ are the respective strengths of the excitatory and the inhibitory recurrent projections.
+  The constant $k$ describes the relative strength of the recurrent inhibition vs. excitation; for a balanced network, we assume that inhibition balances or dominates excitation, e.g., $k \geq 1$.
+  The weight $w_{\rm rc}$ is proportional to the average number $p_{\rm rc} \, M$ of recurrent synapses a neuron receives, and proportional to the synaptic strength $g^E$.
+  The excitatory assemblies are sequentially connected, and we denote the strength of the feedforward projections as $w_{\rm ff}$.
+
+  Assuming the stationary state ($\tau \frac{\text{d}\boldsymbol{r}_{i}}{\text{d}t} =0$) as an adequate approximation, we can express the firing rate of assembly $i$ as a function of the rate in assembly $i-1$:
+  \[\frac{1+kw_{\rm rc}-w_{\rm rc}}{1+kw_{\rm rc}} r_{i}^E = w_{\rm ff} \, r_{i-1}^E .\]
+  In the case of a balanced network ($k=1$), the relation can be simplified further:
+  \begin{equation}
+  r_{i}^E  = (1+w_{\rm rc})w_{\rm ff} \, r_{i-1}^E = \kappa\, r_{i-1}^E
+    \label{eq:EI_coupled2}
+  \end{equation}
+  where $\kappa = w_{\rm ff}(1+w_{\rm rc})$ is the ``effective feedforward connectivity''.
+  We are interested is the minimal connectivity for replay. Eventually this corresponds to $\kappa=1$.
+  Substituting the weights $w_{\rm rc} = c \, M p_{\rm rc} \, g^E \,\text{      and      } \, w_{ \rm ff} = c \, M p_{\rm ff} \, g_{\rm ff}^{E}$, we find
+  \begin{equation}
+    \kappa  = (1 + cMp_{\rm rc}g_{\rm rc}^E) cMp_{\rm ff}g_{\rm ff}^E 
+    \label{eq:EI_coupled3}
+  \end{equation}
+
+  %into $\kappa=1$, we can find a relation between recurrent and feedforward connectivity:
+  %\[
+    %p_{\rm rc} = \frac{1}{cMg^E} \left( \frac{1}{cMp_{\rm ff}g_{\rm ff}^E} - 1\right) \,\,\,,
+  %\]
+
+  By fitting the critical value $\kappa(p_{\rm rc}=0.08,~p_{\rm ff}=0.04)=1$ from the simulation results (Figure~3 from the manuscript), we found $c = 0.25 \, {\rm nS}^{-1}$.
+  However, this procedure does not tell us how $c$ depends on various parameters, e.g., conductances, time-constants, network size.
+  Therefore, we try to make a step further and get an analytical expression for $c$ using a nonlinear model.
+
+  For the sake of simplicity, let's assume that $p_{\rm rc}=0$ (motivate implicitness of f).
+  Then $c$ can be expressed as (origin): 
+  \[
+    c = \frac{\frac{\partial r_i^E}{\partial r_{i-1}^{E}}} {Mp_{\rm ff}g_{\rm ff}^E }
+  \]
+  We will try to find similar expression for the steepness (what is steepness) in the non-linear models and see if the values match somehow.
+  
+  
+\subsection{non-linear models}
+
+This section will make an attempt of finding the constant $c$ used to fit the linear model to the simulation results of minimal connectivity for a propagation of activity between 2 assemblies.
+Our aim is to use a more detailed non-linear model to find an expression for the constant $c$, which describes the input-output relation of FR in the linear model.
+
+The firing rate $\nu$ of a (sub)population of neurons can be expressed as a function of the mean $\mu$ and the SD $\sigma$ of the membrane potential distribution (ref for equations):
+
+\[ \nu = f(\mu , \sigma) \]
+
+\[
+\mu = \sum(inputs) = \sum_{i}J_i C_i \nu_i
+\]
+
+\[
+\sigma = \sqrt{\sum_{i}J^2_i C_i \nu_i}
+\]
+
+Where $C_i$ denotes the number of inputs of particular type, $J_i$ is their synaptic efficacies, and $\nu_i$ is the input rate.
+Or more detailed, the mean and the standard deviation of the membrane potential of the excitatory neurons of an assembly $i$ can be written as:
+\[
+  \mu_i = C_{\rm rand}^E J^E \nu^E + C_{\rm rc}^E J^E \nu_i^E + C_{\rm ff} J_{\rm ff}^E \nu^E_{i-1} + C_{\rm rand}^I J^{I} \nu^I + C_{\rm rc}^I J^{I}_{\rm rc} \nu_{i}^I + I_{\rm ext}/g_{\rm leak}
+\]
+\[
+  \sigma_i^2 = C_{\rm rand}^E J^{E^2} \nu^E + C_{\rm rc}^E J^{E^2} \nu_i^E + C_{\rm ff} J_{\rm ff}^{E^2} \nu^E_{i-1} + C_{\rm rand}^I J^{I^2} \nu^I + C_{\rm rc}^I J^{I^2}_{\rm rc} \nu_{i}^I 
+\]
+$\nu^E$ is backgraound FR of other neurons in the network that are connected with cerand inputs to each neurons in the assembly and other symbols.
+Here $J^E$ and $J^{E^2}$ are the integrals of an EPSP and the square of the EPSP over time (explain origin of terms):
+
+\[
+  J^E = \int_t{EPSP}{\rm d} t = \tau_e (V^E - V^{\rm th}) \frac{g^E}{g^{\rm leak}}
+\]
+\[
+  J^{E^2} = \int_t{EPSP^2}{\rm d}t = \frac{\tau_e^2 (V^E - V^{\rm th})^2 {g^E}^2}{2(\tau + \tau_e) {g^{\rm leak}}^2} .
+\]\\\\
+
+Note that the firing rate $\nu$ is expressed through an implicit function $f(\nu) (what is f??)$.
+The two models that we are considering are the full IF model:
+
+\[
+  \nu = \Big(\tau_{\rm rp} + \tau \sqrt{\pi} \int_{\frac{V^{\rm rest}-\mu}{\sigma}}^{\frac{\theta-\mu}{\sigma}} e^{u^2} \big( 1+ {\rm erf}(u) \big) {\rm d}u \Big)^{-1}
+\]
+
+and the simplified IF model that is a reasonable approximation of the full model for low rates ($ V^{\rm th} - \mu \gg \sigma $):
+\[ 
+  \nu = \frac{1}{\tau} \frac{\theta - \mu}{\sigma \sqrt{\pi}} \exp \left(- {\frac{(\theta - \mu)^2}{\sigma^2}} \right)
+\]
+
+Thus, by calculating the steepness of the firing rate transfer function at our resting state, we can get an estimation for $c$ used in the linear model.
+\[
+  c_{\rm NN} = \frac{\frac{\partial \nu}{\partial \nu_{\rm ff}}}{Mp_{\rm ff}g_{\rm ff}^E } ,
+\]
+
+where $ \frac{\partial \nu}{\partial \nu_{\rm ff}}$ can be calculated from the chain rule:
+
+\[
+\frac{\partial \nu}{\partial \nu_{\rm ff}} = \frac{\partial \nu}{\partial \mu} \frac{\partial \mu}{\partial \nu_{\rm ff}} + 
+\frac{\partial \nu}{\partial \sigma} \frac{\partial \sigma}{\partial \nu_{\rm ff}} 
+\]
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{full model}
+
+\begin{equation}
+  \nu = \Big(\tau_{\rm rp} + \tau \sqrt{\pi} \int_{\frac{V_r-\mu}{\sigma}}^{\frac{\theta-\mu}{\sigma}} e^{u^2} \big( 1+ {\rm erf}(u) \big) {\rm d}u \Big)^{-1}
+  \label{eq:nn0}
+\end{equation}
+
+
+This model works under a couple of assumptions:
+  - all the inputs are uncorrelated (AI network state)
+  - the conductance time constants are much smaller than the membrane tau
+
+  In the following equations, we denote the integrand function from above with the function $\varphi()$.
+\begin{align}
+ \frac{\partial \nu}{\partial \mu} &= 
+  (-1) \nu^2 \sqrt{\pi} \tau \Bigg( \varphi \left(\frac{\theta-\mu}{\sigma}\right) \frac{-1}{\sigma} - \varphi\left(\frac{V_r-\mu}{\sigma}\right) \frac{-1}{\sigma}  \Bigg) = \\
+  & = \frac{\nu^2 \sqrt{\pi} \tau}{\sigma} \Bigg( \varphi \left(\frac{\theta-\mu}{\sigma}\right)- \varphi\left(\frac{V_r-\mu}{\sigma}\right) \Bigg) 
+\end{align}
+  Analogously, we calculate the partial derivative with respect to $\sigma$:
+\begin{align}
+ \frac{\partial \nu}{\partial \sigma} &= 
+  (-1) \nu^2 \sqrt{\pi} \tau \Bigg( \varphi \left(\frac{\theta-\mu}{\sigma}\right)(\theta- \mu)\frac{-1}{\sigma^2} - \varphi\left(\frac{V_r-\mu}{\sigma}\right)(V_r-\mu)\frac{-1}{\sigma^2}  \Bigg) = \\
+  & = \frac{\nu^2 \sqrt{\pi} \tau}{\sigma^2} \Bigg( (\theta- \mu)\varphi \left(\frac{\theta-\mu}{\sigma}\right)- (V_r- \mu)\varphi\left(\frac{V_r-\mu}{\sigma}\right) \Bigg) 
+\end{align}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{simplified model}
+
+\[ 
+\nu = \frac{1}{\tau} \frac{\theta - \mu}{\sigma \sqrt{\pi}} \exp \left(- {\frac{(\theta - \mu)^2}{\sigma^2}} \right)
+\]
+
+\begin{align}
+ \frac{\partial \nu}{\partial \mu} &= 
+ \frac{1}{\tau} \frac{-1}{\sigma \sqrt{\pi}} \exp \left(-{\frac{(\theta - \mu)^2}{\sigma^2}} \right) +
+ \frac{1}{\tau} \frac{\theta - \mu}{\sigma \sqrt{\pi}} \exp \left(-{\frac{(\theta - \mu)^2}{\sigma^2}} \right) \left(-2\frac{\theta - \mu}{\sigma^2}(-1)\right) = \\
+ &= (\frac{1}{\tau} \frac{1}{\sigma \sqrt{\pi}})  \exp \left(-{\frac{(\theta - \mu)^2}{\sigma^2}} \right) \left( 2\frac{(\theta - \mu)^2}{\sigma^2} - 1 \right)
+\end{align}
+
+
+\begin{align}
+ \frac{\partial \nu}{\partial \sigma} &= 
+ \frac{1}{\tau} \frac{\theta - \mu}{\sqrt{\pi}} \frac{-1}{\sigma^2} \exp \left(-{\frac{(\theta - \mu)^2}{\sigma^2}} \right) +
+ \frac{1}{\tau} \frac{\theta - \mu}{\sigma \sqrt{\pi}} \exp\left(-{\frac{(\theta - \mu)^2}{\sigma^2}} \right) (-1)(\theta - \mu)^2 \frac{-2}{\sigma^3} = \\
+ &= \frac{1}{\tau} \frac{\theta - \mu}{\sigma^2 \sqrt{\pi}} \exp\left(-{\frac{(\theta - \mu)^2}{\sigma^2}} \right) \left(2 \frac{(\theta - \mu)^2}{\sigma^2} - 1 \right)
+\end{align} \\\\\\
+
+
+In the case of no recurrent connections, it's straightforward to estimate the partial derivatives of $\mu$ and $\sigma$ with respect to the feedforward input rate (match notation!!):
+\[
+  \frac{\partial \mu}{\partial \nu_{\rm ff}} = M p_{\rm ff} J_{\rm ff}^E 
+\]
+\[
+  \frac{\partial \sigma}{\partial \nu_{\rm ff}} = \frac{1}{2} \frac{1}{\sigma} M p_{\rm ff} J_{\rm ff}^{E^2}
+\]
+
+\subsection{finding the $c$}
+To find the constant $c$ according to the method above a few steps are taken:
+
+\begin{itemize}
+  \item We solve solve a system of 2 equations for the excitatory and inhibitory populations of the global network using Equation \ref{eq:nn0}.
+    The two unknowns are the weights from inhibitory to excitatory neurons $g^{EI}_{\rm rand}$ and the firing rate of the inhibitory population $\nu^I$.
+  \item As mentioned above, in this step we consider an assembly that receives a feedforward input from another assembly.
+    As the excitatory input to this assembly is different than the purely random input but the inhibitory input is only random, we expect that the inhibitory weights targeting this assembly will be different than the background I-to-E connections.
+    Therefore, once again we solve Equation \ref{eq:nn0} for this assembly and find the weights $g^{EI}_{i~\rm rand}$ specific for the assembly.
+  \item Now we can calculate $\mu$ and $\sigma$ for the assembly in questions and the above-mentioned derivatives in order to get an estimate for $c$.
+
+\end{itemize}
+
+For the sake of experiment, we also take only step 1, and estimate the slope of the random neurons.
+
+
+\subsection{why $c$ does not fit?}
+The values for $c$ which both non-linear models are quite close to each other: 0.114 and 0.162 for the full and the simplified model, respectively.
+In case that we consider a random network and ignore the assemblies, the slope of $c$ in both cases is: 0.118 and 0.169.
+All these values are well smaller than the expected 0.25 from the manual fit to the numerics.
+There are various reasons what could have gone wrong.
+The linear model neglects many stuff: like nonlinearity, noise (nn as well!), diff time constants of excitation and inhibition.
+Moreover, the non-linear model works under the assumption of non-correlated inputs.
+Therefore the constant $c$ we just estimated here is only valid for the background inputs.
+During propagation, the effective slope of the transfer function can be substantially different and, therefore, the mismatch with the numerics.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
