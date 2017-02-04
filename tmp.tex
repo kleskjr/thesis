@@ -1,0 +1,136 @@
+% Template to be used while publishing    
+% a scientific work (PhD Thesis etc.)
+% at the EDOC-Server of HU-Berlin                      
+%    developed 2003-2008 by
+% AG Elektronisches Publizieren, 
+% Computer- und Medienservice,
+% Humboldt-Universitaet zu Berlin
+%    with friendly support of
+% TeX-Stammtisch in Berlin     
+
+% $Revision: 19 $
+% $HeadURL: svn+ssh://ryckojox@svn.cms.hu-berlin.de/svn/projects/epub/latex/hudiss/mustermann.tex $
+% $Date: 2009-07-03 15:49:19 +0200 (ptk, 03 lip 2009) $
+% $Author$
+% $Id: mustermann.tex 19 2009-07-03 13:49:19Z ryckojox $
+                             
+% Questions, comments, support:
+%    edoc-latex@cms.hu-berlin.de    
+
+% Documentation and information about the conditions of a publication:
+%    http://edoc.hu-berlin.de/e_autoren/latex          
+
+% Upload:
+%    https://edoc.hu-berlin.de/cgi/dokupload/dokupload.cgi
+
+\documentclass[openright,11pt% 
+]{scrbook}[2007/12/24]
+
+\usepackage{textcomp}
+%\usepackage[english,ngerman]{babel}
+%\usepackage[CaptionAfterwards]{fltpage}
+% The following package is necessary.
+% To change the default options of the packages, use the key=value interface.
+% See the documentation for details.
+% If you need to use any special characters or LaTeX-commands 
+% within the options, use \hudisssetup{} after loading this package,
+% otherwise they will NOT work correctly.
+\usepackage[    
+    inputenc=utf8, % default - latin1, utf8
+    % fontset=palatino, % other possible parameters: lmodern, times
+    % natbib={}, %include to use the natbib-package
+    % jurabib={}, %include to use the jurabib-package
+    % apacite={}, %include to use the apacite-package
+    hints=false, % set to 'false' for submission
+    checktabu=false, % set to 'false' for submission
+    draft=false, % set to 'false' for submission
+    qserie=false
+ ]{hudiss}
+% 2013 Oct by JHS: hudiss has been patched to account for edoc demands
+% the geometry package was used to adjust margins. This only works for
+% the default A4 setting. A5 (wich would be allowed as well) has not
+% been tested - sorry.
+               
+\hudisssetup{%
+    titlepagefont={\Large\sffamily} % Use to change the titlepage font
+}
+
+% Fill out all the metadata here:
+\hudissmetadata{%
+    authorprefix={M.Sc.}, % e.g. Dipl.-Inf.
+    authorfirstname={Nikolay Aleksandrov}, % first name
+    authorsurname={Chenkov}, % surname
+    authorsuffix={\!}, % e.g. Ph.D.
+    %authoradd={gebohren in XXX}, % date and place of birth
+    doctitle={Mechanisms behind sharp-wave ripple generation}, % title of the thesis
+    docsubtitle={xxx}, % subtitle of the thesis
+    % docsubject={}, % subject of the thesis (used in the properties of the pdf-document)
+    % approvala={................................}, % 
+    % approvalb={................................},
+    % approvalc={................................},
+    approvala={Richard Kempter}, % during first submission use dots!
+    approvalb={Reviewer B},
+    approvalc={Reviewer C},
+    % approvald={},
+    % approvale={},
+    degree={d\,o\,c\,t\,o\,r\;\;r\,e\,r\,u\,m\;\;n\,a\,t\,u\,r\,a\,l\,i\,u\,m\\(Dr. rer. nat.)},
+    subject={Theoretische Biologie}, % e.g. Informatik
+    faculty={Mathematisch-Naturwissenschaftlichen Fakult\"at I}, % in Dativ/Genitiv! e.g. Mathematisch-Wissenschaftlichen Fakult\"at II
+    university={Humboldt-Universit\"at zu Berlin}, % e.g. Humboldt-Universit\"at zu Berlin
+    dean={Prof. Stefan Hecht, PhD}, % dean of the faculty
+    president={Prof. Dr. Jan-Hendrik Obertz}, % president of the university
+    datesubmitted={20.09.2012}, % the date of the submission
+    dateexam={08.04.2013}, % the date of your last exam
+    %keywordsen not working
+    keywordsen={assembly, sequence, replay, sharp-wave ripple, memory}, % english keywords comma separated
+    %keywordsde={Kanalrauschen, ...} % german keywords comma separated
+}
+
+% If you whish to load any further packages, 
+% make any own adjustments (e. g. for the package fancyhdr)
+% or define any own commands
+% put ALL of them in the following file:
+\input{adjustment.tex}
+\graphicspath{{figs/}}
+
+% The order of the parts in the document is only our suggestion,
+% you can change it, if you wish.
+% Don't put any other text between those commands.
+% Do not remove the \*matter macros.
+% Use standard macros to include new chapters.
+\begin{document}
+\setlength{\parindent}{4ex}
+\selectlanguage{english}%ngerman
+\everymath{\textstyle}
+  \frontmatter
+    \maketitle
+    %\include{dedication}
+    %\include{abstract2}
+    %\include{zusammenfassung}
+    \tableofcontents    
+  \mainmatter
+    \include{intro}
+    \include{modulationofswrs2}
+    %\include{ch_transient_oscillations}
+    %\include{ch_probing_ca1}
+    %\include{ch_gabaergic_modulation}
+    %\include{ch_olm_recruitment}
+    %\include{ch_outlook}
+    %\include{appendixA}
+  \backmatter
+    %\nocite{*}                
+    	% See the documentation or under
+    	% http://edoc.hu-berlin.de/e_autoren/latex/bedingung.php
+    	% for the list of the permitted styles.
+    \bibliographystyle{apalike} % create your own bibstyle jhs1
+    \bibliography{refs_intro,refs_swrs}%lit
+    %\listoffigures
+    %\listoftables    
+    %\printindex
+    %\include{acknowledgements}
+    %\include{cv}
+    %\include{publications}    % Use our template or write your own.
+    %\include{declaration}    % Use our template or write your own.
+    %\include{refs_manuscript}
+    %\include{refs_new}
+\end{document}
