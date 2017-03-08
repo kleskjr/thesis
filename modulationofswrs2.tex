@@ -1,350 +1,693 @@
-\chapter{Modulation of SWR incidence}
+\chapter{Modulation of sharp-wave incidence}
+\label{chap:swr}
 
 \section{Summary}
-
-  Sharp-wave ripples are network events in the hippocampus that involve large
-  number of cells that fire in synchrony within a time window of 20-100 ms.
-  Despite the huge attention that SWRs are attracting, the exact mechanisms of SW
-  generation, termination are still debatable.  An {\it in-vitro} model of SWs was
-  developed by Maierxxxx has largely facilited the study of the SWs. In this
-  chapter I review the literature on the effects of various drugs on the SW
-  incidence and discuss on the possible mechanisms of drug control on SWs.
-  Moreover, I analyse 2 datasets of {\it in-vitro} recordings provided by Nikolaus and
-  show that the gaabaA antagonist gabazine does not only decrease SW incidence
-  but also increases SW amplitudes. GabaB antagonist SCH..., on th eother side
-  increases SW incidence but decreases the amplitude of the events. The results
-  suggest the existance of a limited resourse that is gettting depleted by SWs
-  and recovered by time
-
+  Recent \textit{in vitro} studies have demonstrated that sharp-wave ripple
+  events can be evoked after optogenetic stimulation of a parvalbumin-positive
+  interneuron subpopulation \citep{Schlingloff2014, Kohus2016}. The
+  2-population model described in the previous chapter cannot explain this
+  phenomenon. In this chapter, a 3-population model is discussed in detail as a
+  hypothetical disinhibitory circuit that can generate the population bursts in
+  the CA areas of the hippocampus. The main theme addressed here is how the
+  GABAergic transmission modulates the incidence of sharp-wave ripple events.
+  In particular, it is unknown how gabazine, a $\rm GABA_A$ receptor antagonist
+  suppresses the generation of sharp-wave ripples. Analyzing data from
+  \textit{in-vitro} recordings and dissecting the 2-population model \textit{in
+  silico} and analytically gives a few possible explanation of the gabazine
+  effect. The results are interpreted in the light of the proposed circuit.
+  Another question explored here is whether the slow dynamics of $\rm GABA_B$
+  receptors is modulating the long time scale of the inter-event intervals,
+  that is in the order of hundreds of milliseconds to tens of seconds.
 
 \section{Introduction}
-  general question of the origin of SWs; ca1 minislices, disinhibition, gabzine 
-  a paragraph about what this chapter is about: investigate the effect of some drugs
-  on SW incidence; data and theorykk
+  Sharp-wave ripples (SWRs) are network events in the hippocampus that involve
+  large numbers of cells that fire in synchrony within a time window of
+  $\sim20-100\, \rm ms$ \citep{Buzsaki2015}. During SWRs \textit{in vivo},
+  principal neurons can fire in a temporal order that reflects the behaviour
+  sequences from previous \citep{Lee2002} or future episodes
+  \citep{Dragoi2011}. Such replays are important for the consolidation of newly
+  formed memories \citep{Girardeau2009}. Despite the concentrated effort and
+  the progress in studying SWRs, some basic understanding of the emergence and
+  the development of these events is still lacking. Therefore,
+  \textit{in-vitro} models have been developed to facilitate the study of this
+  peculiar phenomenon \citep{Maier2003}. In particular, \textit{in-vitro}
+  preparations provide a better experimental control over the hippocampal
+  circuit generating SWRs, e.g., facilitation of recording and imaging,
+  isolation of specific microcircuits, pharmacological manipulation of
+  substances, etc.
 
-  \subsection{drug influence on SWRs incidence}
+  In this introduction, I review some general facts from the literature
+  concerning the generation of SWRs. Because of the importance of inhibition
+  \citep[e.g.,][]{Maier2003, Schlingloff2014}, I start with a brief overview of
+  the main characteristics of the GABAergic neurons and the types of synapses
+  they form in the hippocampus. In the following I will provide a brief
+  discussion on some pharmacological substances that modulate the incidence of
+  spontaneous SWRs \textit{in vitro}. The last section of this introduction is
+  dedicated to a hypothetical 3-population network model that can explain some
+  of the more counterintuitive findings reported in the literature. Throughout
+  the following text, the terms sharp-wave ripple (SWR) and sharp wave (SW) are
+  used interchangeably referring to the same population event. The cases when
+  the fast ripple oscillations are specifically discussed are mentioned
+  explicitly.
+
+  \subsection{Inhibitory transmission in the hippocampus}
+    $\gamma$-Aminobutyric acid (GABA) is the main inhibitory neurotransmitter
+    in the central neural system \citep{Sivilotti1991}. GABA is produced by
+    inhibitory neurons (INs) and stored in vesicles at the presynaptic
+    terminals. GABA is released spontaneously or after a presynaptic neuronal
+    action potential (AP). The action of GABA at the synapses is terminated by
+    uptake mechanisms from the presynaptic side or from the surrounding glial
+    cells. There are two major classes of receptors that are sensitive to the
+    released GABA: $\rm GABA_A$ and $\rm GABA_B$ receptors. 
+
+    \subsubsection{$\rm GABA_A$ receptors}
+    \label{sec:gabaa}
+      %gabaa is ubiquitous sim x\% of all synapses?
+      The $\rm GABA_A $ receptor ($\rm GABA_A R$) is a ligand-gated channel
+      that selectively conducts chloride ions ($\rm Cl^-$) upon activation by
+      agonists such as GABA. Typically, this results in an inhibitory
+      postsynaptic potential (IPSP) and the hyperpolarization of the cell
+      membrane. The reversal potential of the mediated IPSP is determined by
+      the ratio of intracellular and extracellular chloride concentration and
+      is typically $\sim -70\, \rm mV$. Inhibitory interneurons target with
+      every compartment of the hippocampal principal cells (PCs), and $\rm
+      GABA_ARs$ can be found everywhere along the axo-dendritic axis of both
+      PCs and INs \citep{Kullmann2005}.
+      %ref on nonGABAergic interneurons vida?
+
+      Structurally, $\rm GABA_ARs$ are protein complexes that consist of 5
+      subunits arranged in a ring. The subunits form a central pore through
+      which chloride ions can flow (Figure~\ref{fig:gabaa}). Multiple possible
+      combinations of subunits (an incomplete list is shown in the chart in
+      Figure~\ref{fig:gabaa}) can form a receptor. The set of subunit
+      determines basic kinetic properties such as activation and deactivation
+      time constants \citep{Benkwitz2004, Boileau2005}, and also the affinity
+      to GABA, benzodiazepines, steroids, barbiturates, ethanol, etc. The most
+      abundant subunit combination is $\alpha_1 \beta_2 \gamma_2$ (shown in
+      Figure~\ref{fig:gabaa}C). For example in the hippocampal CA3 area, 90\%
+      of the perisomatic synapses on PCs are immunopositive for the $\alpha_1$
+      subunit \citep{Kerti2016}. However, not all inhibitory synapses found by
+      immunolabeling are active. Some inhibitory synapses might remain silent
+      due to the lack of presynaptic GABA \citep{Bekkers2005}. Much like their
+      excitatory cousins, the strength of inhibitory synapses is subjected to
+      plasticity by various spike-timing-dependent-plasticity (STDP) rules
+      \citep{Vogels2013}.
+
+      \begin{figure}
+        \center
+        \includegraphics[width= 32pc]{gabaa_alpha.png}
+        \caption{
+          The $\rm GABA_A$ receptor complex.
+          {\bf A,} Rotationally averaged representation of electron microscope
+          image reveals a fivefold symmetry of the $\rm GABA_AR$
+          (\citealp{Nayeem1994}; adapted with permission). The receptor
+          diameter is $\sim 10\,\rm nM$.
+          {\bf B,} Sketch of the most typical $\rm GABA_AR$ $\alpha_1
+          \beta_2 \gamma_2$ with the location of the GABA and benzodiazepines
+          (BZD) binding sites (adapted from Wikipedia Commons).
+          {\bf C,} Chart showing the approximate distribution of $\rm
+          GABA_AR$ according to the subunits expression from a rat brain
+          (\citealp{Whiting2003}; adapted with permission).
+               }
+      \label{fig:gabaa}
+      \end{figure}
+      
+      % tonic
+      Not all $\rm GABA_ARs$ are located at the synapses. A major subclass of
+      $\rm GABA_ARs$ containing the $\delta$ subunit are located
+      extrasynaptically on the membrane of cell bodies or dendrites. These
+      receptors are especially sensitive to the ambient GABA that is released
+      from presynaptic terminals and diffused from the synaptic cleft into the
+      extracellular space \citep{Semyanov2004, Farrant2005}. Their activation
+      leads to a `tonic' hyperpolarization of the cell membrane, which
+      contrasts the rapid dynamics of phasic IPSPs. Tonic $\rm GABA_A Rs$
+      express a wide range of modulations. Their activity depends on the amount
+      of GABA released from the nearby located synapses, and by the changes in
+      GABA uptake \citep{Farrant2005}.
+
+    \subsubsection{$\rm GABA_B$ receptors}
+      $\rm GABA_B$ receptors ($\rm GABA_BRs$) are another major class of
+      inhibitory GABAergic receptors that are expressed in most neurons of the
+      central nervous system \citep{Gassmann2012}. They are metabotropic
+      receptors, that is, acting through G~proteins. A functional $\rm
+      GABA_BR$ consists of two subunits: $\rm GABA_{B1a}$ or $\rm GABA_{B1a}$,
+      and $\rm GABA_{B2}$. The $\rm GABA_BRs$ can be located at the post- or
+      presynaptic side of the terminals.  Postsynaptic $\rm GABA_BRs$ are
+      located near the glutamatergic synapses but not at the inhibitory ones.
+      There, they activate the G-protein-activated inwardly rectifying
+      potassium channels (GIRKs) that inhibit the neuronal activity by
+      generating a slow IPSP ($\sim 500 \rm \, ms$) with a low reversal
+      potential of $\sim - 100\, \rm mV$ \citep{Booker2013}. The postsynaptic
+      receptor activation is considered important in the modulation of the
+      long-term synaptic plasticity by controlling the backpropagation of APs
+      \citep{Leung2006}. Presynaptic $\rm GABA_BRs$ can be located at
+      excitatory or inhibitory terminals, acting as hetero- or autoreceptors,
+      respectively. Activation of the presynaptic $\rm GABA_BRs$ reduces the
+      permeability of the voltage-gated $\rm Ca^{2+}$ channels (VGCCs)
+      resulting in inhibition of $\rm Ca^{2+}$ influx at the terminal, and
+      thus, in reduction of the evoked and spontaneous neurotransmitter release
+      \citep{Gekel2008}. Autoreceptors can be activated by a single AP of the
+      cell they are located on \citep{Kobayashi2012}, while postsynaptic
+      activation requires repetitive GABAergic firing \citep{Scanziani2000}.
+
+      In the hippocampus, the $\rm GABA_BRs$ are differentially expressed
+      across the hippocampal layers and across neural populations.
+      Postsynaptic, GIRK-coupled receptors are expressed over the whole
+      somato-dendritic axis of the hippocampal principal cells, with the
+      highest densities in the radiatum and in the distal dendrites in stratum
+      lacunosum-moleculare in the CA regions \citep{Degro2015}. Compared to CA1
+      and dentate gyrus, pyramidal cells in area CA3 exhibit substantially
+      stronger IPSPs induced by the $\rm GABA_BR$ agonist baclofen
+      \citep{Degro2015}.  Interneurons show population-specific expression of
+      postsynaptic $\rm GABA_BRs$. For example, immunolabeling reveals high
+      $\rm GABA_{B1}$ subunit density at the extrasynaptic membrane of PVBC. In
+      response to an extracellular stimulation in CA1, parvalbumin positive
+      ($\rm PV^+$) basket cells have larger $\rm GABA_B$-mediated IPSCs
+      compared to the ones evoked in the dendritic-targeting $\rm PV^+$
+      interneurons \citep{Lei2003}. Synaptic transmission from both
+      glutamatergic and GABAergic synapses on interneurons in the
+      stratum radiatum is inhibited by $\rm GABA_BR$ activation. Moreover, $\rm
+      GABA_BR$ activation reduces the frequency-dependent and short-term
+      depression of inhibitory transmission and normalizes the IPSPs on
+      principal cells. $\rm PV^+$ dendritic-targeting interneurons show higher
+      densities of $\rm GABA_BRs$ in the axons compared to $\rm PV^+$ basket
+      cells \citep{Booker2013}.
+
+  \subsection{GABAergic modulation of sharp-wave ripple incidence \textit{in vitro}}
   \label{swr_modulation}
-  GB: 
-    The role of $\rm GABA_B Rs$ in the modulation of SWRs is unclear. Various
-    studies have reported that blocking the $\rm GABA_B Rs$ in slices doesn't
-    alter the SWR properties, such as incidence, amplitude, duration
-    \cite{Hollnagel2014, Hofer2015}
-    It has been shown that $\rm GABA_B Rs$ are involved in SW modulation 
-    \cite{Maier2102}
-    but also Behrens? showed that in their model it did not modulate incidence?
+    \textit{In-vitro} slice preparations are ideally suited to study the local
+    hippocampal circuitry. Under certain experimental conditions, slices can
+    express spontaneous events that resemble the SWRs observed \textit{in vivo}
+    \citep{Hajos2009, Maier2009}. These results suggest that a fraction of the
+    hippocampal circuitry is sufficient for the generation of SWRs.
+    \textit{In-vitro} preparations have a slice thickness typically $\sim 500
+    \, \rm \mu m$, containing $\sim$ 20,000--40,000 neurons in the CA areas
+    \citep[an estimate based on the numbers of neurons in the rat hippocampus
+    and slice thickness;][]{Boss1985, West1991, Bezaire2013}. Moreover,
+    mini-slice experiments show that isolated CA3 and CA1 areas can also
+    generate SWRs in the absence of connections to neighboring regions
+    \citep{Maier2003}. Despite the relatively small network size, the dynamics
+    of the hippocampal circuit is not well understood, and a complete model of
+    the SWR generation mechanism is still missing.
 
+    Because of the larger neuronal excitability of the ventral parts of the
+    hippocampi \citep{Dougherty2012}, SWRs \textit{in-vitro} models usually
+    rely on ventral slices \citep[e.g.,][]{Maier2003, Nimmrich2005}. SWRs
+    normally originate spontaneously in the CA3 region with a stereotypical
+    waveform shape consisting of the sharp wave and the ripple oscillation in
+    the field potential \citep{Csicsvari1999}. The activity then propagates to
+    the CA1 area via the Schaffer collateral pathway. The ripples are, however,
+    incoherent in both regions, suggesting an independent origin of the fast
+    oscillation \citep{Csicsvari2000, Both2008}. The \textit{in-vitro} model
+    provides the opportunity of experimental control, and thus, to disentangle
+    the contribution of various factors such as the contribution of different
+    neuronal populations, neurotransmitter signalling, etc.
+    
+    Inhibitory transmission plays a central role in the generation of SWRs
+    \citep{Maier2003, Schlingloff2014}. Drugs altering the properties of
+    inhibitory transmission can shed light on the different signaling paths
+    involved the generation of SWRs. For example, SR-95531 (gabazine) is a
+    widely used $\rm GABA_A$ antagonist that has high affinity to the GABA
+    binding site of phasic receptors \citep{Ueno1997, Bai2001, Yeung2003}.  Low
+    doses of gabazine \textit{in vitro} decrease the incidence of SWRs, while
+    larger doses block the events \citep{Maier2003, Nimmrich2005,
+    Ellender2010}. Currently, it is unclear through what mechanisms gabazine
+    affects the SW incidence.
+    %It is been shown that bicuculline, another $\rm GABA_A$ antagonist also
+    %decreases the SW incidence \textit{in vivo} \citep{Suzuki1988}, however up
+    %to my knowledge, its effect \textit{in vitro} is not known.
+    On the other hand, thiopental is a barbiturate that increases the IPSP
+    decay time constant, and thus, increases the total charge at the
+    postsynaptic side \citep{Dickinson2002}.
+    %At higher concentrations it activates also the tonic $\rm GABA_A Rs$.
+    Low doses of thiopental decrease SW incidence, while prolonging the
+    duration and the peak of the spontaneous events, and interestingly, reduce
+    the number of ripples per event \citep{Papatheodoropoulos2007}. Moreover,
+    how can two drugs (i.e., gabazine and thiopental) that have opposite
+    effects on the GABA synapses affect SWRs in a similar manner, i.e.,
+    decreasing the incidence of spontaneous SWRs?
 
+    Other major drugs affecting $\rm GABA_A Rs$ such as diazepam and
+    phenobarbital have nonlinear effects on SW incidence: for low doses
+    the occurrence is increased, and for higher concentrations the incidence
+    goes down \citep{Papatheodoropoulos2007, Koniaris2011}. These effects are
+    not well understood.
+  
+    %GB: 
+    The role in the modulation of SWRs of the other major inhibitory receptor,
+    the $\rm GABA_B R$ is unclear. Some studies have reported that blocking
+    $\rm GABA_B Rs$ in slices doesn't alter the SWR properties, such as
+    incidence, amplitude, duration \citep{Hollnagel2014, Hofer2015}. However,
+    later in this chapter I will show that in the \textit{in-vitro} model
+    analysed here, the $\rm GABA_B Rs$ antagonist SCH50,911 increases the
+    incidence of SWRs. Blocking the GIRK channels with SCH23,390 also results
+    in an increase of SW incidence (\citealp{Maier2012}; personal communication
+    with Nikolaus Maier). On the other hand, the application of $\rm GABA_B R$
+    agonists decreases the incidence of SWR events \citep{Maier2012,
+    Hollnagel2014}.
 
-    - lit overview
-    temperature
-    - temp increases incidence, at higher temps, there is a bifurcation and swrs come in bursts (papa...)
+    %here I answer some of these questions, others are left as open.
 
-pH
-  - ???
+  \subsection{Sharp-wave events driven by inhibition}
+    A counterintuitive experimental finding is the fact that SWRs can be evoked
+    by driving inhibitory neurons to fire \citep{Ellender2010, Schlingloff2014,
+    Kohus2016}. In particular, \cite{Schlingloff2014} have demonstrated that
+    SWRs can be elicited by a transient optogenetic drive of a subpopulation of
+    parvalbumin-positive ($\rm PV^+$) interneurons
+    (Figure~\ref{fig:Schlingloff6}). The authors show that SWRs are evoked a
+    few milliseconds after the onset of the light stimulation, and that the
+    number of ripples is stable irrespective of the length of the impulse
+    (Figure~\ref{fig:Schlingloff6}E). Spontaneous SWRs do not occur when
+    ionotropic excitatory transmission is blocked, but nevertheless, events can
+    be evoked by optogenetic stimulation of a $\rm PV^+$ subpopulation. This
+    finding suggests that inhibitory activity is sufficient for the generation
+    of SWRs in the pyramidal layer, given that there is appropriate drive for
+    the circuit, e.g., optical stimulation with duration of $\sim 20 \, \rm
+    ms$. In the control condition, when no synapses are blocked, the $\rm PV^+$
+    stimulation recruits excitation. During the evoked SWRs, whole-cell
+    voltage-clamp recordings from $\rm PV^+$ interneurons reveal phasic
+    excitatory postsynaptic potentials (Figure~\ref{fig:Schlingloff79}),
+    meaning that the inhibitory stimulation leads to the release of excitation.
 
-NNC-711 (Viereckel2013)
+    \begin{figure}
+      \center
+      \includegraphics[width= 25pc]{Schlingloff_f6.png}
+      \caption{
+        Sharp-wave ripples can be evoked by optogenetic drive to $\rm PV^+$ interneurons
+        (\citealp{Schlingloff2014}; adapted with permission)
+        {\bf A,} Fluorescent staining against parvalbumin (red) and ChR2
+        (green) shows that ChR2 is expressed exclusively in $\rm PV^+$
+        interneurons. str. o., stratum oriens; str. rad., stratum radiatum;
+        str. pyr., stratum pyramidale.
+        {\bf B,} Spontaneous and light-evoked (blue bars) SWRs recorded from a
+        slice in control conditions. Spontaneous events disappear after a
+        blockage of excitatory ionotropic transmission (red bar). 
+        {\bf C,} A zoom in the local field potential from the periods denoted
+        with 1 and 2 in \textbf{B}. Spontaneous events are denoted with stars,
+        evoked events are denoted with a blue bar indicating the timing of the
+        light pulse. During the excitatory blockage no spontaneous SWRs occur,
+        but only evoked (right panel).
+        {\bf D,} Examples of a spontaneous SWR (left), an evoked SWR (right),
+        and an evoked SWRs with excitation blocked.
+        {\bf E, F,} Light pulses with different durations evoke SWRs. In
+        control condition, the length of the SWR event is relatively independent
+        on the light duration, which is not the case when excitation is blocked.
+             }
+    \label{fig:Schlingloff6}
+    \end{figure}
 
-thiopental (Papatheodoropoulos2007, Wittinggton96, Dickinson2002)
-  - increases IPSPs (Dick, popa)
-  - a sedative agent impairing memory, barbiturates
-  - decreases SW incidence in vitro (papa...)
-  - prolongs single SWs (papa..)
-  - possible explanations: reduces excitability, enhances tonic gAR on PCs and INs () and directly activates gAR
-
-propafol
-  - tonic gAR, similar results to thiopental (Bieda2004)
-
-phenobarbital
-  - also a barbiturate
-  - at low concentration (up to 100uM) it increases SW incidence; at higher concetration it decreases incidence
-  - increases amplitude 
-
-diazepam, zolpidem (Koniaris2011, Wittington96, Pawelzik99, Thomson2000, Zarnowska2009)
-
-gabazine
-
-gB drugs
-
-canabinoids
-
-
-
-
-
-  \subsection{Hypothesis on the CA3 circuitry giving rise to SWs}
-
+    How does the $\rm PV^+$ interneurons population lead to the excitatory
+    drive observed in the {\it in-vitro} model? A simple two-population model
+    consisting of single excitatory and inhibitory populations cannot explain
+    the above-mentioned phenomenon. To better understand the mechanisms behind
+    SWR generation one needs to look beyond the 2-population model (as
+    presented in Chapter~\ref{chap:memoryreplay}) and consider additional
+    mechanisms. A few explanation have been proposed in the literature:
     \begin{enumerate}
-      \item Slow and fast inhibitory populations; disinhibition taking place (Ellender; Schligloff)
-      \item Slow Inh is targeting distal branches of dendrites; because we don't see IPSPs in the Vm between events
-      \item Slow Inh is PV negative; excitation of PV+ INs leads to SWs
+      \item \textbf{Depolarizing effects of $\rm GABA_ARs$.} It has been shown
+        that during the early phases of development and during certain
+        conditions of {\it in-vitro} preparations $\rm GABA_ARs$ can have
+        depolarizing effects on the postsynaptic membrane potentials of
+        pyramidal cells \citep{Cohen2002, Gulledge2003, Banke2006}. In
+        particular, \cite{Szabadics2006} demonstrated how activation of a
+        single axo-axonic cell can trigger a depolarizing GABAergic
+        postsynaptic potential or a postsynaptic action potential in pyramidal
+        cell in cortical slices from rats and humans. In such a scenario,
+        driving the $\rm PV^+$ interneuron population (that includes the
+        axo-axonic cells) would have an excitatory effect on the network
+        activity.
+      \item \textbf{Inhibition leads to rebound excitation.} \cite{Cobb1995}
+        have shown that inhibitory inputs to depolarized pyramidal neurons can
+        lead to a brief depolarization (rebound) following the initial
+        hyperpolarization. During the rebound depolarization cells can fire
+        action potentials. Such effects taking place simultaneously in multiple
+        neurons would effectively lead to their transient synchronization, and
+        thus, to a possible population burst.
+      \item \textbf{Inhibition de-inactivates voltage-gated ion channels.} This
+        idea is in line with \cite{Platkiewicz2011} who have shown that the
+        inactivation of $\rm Na^+$ channels impacts the neuron's firing
+        threshold. A brief inhibitory/hyperpolarizing input might be sufficient
+        to de-inactivate channels that have been inactivated due to continuous
+        depolarization. This mechanism can be extended also to other
+        voltage-gated ion channels. 
+      \item \textbf{Disinhibition.} A possible disinhibitory loop includes
+        basket cells, which are shown to project to dendritic-targeting
+        interneurons (DTIs) \citep{Cobb1997, Kohus2016}. According to this
+        hypothesis activation of BC leads to strong inhibition of the DTI that
+        actively suppress PC from firing between the events. This inhibition of
+        inhibition would be the direct cause of the following SWR.
     \end{enumerate}
+    
+    \begin{figure}
+      \center
+      \includegraphics[width= 33pc]{Schlingloff_f79.png}
+      \caption{
+        Optogenetic control of $\rm PV^+$ interneurons modulates SWRs
+        (\citealp{Schlingloff2014}; adapted with permission).
+        {\bf A,} Optogenetic drive of $\rm PV^+$ interneurons evoked repetitive action
+        potentials in $\rm PV^+$ cells (loose-patch recording in top trace) as well as a
+        SWR in the LFP (second trace). A whole-cell, voltage-clamp recording 
+        from a $\rm PV^+$ interneuron shows phasic EPSC $<10 \, \rm ms$
+        after the onset of the impulse (two bottom traces).
+        \textbf{B,} Optogenetic silencing of $\rm PV^+$ cells interrupts (left
+        panel) and blocks the generation of spontaneous SWRs (right panel).
+             }
+    \label{fig:Schlingloff79}
+    \end{figure}
 
-    In the previous chapter I propose a computational model for the emergence
-    of SWs and the associated replay of sequences. However, such model
+    The above-mentioned mechanisms are not mutually exclusive as possible
+    causes for the inhibitory-driven evoked events. However, some of these
+    explanations seem more plausible than others. For example, currently there
+    is no evidence that $\rm GABA_AR$ has depolarizing effects in the
+    \textit{in-vitro} SWR models. Experimental support for membrane potential
+    rebounds after inhibitory inputs from PVBCs is also scarce. This hypothesis
+    comes with clear predictions that can be tested experimentally
+    \textit{in-vitro}: i) a patch-clamped recordings from PC should show a
+    rebound spike after driving one or more $\rm PV^+$ interneurons; and ii),
+    blocking de-inactivation of the voltage-gated ion channels should prevent
+    the inhibitory-driven SWRs. 
+    
+  \subsection{Hypothesis on the CA3 circuitry giving rise to sharp-wave ripples}
+  \label{sec:3pop}
+
+  \begin{comment}
+    In the previous chapter I have proposed a computational model for the emergence
+    of SWs and the associated replay of sequences. However, such a model
     consisting of 2 populations (excitatory and inhibitory) is a crude
     approximation of the CA3 hippocampal network, where over 20 different types
     of neurons have been reported \citep{Maccaferri2003, Klausberger2008}. In
     this section I present a phenomenological model of a minimal hypothetical
     CA3 circuit consisting of 3 populations (excitatory and 2 inhibitory) that
-    gives rise to the sharp-wave events observed in slices. This hypothesis
-    aims to explain some paradoxical results reported in the literature. The
-    proposed model relies on number of assumptions that are to be tested in
-    experiments. Moreover, it comes with some predictions that can validate or
-    invalidate the proposed model.
+    gives rise to the SWR events observed in slices. The hypothesis presented
+    below aims to explain some paradoxical results reported in the literature.
+    The proposed model relies on a number of assumptions that are to be tested
+    in experiments. Moreover, it comes with some predictions that can validate
+    or invalidate the proposed model.
+  \end{comment}
 
-    A contra intuitive experimental finding is the fact that SWRs can be evoked
-    by the driving inhibitory neurons to fire \citep{Ellender2010,
-    Schlingloff2014}. In particular, \cite{Schlingloff2014} has demonstrated
-    that SWRs can be elicited by a transient optogenetic drive of the $\rm
-    PV^+$ interneurons (Figure~\ref{fig:sclingloff6}). The authors show that
-    SWRs are evoked a few milliseconds after the onset of the light impulse,
-    and the number of ripples is stable irrespectively of the length of the
-    light stimulations (Figure~\ref{fig:sclingloff6}E). On the other hand,
-    silencing the $\rm PV^+$ lead to suppression of spontaneous SWs. Moreover
-    during the evoked SWs, whole-cell voltage-clamp recordings from $\rm PV^+$
-    interneurons reveal phasic excitation EPSPs.
+    The fact that silencing a $\rm PV^+$ subpopulation can interrupt an ongoing
+    SWR event and significantly reduce the incidence of spontaneously occurring
+    events \citep{Schlingloff2014} supports the last hypothetical mechanisms,
+    the disinhibitory circuit (Figure~\ref{fig:3pop}). The hypothesis presented
+    below aims to explain some paradoxical results reported in the literature.
+    The proposed model relies on a number of assumptions that are to be tested
+    in experiments. Moreover, it comes with some predictions that can validate
+    or invalidate the proposed model.
 
-    silincing pv+ also stops the SW
-
-    A simple two-population model consisting of single excitatory and
-    inhibitory populations can not explain the above-mentioned phenomenon where
-    activation of interneurons leads to the occurrence of SWRs and increases
-    the multiunit activity. To understand the mechanisms behind SWR generation
-    one needs to look beyond the 2-population model (as present in Chapter 2)
-    and consider additional mechanisms. A few explanation have been proposed as
-    possible mechanisms:
-    \begin{enumerate}
-      \item Depolarizing effects of $\rm GABA_A$ receptors. It has been shown
-        that during the early phases of development and during certain
-        conditions in {\it in-vitro} preparation $\rm GABA_A$ receptors can have
-        depolarizing effects on the postsynaptic membrane potentials of
-        pyramidal cells \citep{Cohen2002, Gulledge2003, Banke2006,
-        Szabadics2006}. In such scenario driving the PVBC population would have
-        direct excitatory effects on the whole network.
-      \item Inhibition leads to rebound excitation. \cite{Cobb95} has shown
-        that inhibitory inputs to depolarized pyramidal neurons can lead to a
-        brief depolarization following the initial hyperpolarization. During
-        the depolarization cells can fire action potentials. Such rebound
-        effects taking place simultaneously in multiple neurons would
-        effectively lead to their transient synchronization, and thus, to a
-        possible population burst.
-      \item Inhibition de-inactivates voltage-gated ion channels.
-        This idea is in line with \cite{Platkiewicz2011} which have shown that
-        the inactivation of $\rm Na$ channels impacts neuron's firing threshold. A
-        brief inhibitory/hyperpolarizing input might be sufficient to
-        de-inactivate channels that have been inactivated due to continuous
-        depolarization. This mechanism can be extended also to other
-        voltage-gated ion channels. 
-      \item Disinhibition. A possible disinhibitory loop includes basket cells
-        which are shown to project to dendritic-targeting interneurons (DTIs)
-        \citep{Cobb97, Kohus2016}. According to this hypothesis activation of
-        BC leads to strong inhibition of the DTI that actively suppress PC from
-        firing between the events. This inhibition of inhibition is direct
-        cause of the following SWR.
-    \end{enumerate}
-    
-    The above-mentioned mechanisms are not mutually exclusive as possible
-    causes for the inhibitory-driven evoked events. However, some of these
-    explanations seem to be more plausible than others. For example, currently
-    there is no evidence that $\rm GABA_A$ has depolarizing effects in the
-    preparations used as SWR {\it in-vitro} models. Experimental support for membrane
-    potential rebounds after inhibitory inputs from PVC is also scarce. The
-    fact that silencing the PVC population can interrupt an ongoing SWR event and
-    significantly reduce the incidence of spontaneously occurring events
-    \citep{Schlingloff2014} supports the last hypothetical mechanisms, the
-    disinhibitory circuit.
-
-    According to the disinhibitory hypothesis, the CA3 network is in a balanced state where
-    pyramidal neurons and a DTI population are tightly coupled  and in a low
-    firing rate regime. The DTIs receive a strong inhibition from the
-    $\rm PV^+BC$ that are normally silent in the background state. 
-    
     \begin{figure}
       \center
-      \includegraphics[width= 15pc]{2popnet.png}
+      \includegraphics[width= 25pc]{3pop_gamma.png}
       \caption{
-        2popnet
+        A sketch of a minimal model consisting of 3 neuronal populations.
+        \textbf{left:} The network consist of 3 populations: principal cells
+        (right), PVBC (left), and mIN (top). Populations are all-to-all
+        connected, including recurrent connections (not shown). Axons and
+        synapses are color-coded with red for excitation and blue for
+        inhibition.
+        \textbf{right:} Population activity before and during a SWR represented
+        in three snapshots. The degree of population activation is color-coded
+        with the saturation of the red color. In the background state, PCs and
+        PVBCs have low firing rates, while the mIN population has its highest
+        activity. At the onset of events, PCs and PVBCs are active, while mINs
+        are silent because of the fast inhibition from PVBC. Towards the end of
+        the event, mINs get activated by the excitatory neurons, and thus,
+        start suppressing the SWR event.
              }
-    \label{fig:ca3only_SCsumm}
+      \label{fig:3pop}
     \end{figure}
-
-    A different finding..., \cite{Ellender2010} has shown that during
-    a continuous ($500\, \rm ms)$ drive of a single perisomatic-targeting
-    interneuron, the incidence of SWR occurrence decreases, and then after the
-    stimulation is finished, the incidence of SWs increases with a significant
-    peak of occurrence 1 to $2\,\rm seconds$ after the stimulation is over
-    (Figure xxx). These results do not hold for all the stimulated cells, but for 6/24
-    Perisomatic-targeting interneurons are family of different classes of
-    interneurons that include cholecystokinin-positive basket cells,
-    parvalbumin-positive basket cells, and axo-axonic cells \citep{Freund1996}.
     
+    A minimal disinhibitory model consists of 3 populations: pyramidal cells
+    (PC), parvalbumin-positive basket cells (PVBC), and another class of
+    interneurons, which I will refer to as mysterious interneurons (mINs). The
+    circuit can operate in two regimes: a balanced state with low firing rates
+    that describes the CA3 network dynamics between events, and a high-firing
+    state corresponding to a SWR event (Figure~\ref{fig:3pop}). In the
+    background state the PCs are in a low-firing \citep{Csicsvari1999} balanced
+    state and are heavily inhibited by the active mINs. The PVBCs are virtually
+    silent in the background state \citep{Klausberger2003, Varga2012}.
+    Spontaneous SWRs occur when, due to a build-up of activity, pyramidal
+    neurons excite the PVBCs, and then PVBCs inhibit the mIN population,
+    effectively disinhibiting the pyramidal population. Thus, during a SWR
+    event, the network activity turns around, the PC and PVBC populations are
+    firing with high rates \citep{Klausberger2003, Varga2012}, while the mINs
+    are silent. The conditions in which this disinhibitory circuit operates are
+    explored in detail in a separate project by Roberta Evangelista.
+    Preliminary results predict a strong PC-PVBC-mIN connection pathway in
+    comparison to PC-mIN connections, as well as stronger connections on the
+    PVBC-mIN-PC pathway in comparison to PVBC-PC connections.
+    
+    According to the model, activation of the PC or PVBC population would
+    activate the disinhibitory pathway, leading to a SWR. The model is in line
+    with the reports that find a gradual build-up of PC activity tens of
+    milliseconds prior to spontaneous SWR events \citep{Ellender2010,
+    Schlingloff2014, Hulse2016}. Moreover, depolarization of a small group (few
+    tens up to hundred) of neighboring pyramidal neurons could evoke a SWR
+    \textit{in vivo} \citep{Stark2014}. And \cite{Bazelot2016} showed that
+    driving a single pyramidal cell to firing ($200\, \rm pA$, for $200\, \rm
+    ms$) can prime the occurrence of SWRs \textit{in vitro}. Interestingly, the
+    PC stimulation leads to the recruitment of perisomatic-targeting inhibitory
+    interneurons reflected in the field IPSP at the initial phase of the evoked
+    SWs. According to the proposed hypothesis, the stimulated PCs
+    \citep{Stark2014, Bazelot2016} drive a subpopulation of PVBCs that
+    consequently disinhibit the local circuit. Also in line with the
+    disinhibitory model is the fact that silencing $\rm PV^+$ cells stops an
+    ongoing SW and leads to suppression of spontaneous SWs
+    \citep{Schlingloff2014}.
 
-    Once PVC are activated \citep{Ellender2010, Schlingloff2014}, the PCs are
-    effectively disinhibited resulting in a population burst. It has been
-    shown that there is a gradual build-up of PC activity tens of milliseconds
-    prior to spontaneous SWR events %\citep{delaPrida, Ellender2010,
-    %Schlingloff2014, Hulse2016}. Moreover, excitation of single pyramidal
-    cells \citep{Baszelot2016} can also prime the occurrence of SWRs. The
-    increased firing of pyramids leads to recruitment of PVBC that consequently
-    inhibit the DTIs, and thus, effectively disinhibiting the PC population.
-    The conditions in which this disinhibitory circuit works are explored in
-    detail in a separate project by Roberta Evangelista. Preliminary results
-    give the prediction of strong Py-BC-DTI pathway connections in comparison
-    to Py-DTI connections, as well larger connection on the BC-DTI-Py pathway
-    in comparison to BC-Py connections.
-
-    To make a complete model of SWR occurrence one should also consider
-    mechanisms that control the duration of a SWR and bridge the time interval
-    between events to processes on a relevant time scale in the order of
-    hundreds of milliseconds to seconds. An important component component of
-    such mechanism would be the short-term plasticity of inhibitory
+    %ledri: in vitro epilepsy hippocampal model, activation of a large and diverse IN population
+    %leads to a transient epileptyform activity followed by silent period during the continious stimuklation
+    %just after the offset of stim, new bursts occur
+    The 3-population model is not fully in line with who \cite{Ellender2010}
+    have shown that during a continuous ($500\, \rm ms)$ drive of a single
+    perisomatic-targeting interneuron, the incidence of SWR occurrence
+    decreases, and after termination of the stimulation, the SW incidence
+    increases with a significant peak of occurrence 1 to $2\,\rm seconds$ after
+    the stimulation offset. It is worth noting that these results hold only for
+    a fraction of the stimulated cells (6/24). Perisomatic-targeting
+    interneurons are a family of different classes of interneurons that include
+    cholecystokinin-positive basket cells, parvalbumin-positive basket cells,
+    and axo-axonic cells \citep{Freund1996}. It is not known which, if any
+    particular, class of these interneurons is involved in this temporal
+    suppression of SWRs. It is still an open question why stimulating a single
+    perisomatic-targeting neuron can suppress SWRs and can release SWRs immediately
+    after the stimulation \citep{Ellender2010}, while optical stimulation of small populations
+    gives rise to SWRs just $\sim 1\, \rm ms$ after the onset of the
+    stimulation \citep{Schlingloff2014}. However, exciting a small
+    subpopulation of $\rm PV^+$ interneurons (<5 cells) does not evoke any SWR
+    events, and even suppresses ongoing events \textit{in vivo}
+    \citep{Stark2014}. This might be explained by the fact that while
+    \cite{Schlingloff2014} illuminate the whole slice, and thus activate most
+    of the $\rm PV^+$ interneurons, \cite{Ellender2010} and \cite{Stark2014}
+    activate one or a very few neurons which is not sufficient for
+    disinhibition, and thus, to initiate an event. Another interesting
+    disagreement of results is that \cite{Ellender2010} did not observe a rise
+    of the SW incidence after driving single pyramidal neurons in contrast to
+    the report from \cite{Bazelot2016}.
+    
+    To make a more complete model of the SWR generation, one should also
+    consider mechanisms that control the duration of a SWR and the time
+    interval between events. One requires processes on a relevant time scale on
+    the order of hundreds of milliseconds to seconds. An important component of
+    such mechanisms could be the short-term plasticity of inhibitory
     transmission. It has been shown that basket cells exhibit short-term
-    depression of synaptic transmission both on pyramidal cells and on other
-    interneurons as well \citep{Kraushaar2000, Kohus2016}. During a SWR event
-    BCs fire multiple times with high frequency, and therefore, the efficacies
-    of their synapses decrease significantly. Such depression on BC-DTI
-    synapses would lead to less inhibition on the DTIs, resulting in their
-    recruitment. Once active again, DTIs inhibit the pyramidal population,
-    resulting in SWR termination. The recovery of BCs synapses is a relatively
-    slow process on the order of hundreds of milliseconds \citep{Kohus2016}
-    that might determine the timing between SWR events. Once the synapses
-    recover from depression, the BC population is able to disinhibit the CA3
-    circuit and lead to the next event. In the Result and Discussion sections, I
-    discuss this phenomenological model in the light of the results reported.
-    
-    in a greater detail the assumption and prediction that such a model
-    poses, as well as the foreseen shortcomings.
+    depression (STD) of synaptic transmission both on pyramidal cells and on
+    other interneurons as well \citep{Kraushaar2000, Kohus2016}. During a SWR
+    event, PVBCs fire multiple times with a high frequency, and therefore, the
+    efficacies of their synapses decrease significantly towards the end of an
+    event. Considering such depression on the PVBC-mIN synapses would lead to a
+    weaker inhibition on the mINs in the advanced phase of the sharp wave,
+    resulting in mINs recruitment. Once active again, mINs inhibit the PC
+    population, leading to the termination of the SWR. The recovery of the
+    PVBCs synapses is a relatively slow process on the order of hundreds of
+    milliseconds \citep{Kohus2016}. Once the synapses recover from depression,
+    the PVBC population is able to disinhibit the CA3 circuit again and lead to
+    the next event. In line with the STD hypothesis, a prolonged optogenetic
+    drive ($400\,\rm ms$) to the PC population leads to ripple oscillations
+    that decrease in amplitude and frequency after $50\, \rm ms$
+    \citep{Stark2014}. The decrease in frequency is likely due to the
+    depression of the PVBC-PVBC synapses that are crucial for the ripple
+    oscillation generation \citep{Donoso2017}, while the amplitude decrease is
+    due to the depression of PVBC-PC synapses that are the main contributor to
+    the ripple LFP in the pyramidal cell layer.
 
-    why stimulating 1 perisomatic neuron suppresses SWs during stimulation, and releases
-    SWs immediately after (ellender), while optical stimulation of small populations
-    gives birth to SW just 1 ms after the onset of the stimulation (schlingloff) ?????
+    To summarize, here I propose a phenomenological three-population model as a
+    minimal circuit that can give rise to the SWR events observed \textit{in
+    vitro} and \textit{in vivo} (see Figure~\ref{fig:3pop}). In the background
+    state, in the intervals between events, the pyramidal cell (PC) and the
+    $\rm PV^+$ basket cell (PVBC) population exhibit low firing rates, while
+    being inhibited by another (not identified yet) inhibitory population
+    (mINs). Before the onset of an event, there is a build-up of excitatory
+    activity recruiting PVBCs which inhibit the mIN population, and thus, the
+    disinhibited circuit enters a high firing-rate regime, where the balance of
+    activity is maintained by the pyramidal cells and the PVBCs. The high
+    firing rates of PVBCs during the event leads to short-term depression of
+    their efferent synapses. In particular, as the PVBC-mIN pathway is
+    depressed, the mINs are recruited back into the network, and thus,
+    terminate the event by inhibiting the excitatory PC population. 
 
+    Such a model circuit comes with a number of assumptions/predictions that can
+    be tested experimentally. A basic model requirement is the third population
+    of unidentified interneurons, the mINs. To help narrow down the search for
+    this population, there are a few features that should be exhibited
+    according to the model:
 
-    recovery of inhib synapses controls the incidence and the SW amplitude
+    \begin{itemize}
+      \item mINs are active in the low-firing background state, are silent in
+        the initial stage of the SWR events, and are active again at the
+        advanced phase of the SWRs. Possible candidates are ivy cells
+        \citep{Hajos2013}, axo-axonic cells \citep{Viney2013},
+        enkephalin-expressing interneurons \citep{Fuentealba2008b}, or
+        neurogliaform cells \citep{Karayannis2010}. However, neurogliaform
+        cells and ivy cells have bigger time constants \citep{Fuentealba2008,
+        Karayannis2010}, and their slow IPSPs are unlikely to modulate the
+        network activity on a millisecond time scale upon $\rm PV^+$
+        interneuron stimulation.
+      \item a transient inhibition applied to the mIN population should trigger
+        a SWR event.
+      \item a constant drive applied to the mINs should suppress the generation
+        of SWRs.
+      \item the mINs are parvalbumin negative ($\rm PV^-$) interneurons.
+      \item the mINs are heavily suppressed by a $\rm PV^+$ subpopulation during
+        SWR events.
+      \item due to the lack of observed IPSPs in patch-clamped pyramidal cell
+        recordings, it's likely that mINs target the distal dendrites of PCs.
+      \item a current-source density (CSD) analysis from multi-electrode
+        recordings might show the location the current source evoked by mINs in
+        the background state.
+    \end{itemize} 
 
-    schlinglof sucks with fig 6Av,Bv,Cv:  what is incedence of 30? 30 events per 500 ms?
-    
-    ___________________for discussion:%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    However, the proposed disinhibitory hypothesis has to deal with a few
+    weaknesses at its incarnation. The following issues need to be addressed
+    properly by experiments or extension of the model:
 
-    STD on bc-bc synapses control the amplitude of sws
-    std on bc-my controls the incidence
+    \begin{itemize}
+      \item A light stimulation to the $\rm PV^+$ neurons recruits the
+        excitatory population shortly ($\sim 10\, \rm ms$) after the onset of
+        the light impulse (see Figure~\ref{fig:Schlingloff79}). This result
+        suggests that the membranes of pyramidal cells are in a tight balance
+        of excitatory and inhibitory inputs, and the suppression of mINs leads
+        to a rapid increase of firing. An interesting question is: Where does
+        the excitatory drive originate? In what conditions is the low firing
+        rate of the \textit{in-vitro} circuit sufficiently high to drive the
+        population bursts upon disinhibition?
+         %ref to some measures from PC membranes? hajos?
+      \item As mentioned above, patch-clamp recordings from pyramidal cells
+        rarely show signatures of IPSPs (from the data provided by Nikolaus
+        Maier, and also in \cite{Maier2011, Schlingloff2014}). Assuming that
+        the lack of IPSPs is due to a filtering of the dendritic tree, in which
+        conditions can this filtering happen?
+      \item Given the aforementioned points, it is possible that other
+        mechanisms can take the role of the mINs? For example, an alternative,
+        or complementary, mechanism to the disinhibition circuit could manifest
+        itself though inhibition that would de-inactivate voltage-gated $\rm
+        Na^+$ channels.
+    \end{itemize}
 
-Additional complication might come from the unspecific effects of gabazine:
-gabazine blocks glycine receptors \citep{Shirasaki1991} and SK-type potassium 
-channels \citep{Pedarzani2001}.
+    In the following Results section, I discuss the findings from \textit{in-vitro} data 
+    in the light of the phenomenological model presented here. 
 
-    differential role of gabazine works for 2 pops, but it's unlikely to be the full model
-    because 1. the hippocampal zoo of interneurons consists of more than 20 types that are still not 
-    fully describeda and understood what are their contributions to SWs.
-    2. disinhibitory experiments, 2 pops can not explain that 
-
-information on the order of PC firing can be transfered also through the inhib population.
-giving certain times during the ripple windows...(ref on inhib propagation of activity norman?)
-
-multiple types of SWs
-  - in-vitro experiments show various incedences 0.1 to 10?
-  - various ripple frequences
-  - reference on diff SWs
-  - weather it's always the same circuit is not clear, in studies we have to study a particular 
-  in-vitro model and treat carefully results from other in-vitro models. Maybe some benchmarks for 
-  classifying the type of SW are observed..
-
-
-  %\subsection{Gabazine effects on sharp-wave ripples}
 \section{Results}
 %________________
-  In this section I present main results from analysing data...??
-
-  \subsection{Sharp wave amplitude peaks do not determine the interval until next event }
+  In this section I analyse \textit{in-vitro} recordings provided
+  by Nikolaus Maier. The results are interpreted in the light of the
+  hypothetical 3-population circuit. Additionally, for explaining the
+  experimental findings of how gabazine affects the SWR incidence, I used
+  numerical and analytical methods applied to the 2-population network
+  presented in Chapter~\ref{chap:memoryreplay}.
+ 
+  \subsection{Sharp-wave amplitude peaks do not determine the interval until next event}
     \label{sec:swr_amp-int}
-
     The interval between consecutive SWR events \textit{in vitro} varies from
-    hundreds of milliseconds to tens of seconds depending on the experimental
-    setup and the slice preparation. Currently, we do not know the underling
-    biological processes that have time scales much larger than than the time
-    scales of neural activity (typically milliseconds to tens of milliseconds).
+    tens of milliseconds to tens of seconds depending on the experimental setup
+    and the slice preparation. Currently, we do not know the underlying
+    biological processes that have time scales much larger than the time scales
+    of neural activity (typically milliseconds to tens of milliseconds).
     However, a natural assumption is that there is some kind of recovery of the
     system after each event, e.g., depletion of synaptic and neuronal resources
-    \citep{Cohen2004, Jones2007}, or short-term depression \citep{Romani2015,
-    Kohus2016}, or a slower inhibition evoked by ambient GABA on the
-    extrasynaptic $\rm GABA_A$ receptors \citep{Brown1978, Ben1994} or an
-    activation of synaptic/extrasynaptic $\rm GABA_B$ receptors
-    \citep{Scanziani2000, Hollnagel2014, Lang2014}. Does this recovery time
-    depend on the size of a sharp-wave event, e.g., do the larger events
+    \citep{Cohen2004, Jones2007}, receptor saturation \citep{Trussell1993},
+    short-term depression \citep{Romani2015, Kohus2016}, a slower inhibition
+    evoked by ambient GABA on the extrasynaptic $\rm GABA_ARs$
+    \citep{Brown1978, Ben1994}, or an activation of synaptic/extrasynaptic $\rm
+    GABA_BRs$ \citep{Scanziani2000, Hollnagel2014, Lang2014}. Does this
+    recovery time depend on the size of a SWR event, e.g., do the larger events
     deplete more resources, and thus, prolong the interval until the following
     event?
 
     To analyse the dependence between amplitude of peaks and the following
     intervals, I used data provided by Nikolaus Maier. The dataset consists of
-    extracellular recordings from the CA3 area of hippocampal slices that
-    exhibit spontaneous sharp waves (SWs). I calculated the serial correlation
-    between SW peaks amplitudes and the time interval until the following
-    event. I found only weak correlations (Figure~\ref{fig:ca3only_SCsumm},
-    top-left panel). From the 20 slices, only 9 show correlations that are
-    significant ($p<0.001$) with a mean correlation coefficient of around 0.2.
-    The results show missing (11/20) or a low dependence between the size of a
-    SW and the interval until the following event. Moreover, the correlation
-    coefficients are independent of the frequency of spontaneous events in the
-    slice (Figure~\ref{fig:ca3only_SCsumm}, bottom-left panel).
+    extracellular recordings from CA3 area stratum pyramidale of hippocampal
+    slices that exhibit spontaneous SWRs. I calculated the serial correlation
+    between SW peak amplitudes and the time interval until the following event.
+    I found only weak correlations (Figure~\ref{fig:ca3only_SCsumm}, top-left
+    panel). From the 20 slices, only 9 show correlations that are significant
+    ($p<0.001$) with a mean correlation coefficient of around 0.2. Moreover,
+    the correlation coefficients are independent of the incidence of
+    spontaneous events in the slice (Figure~\ref{fig:ca3only_SCsumm},
+    bottom-left panel).
 
     \begin{figure}
+      \center
       \includegraphics[width= 35pc]{ca3only-cs2.eps}
       \caption{
-        Serial correlation of spontaneous sharp waves. \textbf{top-left}: Distribution
-        of serial correlation coefficients between sharp-wave peaks and the
-        interval until the following event; $n$ is the number of significant
-        correlations ($p<0.001$) that are shown in the boxplot; the blue box
-        extends from the lower to upper quartile values, with a red line at the
-        median correlation; black line (whiskers) show the range of the data;
-        outlier datapoints are denoted with $+$. \textbf{bottom-left:} The
-        peak-interval correlations shown against the incidence for each
-        recording. \textbf{top-right}: Distribution of interval-peak correlation
+        Serial correlation of spontaneous sharp waves (SWs). \textbf{top-left}:
+        Distribution of serial correlation coefficients between SW peak
+        amplitudes and the interval until the following event; $n$ is the
+        number of slices that show significant correlations ($p<0.001$) that
+        are shown in the boxplot; the blue box extends from the lower to upper
+        quartile values, with a red line at the median correlation; black line
+        (whiskers) show the range of the data; outlier datapoints are denoted
+        with $+$. \textbf{bottom-left:} The peak-interval correlations shown
+        against the incidence for each recording; blue circles for significant
+        correlations, red circles for insignificant correlations are considered
+        as 0. \textbf{top-right}: Distribution of interval-peak correlation
         coefficients, and the same correlations plotted against incidence
         (bottom-right).
              }
     \label{fig:ca3only_SCsumm}
     \end{figure}
 
-    The majority of recordings show a missing peak-interval correlations. Even
-    though depletion might control inter-SW intervals, a low peak-interval
-    correlation cannot rule out this mechanism. A possible explanation for this
-    observation is that the SW peaks are a local phenomenon, and while being
-    large at the recording location, SWs peaks can be smaller at other
-    locations of the slice. The next event is then triggered in a site where
-    the peak has been rather low and the local resources are less depleted.
-    Therefore, we can not predict the time of the next event based on the
-    measured amplitude at a particular site because SWs can originate elsewhere
-    in the slice. In such cases, the local depletion recovery does not play a
-    role in controlling the timing of next events. Following this line of
-    reasoning gives us a hypothetical explanation about the surprisingly low
-    correlations between peaks and intervals.
+    The majority of recordings shows a missing peak-interval correlation
+    (11/20). Even though depletion might control inter-SW intervals, a low
+    peak-interval correlation cannot rule out this mechanism. A possible
+    explanation for this observation is that the SW peaks are a local
+    phenomenon, and while being large at the recording location, SWs peaks can
+    be smaller at other locations of the slice. The next event is then
+    triggered in a site where the peak has been rather low and the local
+    resources are less depleted. Therefore, we can not predict the time of the
+    next event based on the measured amplitude at a particular site because SWs
+    can originate elsewhere in the slice. In such cases, the local depletion
+    recovery does not play a role in controlling the timing of next events.
+    Following this line of reasoning gives us a hypothetical explanation about
+    the surprisingly low correlations between peaks and intervals.
 
     To test the hypothesis relying on the locality of SW amplitudes stated
     above, I analysed data from multi-electrode array (MEA) recordings. The
     dataset was provided by Roberta Evangelista, where multiple sites in the
     CA3 area of hippocampal slices are measured simultaneously. In single
-    recordings, the peaks of SW events measured at different locations show
-    very high co-variability (an example is shown
+    recordings, the peak amplitudes of SW events measured at different
+    locations show very high co-variability (an example is shown
     Figure~\ref{fig:peak_correlation_ex}). Moreover, the aggregated data from
-    20 different slices show that any two locations in a CA3 slice have
-    positive and significant ($p<0.001$) correlations between the measured SW
-    peaks (Figure~\ref{fig:peak_correlation_summ}). The high correlations
-    between different sites rule out the hypothesis that the SW amplitude is a
-    local phenomenon in slices.
+    20 different slices show that every pair of locations in a CA3 slice has a
+    positive and significant ($p<0.001$, 2116 total pairs) correlations between
+    the measured SW peaks (Figure~\ref{fig:peak_correlation_summ}). The high
+    correlations between different sites rule out the hypothesis that the
+    amplitude of SWs is a local phenomenon in slices.
 
     \begin{figure}
+      \center
       \includegraphics[width= 35pc]{mea.eps}
       \caption{
-        An example of configuration and recording of a multi-electrode array on
-        a hippocampal slice. \textbf{top-left:} The colored circles (red and
-        blue) denote recording channels that are considered to be in the
-        radiatum layer and have a reliable signal of the sharp-wave events.
-        \textbf{bottom:} Example of a recording sweep where SW peaks measured
-        at the recording electrodes are plotted in time. Here, the peak
-        amplitudes are normalized for each recording site
-        $\left(\frac{x-\mu(x)} {\sigma(x)}\right)$ for better comparison.
-        \textbf{top-right:} A matrix of the pair-wise correlation coefficients
-        (CC) between SW peak amplitudes measured at seven different electrodes.
+        An example multi-electrode array recording {\it in vitro}.
+        \textbf{top-left:} A hippocampal slice with recording sites in black.
+        The colored circles (red and blue) denote recording channels that are
+        considered to be in the stratum pyramidale and have a reliable signal
+        of the SWR events. \textbf{bottom:} Example of a recording
+        sweep, where SW peak amplitudes measured 7 recording electrodes are
+        plotted in time. For better comparison, peaks are normalized by
+        subtracting the mean and dividing by the standard deviation of peaks of
+        peak amplitudes for each recording site.  \textbf{top-right:} A matrix
+        of the pair-wise correlation coefficients (CC) between SW peak
+        amplitudes measured at the different electrodes.
       }
     \label{fig:peak_correlation_ex}
     \end{figure}
@@ -353,9 +696,9 @@ multiple types of SWs
     \centering
       \includegraphics[width= 22pc]{mea_corrs_summ.eps}
       \caption{
-              Aggregated distribution of correlation coefficients between pairs
-              of SW peak amplitudes measured at different locations in CA3 in
-              hippocampal slices.
+        Distribution of correlation coefficients between pairs of SW peak
+        amplitudes measured at different locations in CA3; aggregated data from
+        20 hippocampal slices.
              }
     \label{fig:peak_correlation_summ}
     \end{figure}
@@ -367,33 +710,23 @@ multiple types of SWs
     phenomenon, and a large SW measured at one location is likely to be large
     in the whole CA3 region.
     
-  \subsection{Sharp wave amplitude and duration is correlated to the time interval since the last event}
+  \subsection{The interval since last event determines the size of the following sharp wave}
     \label{sec:swr_int-amp}
     Another line of reasoning about how depletion might affect the incidence of
-    SW events is that the duration of time passed after a SW event would
+    SW events is that the duration of time passed after the last SW event would
     influence the recovery of the system. For example, after longer periods of
-    time, the network has more time to recover the depleted resources and a
+    time, the network has more time to recover the depleted resources, and a
     larger event is to be expected in comparison to shorter inter-event
     periods. To test this idea, I calculated the serial correlation between the
-    inter-event time intervals and the peak of the following SW
-    (Figure~\ref{fig:ca3only_SCsumm}, top-right panel). Most of the recordings
-    show significant ($p<0.001$) and positive correlations (18 out of 20
-    recordings). This means that after a long interval the amplitude peak of
-    the following SW is big, and after a brief interval, the following sharp
-    wave has a smaller amplitude. 
+    inter-event time intervals and the peak amplitude of the following SW
+    (Figure~\ref{fig:ca3only_SCsumm}, top-right panel). Most slices show
+    significant and positive correlations ($p<0.001$; 18 out of 20 recordings).
+    This means that after a long interval the amplitude peak of the following
+    SW is big, and after a brief interval, the following SW has a
+    smaller amplitude. 
 
-    The high interval-peak correlations found in the data are confirmed by the
-    recent results \citep{Kohus2016}. Moreover, \cite{Kohus2016} performed a
-    detailed study on the inhibitory connections in the CA3 area and show that
-    the outgoing synapses of parvalbumin-positive basket cells (PVBCs) undergo
-    short-term depression (STD) that acts on a time scale of hundreds of
-    milliseconds. The authors propose that the synaptic recovery from this
-    depression is responsible for the peak of SWRs observed in the local field
-    potential, and moreover, suggest that this can be a possible mechanism
-    controlling the incidence of SWRs.
-    
     In the current dataset, the incidence of spontaneous SWs ranges from 0.1 to
-    $\sim 1 \,\rm events/sec$ across slices. A natural question is whether the
+    $\sim 1 \,\rm event/sec$ across slices. A natural question is whether the
     incidence influences the serial correlations between the intervals and the
     following SW peaks. Statistical tests (Pearson and Spearman) show that this
     dependence is, however, statistically insignificant. Having a closer look
@@ -401,11 +734,11 @@ multiple types of SWs
     incidence and the serial correlations is not trivial. While some slices
     show very strong linear dependence between these two parameters (e.g.,
     $c=0.77$, $p<10^{-6}$, in Figure~\ref{fig:linear_inc-corr}), other slices
-    show an inverse dependence between the incidence and the serial correlation
-    of interval-peak (e.g., $c=0.93$, $p<10^{-6}$, in
-    Figure~\ref{fig:inv_linear_inc-corr}). This result suggests that there are
-    mechanisms behind the dependence between incidence and serial correlation
-    but these mechanism might vary from slice to slice.
+    show an inverse dependence between the incidence and the interval-peak
+    correlations (e.g., $c=0.93$, $p<10^{-6}$, in
+    Figure~\ref{fig:inv_linear_inc-corr}) or no dependence at all. This result
+    suggests that the mechanisms behind the dependence between incidence and
+    serial correlation might vary from slice to slice.
     
     \begin{figure}
       \centering
@@ -416,9 +749,9 @@ multiple types of SWs
         The third panel shows the SW durations (units in ms) in time. The
         correlation between SW intervals and the following peaks are measured
         in 5-minute running time windows and plotted against the incidence
-        within that time window. This examples show significant positive
-        correlations between incidence and SW peak, and between incidence and
-        serial correlation (interval-peak).
+        within that time window. This example shows significant positive
+        correlations between incidence and SW peak amplitude, and between
+        incidence and interval-peak correlation (bottom-right panel).
              }
       \label{fig:linear_inc-corr}
     \end{figure}
@@ -432,69 +765,93 @@ multiple types of SWs
         The third panel shows the SW durations (units in ms) in time. The
         correlation between SW intervals and the following peaks are measured
         in 5-minute running time windows and plotted against the incidence
-        within that time window. This examples show significant negative
-        correlations between incidence and SW peak, and between incidence and
-        serial correlation (interval-peak).
+        within that time window. This example shows significant negative
+        correlations between incidence and SW peak amplitude, and between
+        incidence and interval-peak correlation (bottom-right panel).
              }
       \label{fig:inv_linear_inc-corr}
     \end{figure}
 
     In summary, the majority of slices (18/20) show positive and significant
-    ($p<0.001$) correlations between the time interval since last event and the
+    ($p<0.001$) correlations between the time interval since the last event and the
     peak amplitude of the following SW. After dividing the recordings in
     5-minute time windows, each slice shows at least once a positive and
-    significant serial correlation in some of the time windows. Negative
+    significant serial correlation during the course of the recording. Negative
     correlations are not present.
+
+    The high interval-peak correlations found in the data have been confirmed
+    recently by \cite{Kohus2016}. The authors propose that a recovery from
+    short-term depression (STD) on the inhibitory synapses affects the
+    amplitudes of SWR peaks observed in the local field potential, and
+    moreover, suggest that STD is a possible mechanism controlling the SWR
+    incidence. The field potential in stratum pyramidale is dominated by the
+    inhibitory synaptic activity \citep{Schonberger2014}. Therefore, the
+    amplitude of SW peaks in the stratum pyramidale are modulated by the local
+    inhibitory synaptic currents. A recovery from STD of the PVBC-PVBC and
+    PVBC-PC synapses is a strong candidate for the modulation of sharp-wave
+    peak amplitudes. Thus, the high amplitudes of SWs observed after longer
+    time intervals since last event are caused by recovered inhibitory synapses
+    in the pyramidal layer. However, the positive peak-interval correlation
+    observed in some slices (8/20) suggests that the SW amplitude might also
+    reflect the PVBC firing to a smaller degree. In the light of the
+    3-population hypothesis stated in Section~\ref{sec:3pop}, the incidence of
+    SWs is controlled by the STD recovery time constant on the inhibitory
+    PVBC-mINs synapses, and higher firing PVBC firing would lead to a larger
+    depression, and thus, longer interval until next event.
 
   \subsection{Gabazine effects on sharp-wave ripples {\textit {in vitro}} }
     \label{sec:gabazine_invitro}
     Hippocampal slices exhibit network dynamics shaped by excitatory and
-    inhibitory activities that balance each other \citep{Maier2011}. It is intuitively expected
-    that by decreasing the total inhibitory coupling (connections from
-    inhibitory to all the other neurons are weakened) the network would get
-    into a more excitable state. However, from previous work
-    \citep[e.g.,][]{Nimmrich2005} it is known that application of low
-    concentration of gabazine (a $\rm GABA_A$ receptor antagonist) decreases
-    the rate of spontaneously occurring sharp waves. How does the application
-    of gabazine affect the network activity is not clear. An underlying
-    assumption in the current analysis is that the decrease of incidence is due
-    to a decrease of the firing rate of the excitatory population. But how does
-    a decrease of inhibition lead to a more inhibited network? To tackle this
-    paradox, in this section I analyse some data provided by Nikolaus Maier in
-    which gabazine is applied to hippocampal slices.
+    inhibitory activities that balance each other \citep{Csicsvari1999,
+    Maier2011, English2014, Hulse2016}. It is intuitively expected that by
+    decreasing the total inhibitory coupling (connections from inhibitory to
+    all the other neurons are weakened) the network would get more excitable.
+    However, from previous work \citep[e.g.,][]{Nimmrich2005} it is known that
+    application of low concentrations of gabazine (a $\rm GABA_AR$ antagonist)
+    decreases the rate of spontaneously occurring SWRs, while larger
+    concentrations block SWRs \citep{Maier2003, Ellender2010}. It is not clear
+    how the application of gabazine affects the network activity. 
     
-    Gabazine (SR-95531) is a $\rm GABA_A$ receptor antagonist that binds to the
-    GABA-binding site, effectively decreasing the inhibitory conductances. For
-    low drug concentrations block phasic but not tonic $\rm GABA_A$ receptors
-    \citep{Bai2001, Yeung2003, Behrens2007}. In the experiments analysed here,
-    after a few minutes of stable baseline recording, $100 \,\rm nM$ gabazine
-    (a low concentration) was applied to the hippocampal slices. A typical
-    example is shown in Figure~\ref{fig:gabazine_ex} where gabazine was applied
-    27 minutes after the recording onset (application duration denoted with a
-    horizontal red line). Shortly after the drug infusion, the incidence of
-    spontaneous events goes down from 0.32 to 0.15 (values are measured in
+    An underlying assumption in the presented analysis is that the decrease of
+    SWR incidence is due to a decrease of the firing rate of the excitatory
+    population outside of SWRs. But how does a decrease of inhibition lead to a
+    more inhibited network? To tackle this paradox, in this section I analyse
+    some data provided by Nikolaus Maier in which gabazine is applied to
+    hippocampal slices.
+    
+    Gabazine (SR-95531) is a $\rm GABA_AR$ antagonist that binds to the
+    GABA-binding site, effectively decreasing inhibitory conductance. Low drug
+    concentrations block phasic but not tonic $\rm GABA_ARs$ \citep{Bai2001,
+    Yeung2003, Behrens2007}. In the experiments analysed here, after a few
+    minutes of stable baseline recording, low concentrations of gabazine ($100
+    \,\rm nM$) were applied to the hippocampal slices. A typical example is
+    shown in Figure~\ref{fig:gabazine_ex} where gabazine was applied 27 minutes
+    after the recording onset (application duration denoted with a horizontal
+    red line). Shortly after the drug infusion, the incidence of spontaneous
+    events goes down from 0.32 to 0.15 events/second (values are measured in
     5-minute time windows from before and during drug application, independent
-    two-sample t-test with p-value $<10^{-6}$). Overlying all detected events
-    (before and during drug) relatively to the peak of the filtered signal and
-    calculating their mean value shows a stereotypical SW waveform
+    two-sample t-test with p-value $<10^{-6}$). The averaged LFP waveforms
+    associated with SWRs (arranged relative to the peak of the filtered signal)
+    show a stereotypical SW waveform before and during the drug application
     (Figure~\ref{fig:gabazine_ex}, bottom panels). There is also slight but
     significant increase of the SW peak amplitudes and duration after the
-    gabazine application (??p-values $<10^{-3}$). After the washout (end of red
+    gabazine application (p-values $<10^{-3}$). After the washout (end of red
     bar, at 43 minutes) the incidence of SWs increases back to the values
     before the drug infusion.
     
     \begin{figure}
+      \center
       \includegraphics[width =35pc]{6june12_slice1.png}
       \caption{
-        An extracellular recording from the CA3 area where gabazine is applied to
-        the hippocampal slice. The time of drug application is denoted with a
+        An extracellular recording from CA3 where gabazine concentration is applied to
+        the hippocampal slice. Time of drug application is denoted with a
         horizontal red bar. The top panel shows the SW incidence in time with a
         half-minute time resolution. The two panels below show the SW amplitude
-        peaks, where `fil' and `raw' stand for band-passed filtered ($\sim
-        5-50\, \rm Hz$, for details see the Methods section) and raw voltage
+        peaks, where `fil' and `raw' denote band-passed filtered ($\sim
+        5$--$50\, \rm Hz$, for details see the Methods section) and raw voltage
         traces, respectively; units are in mV. The gray dots represent single
-        events, and the black lines represent the mean and the standard
-        deviation of the amplitude peak in a minute time window. Analogously,
+        events, and the black lines represent the mean and errors bar the standard
+        deviation of the amplitude peak in one-minute time windows. Analogously,
         the forth panel shows the SW duration in milliseconds. The panels on
         the bottom row show all events before (left) and during (middle) drug
         application overlaid in gray, and the mean wave-forms are in black. The
@@ -509,101 +866,105 @@ multiple types of SWs
     %reflecting the spiking of one or more neurons located nearby the recording
     %electrode. In this example, the network activity seems to be less noisy
     %after the application of gabazine.
-
-    Gabazine decreased the incidence in all 8 slice recordings, in 6 slices the
+    Gabazine decreased the incidence in all 8 slice recordings. In 6 slices the
     decrease was significant (independent two-sample t-test with
-    p-value$<0.001$). The average effect is shown in
-    Figure~\ref{fig:gabazine_sum} where the incidence is normalized (to value
-    of 1) relative to the incidence before drug application. Gabazine starts
-    affecting the incidence already 1 minute after application and takes around
-    5 minutes to take a full effect. 
+    p-value$<10^{-3}$). The average effect is shown in
+    Figure~\ref{fig:gabazine_sum}, where the incidence is normalized (to value
+    of 1 for the incidence 5 minutes prior to drug application). Gabazine
+    starts affecting the incidence already 1 minute after application and takes
+    around 5 minutes to take a full effect. 
     
     \begin{figure}
+      \center
       \includegraphics[width =35pc]{gabazine_events_all.eps}
       \caption{
-        $\rm GABA_AR$ antagonist gabazine effects on sharp waves. {\bf top}: SW
+        The $\rm GABA_AR$ antagonist gabazine affects SWRs. {\bf top}: SW
         incidence in time aggregated from all recordings ($n=8$), where the
-        incidence is normalized to 1 by dividing by the mean incidence from before
-        the drug application. The red bar shows the time of drug application.
-        {\bf bottom:} The average SW incidence, peak and duration measured in
-        5-minutes time windows before ([-7, 2] minutes) and during ([6, 11]
-        minutes) gabazine application for each slice are denoted with black
-        dots. The red dots are the averages from all slices.
+        incidence is normalized to 1 by dividing by the mean incidence from
+        before the drug application. The red bar shows the time of drug
+        application.  {\bf bottom:} The average SW incidence, peak, and
+        duration measured in 5-minute time windows before ([-7, -2] minutes)
+        and during ([6, 11] minutes) gabazine application. Each slice is
+        denoted with two black dots that are connected by a line. The red dots
+        are the averages from all slices.
       }
       \label{fig:gabazine_sum}
     \end{figure}
 
-    To better characterize how the drug affects the network dynamics, further,
-    the analysis focuses on the events in constrained time windows only. Events
+    To better characterize how the drug affects the network dynamics, the
+    further analysis focuses on the events in constrained time windows. Events
     from the window [-7, -2] minutes (before drug application) and [6, 11]
     minutes (after drug application) were used to calculate properties of SWs
     (Figure~\ref{fig:gabazine_sum} bottom row). As already mentioned, there is
     a significant effect on the incidence (around 37\% decrease on average).
     However, somewhat weaker effects are observed on the SW peak amplitude and
-    duration.  On average, events tend to get bigger after gabazine
-    application. 4 out of 8 recordings show significant (p-value$<0.002$)
-    increase in SW amplitude peak after the drug application, and 2/8 show a
-    decrease in amplitudes. It is not known whether this increase in amplitudes
-    is due to direct effects of gabazine or because of the decreased incidence,
-    and thus longer recovery time. 
+    duration. On average, events tend to be larger after gabazine application,
+    where 4 out of 8 recordings show significant ($p<0.002$) increase in SW
+    amplitude peak after the drug application, and 2/8 show a decrease in
+    amplitude. It is not known whether this increase in amplitudes is due to
+    direct effects of gabazine or because of the decreased incidence, and thus,
+    the longer recovery time. 
 
-    The found effect on the SW amplitude is in odds with the finding of
-    \citep{Schlingloff2014} who showed that a local puff of gabazine \textit{in
-    vitro} decreases the SWR amplitude around the application site
-    (Figure~\ref{fig:schlingloff_gabazine}). A possible explanation is that the
-    incidence in \citep{Schlingloff2014} is intact as SWRs occur at other
-    locations of the slice that are unaffected by the drug. The puffed
-    location, however, needs more time to recover from previous events and,
-    therefore, the frequent events occurring elsewhere can not engage fully the
-    affected subnetwork. In the slices used in our analysis, however, the
-    gabazine infusion is global, which results in a slight increase of the SWR
-    peaks and also a decrease of the incidence.
+    The found effect of gabazine on the SW amplitude is at odds with the
+    finding of \cite{Schlingloff2014} who showed that a local puff of gabazine
+    \textit{in vitro} dramatically decreases the SWR amplitude around the
+    application site. A possible explanation is that due to the large
+    concentration of gabazine in the local application ($10\,\rm \mu M$), the
+    local inhibitory currents, which modulate the field potential in the
+    stratum pyramidale \citep{Schonberger2014}, are totally suppressed, and
+    thus the local amplitude is small.
+    %Another additional effect is that the incidence in
+    %their experiment is intact as SWRs occur at other locations of the slice
+    %that are unaffected by the drug. The puffed location, however, needs more
+    %time to recover from previous events, and therefore, the frequent events
+    %occurring elsewhere can not engage fully the affected subnetwork. In the
+    %slices analysed here, however, the gabazine infusion is global, which
+    %results in a slight increase of the SWR peaks, and also to a decrease of
+    %the incidence.
     
-    \begin{figure}
-      \includegraphics[width =35pc]{Schlingloff_3bcd5e.png}
-      \caption{A local application of gabazine decreases the amplitude of the
-        local SWRs (B) and also decreases the multiunit activity during SW
-        events (C, D). Gabazine puffed in the somatic region of PVBCs leads to
-        an increased firing and removes the ripple-lock firing of PVBCs. This
-        figure is adopted with permission? from \cite{Schlingloff2014}.
-      }
-    \label{fig:schlingloff_gabazine}
-    \end{figure}
-
     Does gabazine have an effect on the serial correlation between consecutive
-    events? To answer this question, the serial correlations (peak-interval and
-    interval-peak) were measured before and after drug application in 5-minute
-    time windows as described above (Figure~\ref{fig:gabazine_SCsumm}). While
-    the peak-interval correlation remains low and does not change after the
-    gabazine application, there is a trend of increase in the interval-peak
-    correlation. Showing the relation between incidence and interval-peak
-    correlation for individual recording (Figure~\ref{fig:gabazine_SCsumm})
-    reveals the tendency of decreasing incidence and increased interval-peak
-    correlations (6 out of 8 recordings).
+    SWR events? To answer this question, the serial correlations (peak-interval
+    and interval-peak) were measured before and after drug application in
+    5-minute time windows as described above
+    (Figure~\ref{fig:gabazine_SCsumm}). While the peak-interval correlation
+    remains low and does not change after the gabazine application, there is a
+    trend of increase in the interval-peak correlation. Showing the relation
+    between incidence and interval-peak correlation for individual recording
+    (Figure~\ref{fig:gabazine_SCsumm}, bottom panel) reveals the tendency of
+    decreasing incidence and increased interval-peak correlations (6 out of 8
+    recordings).
 
     \begin{figure}
+      \center
       \includegraphics[width= 30pc]{gabazine_SCsumm.eps}
       \caption{
-        Gabazine effect on the serial (interval-peak) correlations. \textbf{top:} Serial
+        Gabazine effect on the serial correlations. \textbf{top:} Serial
         correlation before and during gabazine are calculated in 5-minute long
         time windows, where $n$ shows the number of recordings with significant
         correlations ($p<0.001$) before gabazine application (before), during
-        application (during), and aggregated data from the whole recording (all). \textbf{bottom:}
-        Serial correlations coefficients between time interval since last event and the following SW
-        peak are plotted against recorded incidence; arrows show the change
-        after gabazine application.
+        application (during), and aggregated data from a whole recording (all).
+        \textbf{bottom:} Serial correlations coefficients between time interval
+        since last event and the following SW (interval-peak) peak are plotted
+        against recorded incidence; arrows show the change after gabazine
+        application.
              }
     \label{fig:gabazine_SCsumm}
     \end{figure}
 
-    In summary, gabazine has the contra-intuitive effect of decreasing the
-    incidence of SWRs. Moreover, gabazine application has weak effects in
-    increasing the SWR amplitudes and the serial correlations between
-    inter-sharp-wave interval and the peak of the following SWR. However, due
-    to the small dataset (8 recordings), I can not present a conclusive
-    evidence of the drug effects.
+    In summary, gabazine has the counterintuitive effect of decreasing the
+    incidence of SWRs. Moreover, gabazine application slightly increases the SW
+    amplitude and the serial correlation between inter-sharp-wave interval and
+    the peak of the following SWR. Due to the small dataset (8 recordings), I
+    can not present a conclusive evidence of the drug effects. However, it is
+    interesting that decreasing the inhibitory synaptic transmission increases
+    the peak of SWs in the pyramidal layer (6/8 slices, 4 of which
+    significant). Ideas on how gabazine affects the generation of SWRs in the
+    3-population model are discussed in a greater detail in the Discussion
+    (Section~\ref{sec:disc_gabazine}). In the following section, using
+    numerical and analytical modelling, I study the effects of gabazine in a
+    simpler 2-population model.
 
-  \subsection{Gabazine influence on SWR incidence {\textit {in silico} }}
+  \subsection{Gabazine effects on sharp-wave incidence {\textit {in silico} }}
     \label{sec:gabazine_insilico}
     To better understand how gabazine affects the incidence of SWRs
     {\textit {in silico}}, I deploy the assembly-sequence concept (described in
@@ -622,36 +983,43 @@ multiple types of SWs
     fluctuations in the firing rates get amplified by the feedforward structure
     resulting in spontaneous replays (Figure~\ref{fig:spontan}). For a more
     detailed description of the numerical model and the parameter values,
-    please refer to Chapter~\ref{chap:memoryreplay}. Here, the effects of
-    gabazine are modeled simply by decreasing the conductances of the targeted
-    inhibitory synapses with a fixed rate (i.e., $5\%$).
+    please refer to Chapter~\ref{chap:memoryreplay}. The effects of gabazine
+    are modeled by decreasing the conductances of the targeted inhibitory
+    synapses by a fixed rate. The network dynamics is stable when the
+    conductances are decreased up to $\sim 10\%$ from their original value,
+    while a larger decrease leads to an epileptiform activity. Here,
+    \textit{in-silico} gabazine decreases the affected synapses with a $5\%$, a
+    value which is likely to be smaller than the effect of $100\,\rm nM$ in the
+    experiments \citep{Nimmrich2005}.
 
-    Not surprisingly, gabazine drastically increased the rate of spontaneous
-    replays of assembly sequences in the modelled network. This is illustrated
-    in Figure~\ref{fig:gabzine_sim}, where gabazine is applied to all inhibitory
-    synapses after the $21^{\rm st}$~second of the simulation. The top two
-    panel show raster plots of the excitatory and inhibitory neurons where the
-    black dots show individual spikes, and the black stripes are burst of
-    synchronous activity during which many neurons fire in close temporal
-    proximity. The replays during these activity bursts are used as a model of
-    the sharp-wave events. The frequency of these population events is
-    increased immediately after the simulated gabazine infusion, as seen in the number of
-    replays (the top panel), and in the firing rates (third panel). This result
-    is in direct opposition with the gabazine effects that are reported
-    {\textit{in vitro}} (Section~\ref{gabazine_invitro}).
+    Not surprisingly, {\it in-silico} gabazine drastically increased the rate
+    of spontaneous replays of assembly sequences in the modelled network. This
+    is illustrated in Figure~\ref{fig:gabazine_sim}, where gabazine is applied
+    to all inhibitory synapses after the $21^{\rm st}$~second of the
+    simulation. The top two panels show raster plots of the excitatory and
+    inhibitory neurons where black dots show individual spikes, and black
+    stripes are burst of synchronous activity during which many neurons fire in
+    close temporal proximity. The replays during these activity bursts are used
+    as a model of the SWR events. The frequency of these population
+    events is increased immediately after the simulated gabazine infusion, as
+    seen in the number of replays (the top panel), and in the firing rates
+    (third panel). This result is in direct opposition with the gabazine
+    effects that are reported {\textit{in vitro}}
+    (Section~\ref{sec:gabazine_invitro}).
 
     \begin{figure}
+      \center
       \includegraphics[width =35pc]{gabazine_sim.eps}
       \caption{
         Gabazine {\it in silico} increases the rate of spontaneous replays.
-        Decreasing all inhibitory conductances (at $21^{\rm th} \rm second$
-        with 5\% leads to increase in the incidence of spontaneous replays in
-        balanced-network simulations. The two upper panels show rater plots of
+        Decreasing all inhibitory conductances (at $21^{\rm th}\, \rm second$
+        by 5\%) leads to an increase in the incidence of spontaneous replays in
+        balanced-network simulations. The two upper panels show raster plots of
         subpopulations of excitatory and inhibitory neurons, where each black
-        dot denotes a spike. Middle plot shows the firing rate of the
+        dot denotes a spike. The middle plot shows the firing rate of the
         excitatory and inhibitory populations. The last two panels show the
         currents experienced by one excitatory and one inhibitory neuron. Red,
-        blue, gray, and black color denote excitatory, inhibitory, leak, and
+        blue, gray, and black colors denote excitatory, inhibitory, leak, and
         total currents.
             }
     \label{fig:gabazine_sim}
@@ -659,49 +1027,55 @@ multiple types of SWs
 
     Can a relatively simple two-populations balanced network explain the
     gabazine-associated decrease of SWR incidence reported in experiments?
-    $\rm GABA_A$ receptors ($\rm GABA_A R$) are known to be complex channels
-    with six subunits that can come in various combinations (for the curious
-    readers, see Section~\ref{sec:gabaa_intro}). The expressed subunits largely
+    $\rm GABA_A Rs$ are known to be complex channels
+    with five subunits that can come in various combinations (for the curious
+    readers, see Section~\ref{sec:gabaa}). The expressed subunits largely
     determine the receptor properties, i.e., time constants, affinity to GABA
     and other neurotransmitters. For example tonic $\rm GABA_A R$ are
-    insensitive for gabazine at low concentrations while phasic $\rm GABA_A R$
-    show various affinities depending on the subunit expression. The subunit
-    expression is largely determined by the type of the postsynaptic neuron and
-    by the location of the channels on the morphological tree
-    \ref{???}. One hypothesis to explain the gabazine-associated decrease of SW
-    events relies on the assumption that gabazine has differential effects on
-    the different $\rm GABA_A$ synapses. And more specifically, if
-    inhibitory-to-inhibitory synapses are affected to a larger degree than the
-    inhibitory-to-excitatory synapses, one would expect a network that is less
-    disinhibited, and thus, the excitatory population receives more inhibition
-    resulting in smaller firing rates. In what follows, I test whether such
-    assumptions would really decrease the incidence of modeled events.
+    insensitive for gabazine \citep{Bai2001, Yeung2003, Behrens2007} at low
+    concentrations while phasic $\rm GABA_A R$ show various affinities
+    depending on the subunit expression. The subunit expression is largely
+    determined by the type of the postsynaptic neuron and by the location of
+    the channels on the morphological tree \citep{Sieghart2002}. One hypothesis
+    to explain the gabazine-associated decrease of SW events relies on the
+    assumption that gabazine has differential effects on the different $\rm
+    GABA_A$ synapses. And more specifically, if inhibitory-to-inhibitory
+    synapses are affected to a larger degree than the inhibitory-to-excitatory
+    synapses, one would expect a network that is less disinhibited, and thus,
+    the excitatory population receives more inhibition resulting in smaller
+    firing rates. In what follows, I test whether such assumptions would really
+    decrease the incidence of modeled events.
 
     As a toy example in numerical simulation, I consider the extreme case where
-    gabazine affects the inhibitory-to-inhibitory synapses only. As expected,
-    the firing rate of the excitatory neurons is decreased
-    (Figure~\ref{fig:gabazine_sim_giionly}). However, the network shows a
-    decrease in the firing rate of the inhibitory population as well. How is it
-    possible that excitatory neurons receiving weaker inhibition (smaller input
-    rate), fire less? To better understand the effects of gabazine, further, I
-    present an analytical approach.
+    gabazine affects the inhibitory-to-inhibitory synapses only. \textit{
+    In-silico} gabazine indeed decreases the firing rate of the excitatory
+    neurons (Figure~\ref{fig:gabazine_sim_giionly}). However, the network shows
+    also a decrease in the firing rate of the inhibitory population as well.
+    How is it possible that excitatory neurons receiving weaker inhibition
+    (smaller input from inhibitory population), fire less? To better understand
+    the effects of gabazine, further, I present an analytical approach.
     
     \begin{figure}
-      \includegraphics[width =35pc]{gabazine_sim_gii.eps}
+      \center
+      \includegraphics[width =30pc]{gabazine_sim_gii.eps}
       \caption{
-        Gabazine {\it in silico} applied only to inhibitory-to-inhibitory synapses
-        decreases the rate of spontaneous replays. {\bf top:} Spontaneous replays
-        occur during the peaks of the excitatory and inhibitory firing rates. 
-        Decreasing the inhibitory-to-inhibitory conductances (at $21^{\rm th} \rm second$
-        with 5\% decreases of firing rates and abolishes the spontaneous replays in
-        balanced-network simulations. {\bf bottom:} Figure-out what I did! small gee?
+        Gabazine {\it in silico} applied only to inhibitory-to-inhibitory
+        synapses decreases the rate of spontaneous replays. {\bf top:}
+        Spontaneous replays occur during the peaks of the excitatory and
+        inhibitory firing rates. Decreasing the inhibitory-to-inhibitory
+        conductances (at $21^{\rm th}\, \rm second$ by 5\%) decreases the
+        firing rates and abolishes the spontaneous replays in balanced-network
+        simulations. {\bf bottom:} Gabazine applied only on
+        inhibitory-to-inhibitory synapses can result in decrease of excitatory
+        and increase of inhibitory firing rates.
       }
     \label{fig:gabazine_sim_giionly}
     \end{figure}
 
-    To capture the network dynamics, I apply a linear model of a two-population
-    balanced network and analyse how the rates depend on gabazine. The network
-    dynamics is described by the system of differential equations:
+    To capture the dynamics of the simulated network, I apply a linear model to
+    a two-population balanced network and analyse how the firing rates depend
+    on gabazine. The network dynamics is described by a system of differential
+    equations:
     \begin{equation}
       \begin{split}
         \tau \frac{\text{d}r^E}{\text{d}t} &= - r^E + w_{\rm ee} \, r^E -w_{\rm ei} \, r^I + I_0\\
@@ -710,8 +1084,8 @@ multiple types of SWs
       \label{eq:balanced_net}
     \end{equation}
     where $r^E$ and $r^I$ are excitatory and the inhibitory firing rates,
-    respectively. The connection from population $x$ to $y$ is described by the
-    connection weight $w_{\rm yx}$ ($x,y = e, i$). The population time constant
+    respectively. The connection from populations $x$ to $y$ is described by a dimensionless
+    connection weight variable $w_{\rm yx}$ ($x,y = e, i$). The population time constant
     is $\tau$, and the external input to the populations is denoted with $I_0$.
 
     Assuming that the network is in a steady state, then the rates are
@@ -728,7 +1102,7 @@ multiple types of SWs
       \label{eq:balanced_sol}
     \end{equation}
   
-    To estimate how gabazine-induced decrease of inhibitory connections
+    To estimate how the gabazine-induced decrease of inhibitory connections
     affects the firing rates, we can look at the derivatives of the
     steady-state rates in respect to the gabazine concentration $c_{\rm gbz}$:
     \begin{equation}
@@ -773,8 +1147,9 @@ multiple types of SWs
     
     If we now assume that gabazine has the same effect on all inhibitory
     synapses, i.e., $\frac{\partial w_{\rm ei}}{\partial c_{\rm gbz}} =
-    \frac{\partial w_{\rm ii}}{\partial c_{\rm gbz}}$, the change of firing
-    rate due to gabazine is:
+    \frac{\partial w_{\rm ii}}{\partial c_{\rm gbz}}$, and substitute
+    Equations~\ref{eq:drdwii}, and \ref{eq:drdwei} in \ref{eq:re_chain} and
+    \ref{eq:ri_chain}, the change of firing rate due to gabazine is:
     \begin{equation}
       \begin{split}
         \frac{\partial r^E}{\partial c_{\rm gbz}} &=
@@ -793,13 +1168,13 @@ multiple types of SWs
     always increases the rate of both excitatory and inhibitory
     populations. 
 
-    Can this linear model model explain the simulation results in which
+    Can this simple linear model capture the simulation results in which
     gabazine affects only inhibitory-to-inhibitory synapses? There we saw a
     decrease not only in the excitatory but also in the inhibitory firing rates
-    (Figure~\ref{fig???,bottom?}). Taking the rate derivatives in respect to
-    $w_{\rm ii}$ only (In Equations~\ref{eq:re_chain} and \ref{eq:ri_chain}, we
-    assume that $\frac{\partial w_{\rm ei}}{\partial c_{\rm gbz}} = 0$):
-
+    (Figure~\ref{fig:gabazine_sim}, bottom panel). Taking the rate derivatives
+    in respect to $w_{\rm ii}$ only (in Equations~\ref{eq:re_chain} and
+    \ref{eq:ri_chain}, we assume that $\frac{\partial w_{\rm ei}}{\partial
+    c_{\rm gbz}} = 0$), we obtain:
     \begin{equation}
       \begin{split}
         \frac{\partial r^E}{\partial c_{\rm gbz}} &=
@@ -815,10 +1190,10 @@ multiple types of SWs
     \end{equation}
  
     Here, the sign of the determinant $D$ from Equation~\ref{eq:balanced_net}
-    determines the change in firing rate. Let us first assume that $D<0$. To
-    fulfil the requirement for positive firing rates (i.e., $r^I>0$ in
-    Equation~\ref{eq:balanced_sol}), then $w_{\rm ee}>1+w_{\rm ie}$ should be
-    fulfilled. However, this is unlikely to be the case as the excitatory
+    determines the change of excitatory firing rate. Let us first assume that
+    $D<0$. To fulfil the requirement for positive firing rates (i.e., $r^I>0$
+    in Equation~\ref{eq:balanced_sol}), then $w_{\rm ee}>1+w_{\rm ie}$ should
+    be fulfilled. However, this is unlikely to be the case as the excitatory
     conductances used in the simulations are all equal $g_{\rm ee}=g_{\rm ie}$.
     Therefore, I conclude that $D>0$. In that case, it is easy to see that
     $\frac{\partial r^E}{\partial c_{\rm gbz}} < 0$, meaning that excitatory
@@ -831,9 +1206,9 @@ multiple types of SWs
     rate decreases during gabazine application as well (as seen in
     Figure~\ref{fig:gabazine_sim_giionly}, top panel). For values of $w_{\rm
     ee}$ outside of this interval, one would expect increase of inhibitory
-    firing after the drug infusion. For the prove of concept, I tested a
-    network where $g_{\rm ee}=2 g_{\rm ie}$ and show that in such case the
-    inhibitory rate goes up after the simulated drug application
+    firing after the drug infusion. As a proof of concept, I tested a
+    network where $g_{\rm ee}= 0$ and show that in such case the inhibitory
+    rate goes up after the simulated drug application
     (Figure~\ref{fig:gabazine_sim_giionly}, bottom panel).
     %To test again whether low/high wee increases ri!!!!
     %I tested that by using lower (5 times smaller than default)
@@ -845,114 +1220,115 @@ multiple types of SWs
     and a linear analytical description, I showed that in a balanced network a
     gabazine application is increasing the firing rates of both inhibitory and
     excitatory populations. This increase of firing leads to higher incidence
-    of spontaneous replays which is in odds with the counterintuitive decrease
-    of incidence observed {\textit {in vitro}}. Therefore, I tested whether a
-    differential effect of gabazine on different synapses can explain the
-    experimental results. I considered the extreme case when gabazine affects
-    only inhibitory-to-inhibitory synapses and showed that in this case we can
-    always expect decrease in the rate of excitatory population. This result
-    suggests that possibly stronger effects of gabazine on the inhibitory
-    neurons might explain the decreased SWR incidence after gabazine
-    application {\textit {in vitro}}.
+    of spontaneous replays which is in odds with the decrease of SW incidence
+    observed {\textit{in vitro}}. Therefore, I tested whether a differential
+    effect of gabazine on different synapses can explain the experimental
+    results. I considered the extreme case when gabazine affects only
+    inhibitory-to-inhibitory synapses and showed that in this case the firing
+    rate of the excitatory population decreases. This result suggests that a
+    stronger effect of gabazine on the inhibitory-to-inhibitory synapses can
+    explain the decreased SWR incidence after gabazine application {\textit{in
+    vitro}}.
     
-    Here I examine a minimal model consisting of only two populations, but
-    nevertheless the approach can provide some means for studying {\it in-vitro}
-    models. A similar approach can also be applied to the more accurate
-    3-population nonlinear model currently developed by Roberta Evangelista,
-    and utilized to examine in what conditions gabazine decreases the network
-    excitability. Is it possible that in the 3-population model, a gabazine
-    application to all inhibitory synapses can decrease the rate of spontaneous
-    events? Or would it be required that the disinhibitory synapses (from PVBC
-    to the mysterious inhibitory neurons) are affected to a larger degree?
+    Here I examine a minimal model consisting of only two populations, which
+    can nevertheless provide some means for studying \textit{in-vitro} models.
+    A similar approach can also be applied to the more accurate 3-population
+    nonlinear model currently developed by Roberta Evangelista, and utilized to
+    examine in what conditions gabazine decreases the network excitability. Is
+    it possible that in the 3-population model, a gabazine application to all
+    inhibitory synapses can decrease the rate of spontaneous events? Or would
+    it be required that the disinhibitory synapses (from PVBC to the mysterious
+    inhibitory neurons) are affected to a larger degree?
 
     A strong assumption in the foundation of the current framework is that the
-    decrease of SWR incidence is due to decrease of firing of the excitatory
+    decrease of SWR incidence is due to a decrease of firing of the excitatory
     population. Whether this is indeed the case has to be confirmed from
-    {\it in-vitro} experiments. It is also not known how does gabazine affects the
-    firing of the inhibitory populations. The simulations show that gabazine
-    applied only on the inhibitory-to-inhibitory connections can decrease not
-    only the excitatory but also the inhibitory firing rates. This result is
-    interesting by its own as the decrease of $r^E$ is counterintuitive. How
-    does it come that the excitatory population decreases its firing rate after
-    receiving less inhibition due to the decrease of $r^I$? (should I dive into that??)
-
-  \subsection{Involvement of $\rm GABA_B$ receptors in sharp waves}
-
-    Sharp waves are huge population events where many pyramidal cells and
-    interneurons are firing with increased firing rates, which is especially
-    pronounced for the perisomatic targeting parvalbumin-positive basket cells
-    (PVBCs) and the bistratified cells \citep{Klausberger2009}. It has been
+    \textit{in-vitro} experiments. It is also not known how gabazine affects
+    the firing of the inhibitory populations. Numerical and analytical results
+    show that gabazine applied only on the inhibitory-to-inhibitory connections
+    can decrease not only the excitatory but also the inhibitory firing rates.
+    This result is interesting by its own as it demonstrates that intuitive
+    interpretations of a relatively simple model can be misleading and should
+    be used with caution.
+    
+  \subsection{Involvement of $\rm GABA_B$ receptors in sharp-wave ripples}
+    SWRs are huge population events where the vast majority of interneurons are
+    firing with increased rates, and single interneurons often fire multiple
+    times during the event \citep{Klausberger2009, Hajos2013}. It has been
     shown that the repetitive firing of interneurons can activate extrasynaptic
-    $\rm GABA_B$ receptors possibly through increased concentrations of ambient
-    GABA in the extracellular space \cite{Wang2010,??}. The inhibition from
-    $\rm GABA_B Rs$ is relatively slow, lasting several hundreds of
+    $\rm GABA_BRs$, possibly through increased concentrations of ambient GABA
+    in the extracellular space \citep{Scanziani2000, Wang2010}. The inhibition
+    from $\rm GABA_B Rs$ is relatively slow, lasting several hundreds of
     milliseconds, which is close to the time scale of the typical inter-SW
     intervals. Here, I study the possibility that the relatively long time
     intervals between SW events are determined by $\rm GABA_B Rs$.
-    
-    First, to investigate whether $\rm GABA_B$ is involved in the SW incidence
-    in the {\textit{in-vitro}} model, I analysed extracellular recordings where
-    the $\rm GABA_B R$ antagonist SCH50,911 (further referred as SCH) was
-    applied in slices. The number of analysed slices is 12 (see the Methods
-    section). An example of the SCH effects in a slice are shown in
-    Figure~\ref{fig:gB_example}. The drug effects are reflected in the network
-    dynamics already during the first minute of application by increasing the
-    incidence of SWs (Figure~\ref{fig:gB_example}, top panel). An independent
+
+    First, to investigate whether $\rm GABA_BRs$ are involved in the SW
+    incidence in the {\textit{in-vitro}} model, I analysed extracellular
+    recordings where the $\rm GABA_B R$ antagonist SCH50,911 (further referred
+    as SCH) was applied in slices. The number of analysed slices is 12 (see the
+    Methods section). An example of the SCH effects in a slice is shown in
+    Figure~\ref{fig:gB_example}. The drug affects the network dynamics already
+    during the first minute of application by increasing the incidence of
+    spontaneous SWRs (Figure~\ref{fig:gB_example}, top panel). An independent
     two-sample t-test of the incidence (measured as number of events per sweep
-    in confined 5-minute time intervals) show a significant increase of
-    incidence (p-value $<10^{-7}$). Other main properties, such as, peak
-    amplitude and duration are decreased after the SCH application (p-values
+    in confined 5-minute time intervals) shows a significant increase of
+    incidence (p-value $<10^{-7}$). Other main properties, such as peak
+    amplitude and duration are decreased after SCH application (p-values
     $<10^{-10}$, and $<10^{-3}$, respectively).
     
     \begin{figure}
+      \center
       %\includegraphics[width =35pc]{19march13_slice1.png}
       \includegraphics[width =35pc]{20jan12_slice2.png}
       \caption{ 
-        Extracellular recording from the CA3 area where SCH50,911 is applied to
-        the hippocampal slice. The time of drug application is denoted with a
-        horizontal red bar. The top panel shows the SW incidence in time with a
-        minute time resolution. The two panels below show the SW amplitude
-        peaks, where `fil' and `raw' stand for band-passed filtered ($\sim
-        5-50\, \rm Hz$, for details see the Methods section) and raw voltage
-        traces, respectively; units are in mV. The gray dots represent single
-        events, and the black lines represent the mean and the standard
-        deviation of the amplitude peak in a minute time window. Analogously,
-        the forth panel shows the SW duration in milliseconds. The panels on
-        the bottom row show all events before (left) and during (middle) drug
-        application overlaid in gray, and the mean wave-forms are in black. The
-        right-most panel shows a comparison between the mean events from before
-        and during SCH application.
+        Extracellular recording from the pyramidal layer of CA3 area where the
+        $\rm GABA_B R$ antagonist SCH50,911 is applied to a hippocampal slice.
+        The time of drug application is denoted with a horizontal red bar. The
+        top panel shows the SW incidence in time with a minute time resolution.
+        The two panels below show the SW peaks amplitude, where `fil' and `raw'
+        stand for band-passed filtered ($\sim 5-50\, \rm Hz$, for details see
+        the Methods section) and raw voltage traces, respectively; units are in
+        mV. The gray dots represent single events, and the black lines
+        represent the mean and the standard deviation of the amplitude peak in
+        a minute time window. Analogously, the forth panel shows the SW
+        duration in milliseconds. The panels on the bottom row show all events
+        before (left) and during (middle) drug application overlaid in gray,
+        and the mean wave-forms are in black. The right-most panel shows a
+        comparison between the mean events from before and during SCH
+        application.
               }
     \label{fig:gB_example}
     \end{figure}
 
     Blocking the $\rm GABA_B Rs$ resulted in increase of the average incidence
-    of spontaneous sharp waves from all slices.  The drug effects are visible
-    already in the first minute after the application and saturate around 2-3
-    minutes later (Figure~\ref{gB_summ}, top panel). To better assess the
-    effects of SCH further, the analysis focuses on the events in 5-minutes
-    long time windows, i.e., in the intervals [-5, 0] that is before and [2, 7]
-    minutes that is during drug application. Comparing the data from these two
-    intervals shows that SCH increases the incidence in every recording, and
-    10/12 show a significant increase (independent 2-sample t-test;
-    p-value$<0.002$). On average, SCH resulted in decrease of SW amplitudes
-    (Figure~\ref{gB_summ}, bottom middle panel), where 6/12 slices show
-    a significant decrease (p-value$<0.001$), and in 2/12 slices the amplitudes
-    were increased (p-value$0.001$). The duration of sharp waves, also
-    decreases on average, but however, this change is not significant
-    (p-value$>0.01$ in 11/12 slices). While the result for every recording
-    varies depending on the exact 5-minute time windows that are used for the
-    analysis, the summary results do not change qualitatively.
+    of spontaneous SWRs from all slices ($\sim 50\%$ on average). The drug
+    effects are visible already in the first minute after the application and
+    saturate around 2-3 minutes later (Figure~\ref{gB_summ}, top panel). To
+    better assess the effects of SCH further, the analysis focuses on the
+    events in 5-minutes long time windows, i.e., in the intervals [-5, 0]
+    minutes, that is before and [2, 7] minutes, that is during drug
+    application. Comparing the data from these two intervals shows that SCH
+    increases the incidence in every recording (10/12 show a significant
+    increase; independent 2-sample t-test, p-value $<0.002$). On average, SCH
+    resulted in a decrease of SW peak amplitudes (Figure~\ref{gB_summ}, bottom
+    middle panel), where 6/12 slices show a significant decrease
+    (p-value$<0.001$), and in 2/12 slices the amplitudes were increased
+    (p-value$<0.001$). The SW duration also decreased on average, but this
+    change is not significant ($p>0.01$ in 11/12 slices). While the result for
+    every recording varies depending on the exact 5-minute time windows that
+    are used for the analysis, the summary results do not change qualitatively.
     
     \begin{figure}
-      \includegraphics[width =35pc]{SCH_all.eps}
+      \center
+      \includegraphics[width =30pc]{SCH_all.eps}
       \caption{
-        $\rm GABA_BR$ antagonist SCH50,911 effects on sharp waves. {\bf top}:
+        The $\rm GABA_BR$ antagonist SCH50,911 affects SWRs. {\bf top}:
         SW incidence in time aggregated from all recordings ($n=12$), where the
         incidence is normalized to 1 by dividing by the mean incidence before
         the drug application. The red bar shows the time of drug application.
         {\bf bottom:} The average SW incidence, peak and duration measured in
-        5-minutes time windows before ([-5, 0] minutes) and during ([2, 7]
+        5-minute time windows before ([-5, 0] minutes) and during ([2, 7]
         minutes) SCH application for each slice are denoted with black dots.
         The red dots are the averages from all slices.
             }
@@ -960,20 +1336,22 @@ multiple types of SWs
     \end{figure}
 
     Next, I inquire whether blocking $\rm GABA_B Rs$ affects also the serial
-    correlation between events. At first glance the pooled data does not reveal
-    any change in the correlations, as the correlation distributions from
-    before and during SCH application (Figure~\ref{gB_SCsumm}, top panels) are
-    statistically similar. However, looking at the effects in the individual
-    recordings (Figure~\ref{gB_SCsumm}, bottom panel) one can see that there is
-    a decrease of serial correlation after drug application in 10 out of 12
-    slices (the 2 remaining recordings show no significant correlations).
+    (interval-peak) correlation between events. At first glance the pooled data
+    does not reveal any change in the correlations, as the correlation
+    distributions from before and during SCH application
+    (Figure~\ref{gB_SCsumm}, top panels) are statistically similar. However,
+    looking at the effects in the individual recordings
+    (Figure~\ref{gB_SCsumm}, bottom panel) one can see that there is a decrease
+    of serial correlation after drug application in 10 out of 12 slices (the 2
+    remaining recordings show no significant correlations).
 
     \begin{figure}
-      \includegraphics[width =35pc]{SCH_SCsumm.eps}
+      \center
+      \includegraphics[width =30pc]{SCH_SCsumm.eps}
       \caption{
-        $\rm GABA_BR$ antagonist SCH50,911 effect on the serial (interval-peak)
+        $\rm GABA_BR$ antagonist SCH50,911 effect on the serial
         correlations. \textbf{top:} Serial correlation before and during
-        gabazine are calculated in 5-minute long time windows, where $n$ shows
+        SCH are calculated in 5-minute long time windows, where $n$ shows
         the number of recordings with significant correlations ($p<0.001$)
         before SCH application (before), during application (during), and
         aggregated data from the whole recording (all). \textbf{bottom:} Serial
@@ -985,279 +1363,665 @@ multiple types of SWs
     \end{figure}
 
     To summarize the findings above, $\rm GABA_B Rs$ are taking part in the SW
-    modulation by increasing the incidence and decreasing the peaks of SWs.
+    modulation. Application of the $\rm GABA_B Rs$ antagonist results in an
+    increase of SW incidence and in a decrease of the SW peak amplitudes.
     However, the increase in incidence is on average less than two-fold
     suggesting that there are other mechanisms different than $\rm GABA_B$ that
-    act on a slow time scales and are involved in controlling the incidence.
+    act on slow time scales and are involved in controlling the incidence.
     Moreover, blocking $\rm GABA_B Rs$ leads to a decrease in the serial
     correlations between interval and peaks, which is puzzling given the
     increased incidence. Intuitively, one could expect that the serial
     correlations are stronger for higher incidences, and weaker for lower
     incidences when the system depletion is recovered. To investigate how does
     $\rm GABA_B Rs$ influence the SW incidence, it is worth having a closer
-    look at the possible involvement of the different $\rm GABA_B$ channels.
+    look at the possible involvement of the different $\rm GABA_BRs$.
 
     It is been shown that a repetitive firing of certain interneurons can evoke
     slow and strong inhibition due to activation of postsynaptic or
-    extrasynaptic $\rm GABA_B$ receptors on pyramids \citep{Scanziani2000,
-    Gassmann2012}. As sharp waves are population events that recruit many
+    extrasynaptic $\rm GABA_BRs$ on pyramids \citep{Scanziani2000,
+    Gassmann2012}. As SWRs are population events that recruit many
     neurons, and especially the perisomatic targeting interneurons
-    \citep{Klausberg2009} it is likely that ambient GABA in this region is
-    increased \citep{Hollnagel2014, Lang2014}. Next, I ask whether $\rm
-    GABA_BRs$ located postsynaptically on pyramidal cells are indeed activated
-    after SWs, and whether they play any role in the modulation of SWs. To test
-    this hypothesis, here I analyse data from simultaneous (paired)
-    extracellular and intracellular recordings performed in the radiatum layer
-    of the hippocampal CA3 area and a pyramidal cell in the CA3, respectively.
-    By averaging the intracellular traces across events, we can see that a GB
-    hyperpolarization is present in a few recordings, but is not is not visible
-    in the mean of all recordings (Figure~\ref{fig:intra_means}, top panel).
-    Most intracellular traces show various combination of depolarization and
-    hyperpolarization, indicating a rich dynamics of excitatory and inhibitory
-    inputs. In the recordings that show a slow hyperpolarization (4 out of 13
-    recordings, shown in Figure~\ref{fig:intra_means}, bottom panel) the trough
-    in the membrane potential is around $200 \, \rm ms$ after the population
-    event and lasts for about $500 \, \rm ms$. Interestingly, only one
-    recording reveals well-pronounced slow as well as fast inhibition (red
-    trace).
+    \citep{Klausberger2009, Hajos2013}, it is likely that ambient GABA in this
+    region is increased \citep{Hollnagel2014, Lang2014}. Next, I ask whether
+    $\rm GABA_BRs$ located postsynaptically on pyramidal cells are indeed
+    activated after SWs, and whether they play any role in the modulation of
+    SWs. To test this hypothesis, here I analyse data from simultaneous
+    (paired) extracellular and intracellular recordings (kindly sponsored by Nikolaus Maier) performed in the
+    stratum pyramidale of the hippocampal CA3 area and a pyramidal cell in the
+    CA3, respectively. By averaging the intracellular traces across events, we
+    can see that pyramidal cells exhibit a rich membrane potential dynamics
+    during SW events, with various combination of depolarization and
+    hyperpolarization (Figure~\ref{fig:intra_means}, top panel). A slow,
+    possibly $\rm GABA_BR$-mediated hyperpolarization is present in a few recordings, but
+    is not is not visible in the average trace from all cells
+    (Figure~\ref{fig:intra_means}, top panel, thick black line). In the
+    recordings that show a slow hyperpolarization (4 out of 13 cells,
+    Figure~\ref{fig:intra_means}, bottom panel) the trough in the membrane
+    potential is around $200 \, \rm ms$ after the population event and lasts
+    for about $500 \, \rm ms$. Interestingly, one recording reveals
+    well-pronounced slow as well as fast inhibition (red trace).
 
    \begin{figure}
-      \includegraphics[width =30pc]{mean_intras.eps}
+      \center
+      \includegraphics[width =25pc]{mean_intras.eps}
       \caption{ 
-        Simultaneous extracellular and intracellular recordings in slices. {\bf
-        top:} Intracellular recordings from patched pyramidal cells during
-        sharp waves. The mean voltage traces associated to SWs from each slice
-        are color coded; the thick black line is the mean of the means. {\bf
-        bottom:} Mean voltage traces of cells that show slow, possibly $\rm
-        GABA_BR$-evoked hyperpolarization. All traces are normalized by
-        subtracting the mean potential the before the event.
+        Patch-clamp recordings from pyramidal cells during SWRs. {\bf top:}
+        Mean voltage traces associated to SWRs from each slice are color coded;
+        the thick black line is the mean of the means. {\bf bottom:} Mean
+        voltage traces of cells that show slow, possibly $\rm GABA_BR$-mediated
+        hyperpolarization (4/13 cells). Membrane potentials are normalized by
+        subtracting the mean depolarization in a 200-millisecond interval
+        preceding the event.
               }
       \label{fig:intra_means}
     \end{figure}
 
     Is the slow hyperpolarization correlated in any way with the amplitude of
     the SWs? To test this, I separated the events in each recording in two
-    groups: big and small events, i.e., the 30\% biggest or 30\%
+    groups: big and small events, i.e., the 30\% largest SW peaks and 30\%
     smallest events, respectively. Plotting the mean intracellular trace during
     small and big events, shows that the SWs with larger amplitudes are
     associated with larger hyperpolarization (Figure~\ref{fig:intra_big_small},
     top panel). Interestingly, the mean traces before big and small events are
     virtually indistinguishable (Figure~\ref{fig:intra_big_small}, bottom
-    panel), suggesting that the hyperpolarization does not determine the size
-    of the following event. This result holds for all the four recordings that
-    exhibit slow inhibition in the voltage potential.
+    panel), suggesting that the amount of hyperpolarization does not determine the size
+    of the following event. This result holds for all four recordings that
+    exhibit slow inhibition in the membrane potential.
     
     \begin{figure}
-      \includegraphics[width =30pc]{6dec11_cell4_000.eps}
+      \center
+      \includegraphics[width =25pc]{6dec11_cell4_000.eps}
       \caption{ 
-        Sharp waves with larger peak amplitudes evoke stronger
+        Sharp-waves ripples with larger peak amplitudes evoke stronger
         hyperpolarization. {\bf top:} Big events (30 \% of the largest SW
         events) are associated with a well-pronounced slow hyperpolarization.
         Smaller events (30\% of the smallest SWs) did not evoke a $\rm
-        GABA_B$-associated response. The voltage difference preceding the
-        events is a recording artifact (see the Methods section). {\bf bottom:}
-        There is no correlation between the depolarisation of a cell and the
-        peak amplitude of the following SW event.
+        GABA_B$-associated response. The difference of membrane potentials
+        prior to events is a recording artifact (see the Methods section). {\bf
+        bottom:} There is no correlation between the depolarisation of a cell
+        and the peak amplitude of the following SW event.
               }
+      \label{fig:intra_big_small}
     \end{figure}
 
     Moreover, the slow hyperpolarization does not affect the time interval
     until the following event (not shown here). There is a correlation between
-    the interval and the size of the following hyperpolarization, which is
-    expected given the fact that longer intervals are followed by larger SWs,
-    and thus, larger hyperpolarization.
+    the inter-SW interval and the amplitude of the following hyperpolarization,
+    which is expected given the fact that longer intervals are followed by
+    larger SWs, and thus, larger hyperpolarization.
 
     The last dataset of intracellular and extracellular recordings reveals that
-    slow, possibly $\rm GABA_B$-associated hyperpolarization occurs only in a
-    fraction of the CA3 pyramidal neurons {\textit{in vitro}}. The magnitude of
+    slow, possibly $\rm GABA_B$-mediated hyperpolarization occurs in a
+    fraction of the CA3 pyramidal neurons \textit{in vitro}. The magnitude of
     the received inhibition is not correlated with the size or the time
     interval until the next event. Therefore, I conclude that postsynaptic $\rm
-    GABA_B$ receptors do not play a central, if any, role in controlling the
-    incidence of sharp-wave ripples.
+    GABA_BRs$ do not play a central, if any, role in controlling the
+    incidence of SWRs.
  
-    However, seems not to be crucial for SWRs, but only facilitates a bit?
+    To summarise, in contrast to previous reports
+    \citep[i.e.,][]{Hollnagel2014, Hofer2015}, here I show that the $\rm
+    GABA_BR$ antagonist SCH50,911 increases the incidence of spontaneous
+    SWR events. However, due to the small increase in incidence
+    ($\sim 50\%$), the $\rm GABA_BR$ is not the only factor controlling the
+    time between events as hypothesized initially. In half of the slices, the
+    antagonist significantly decreased the amplitudes of SW peaks measured in
+    stratum pyramidale. Moreover, the data shows a decreased interval-peak
+    correlation after the drug application. Intracellular recordings suggest
+    that the time interval between events is not controlled by the postsynaptic
+    $\rm GABA_B Rs$ on pyramids due to the absence of correlation between slow
+    hyperpolarization and inter-event interval.
 
-    In summary, the gB antagonist SCH lead to increase in SW incidence in the in SW vitro model analysed here....?
+    How do $\rm GABA_B Rs$ influence the SW incidence? There are many
+    possible GABA binding sites that may modulate the observed effects. For
+    example, in the light of the 3-population hypothesis, postsynaptic $\rm
+    GABA_B Rs$ on PVBC \citep{Booker2013} or PCs \citep{Kulik2006, Degro2015}
+    can limit the rate of population bursts that disinhibit the network and lead to
+    SWs. Another possibility is the autoreceptors on the PVBC-mIN synapses
+    \citep{Lei2003, Booker2013}, where $\rm GABA_BR$ activation decreases the
+    inhibition on mINs in the background state. Blocking the heteroreceptors on
+    PCs \citep{Lei2003, Lopez2004, Kulik2006} or on PVBCs \citep{Lei2003} could
+    also lead to an increased incidence of SW events. To what degree are these
+    five mechanisms involved in the studied \textit{in-vitro} circuit is not
+    known. Measuring the firing rate of the populations (e.g., PVBCs and PCs)
+    during and between SW events and the firing-rate change after $\rm GABA_B$
+    modulators (agonist or antagonist) can shed some light on the role of the
+    receptors.
 
-    presynaptic effects of gB; likely not due to postsynaptic gBR on PY neurons (from simultaneous intra/extra recordings dataset); Maier2012? also suggests presynaptic effects of gB; however
-      
-    SCH decreases peak
-      
-    decreased peak means decreased currents; however, blocking presynaptic gBR would lead to increased single IPSC/P; therefore likely that SCH decreases FR of perisomatic targeting INs during SW events
+    %decreased peak means decreased currents; however, blocking presynaptic gBR would lead to increased single IPSC/P; therefore likely that SCH decreases FR of perisomatic targeting INs during SW events
 
 \section{Discussion}
-
-  summary:
-    - low peak-interval correlation in comparison to interval-peak
-    - SW amplitude is not a local phenomenon
-
-  The exact effects of gabazine on the network activity invitro are not clear.
-  It is still an open question how does gabazine change the activity of the PC and the different
-  types of INs. 
-
-  Stiedl2006: low concentration of gabazine (500 nM) in hippocmapal slices: only slight increase LFP in striatum rasiatum near pyramidal cell layer
-
-  Schligloff2014 used local puffs of gabazine and showed that MUI activity during SWs in the stratum pyramidale is decreased. However does it also decrease outside of the events? A few more issues with this experiments is.. it was a local puff, and the identity of neurons is not known.
-
-  Experiment suggestions: -
-
-    - quantify network effects of gabazine:
-      - measure and compare PC firing before and during gabazine administration
-      - same for PVBC and the mysterious INs
-    - identify the INs that inhibit PC firing between events.
-
-    Behrens2007: gabazine hyperpolarized cells (in slices which were already induced), 
-maybe because of ambient gaba??
-  \subsection{Hypothesis on how gabazine affects SWR incidence} 
-
-    %Local gabazine puff decreases the SW peaks in Schilinglof, but is also
-    %decreases the MU firing \ref{fig:schlingloff_gabazine}. Cells are more
-    %inhibited? However in another experiment the same authors measured PVBCs in
-    %a loose patch and show that their FR is increased. This suggests some
+  In this chapter I analysed the serial the correlations between sharp-wave
+  events measured in the stratum pyramidale of CA3 area in hippocampal slices.
+  To briefly summarize, the results reveal a strong correlation between time
+  interval since last event and the peak amplitude of the following SW (18/20
+  slices, mean correlation $\sim 0.4$). On the other hand, lower serial
+  correlation between events size and the time interval (9/20 slices, mean
+  correlation $\sim 0.2$) until the following event shows that the amplitude of
+  a SW does not determine the time interval until next event. This absence of
+  peak-interval correlations can not be explained by some locality of the SW
+  events as multi-electrode array recordings reveal that SW peaks are non-local
+  phenomenon, and a large SW measured at one location is likely to be large in
+  the whole CA3 region. 
   
-    Why would gabazine increase the correlations??? especially for decreased
-    incidence one would expect decreased correlations because of the longer
-    time for synaptic recovery from STD...  The increase of SWR amplitudes
-    measured in st. pyr. suggest larger synaptic currents in that region. On
-    the other hand, gabazine decreases the synaptic currents from single
-    presynaptic release. A plausible conclusion that can be made is that the
-    smaller IPSC are compensated by larger firing of the PVBC. The larger PVBC
-    firing leads to a stronger the synaptic depression and thus to a longer
-    time of synaptic recovery. 
+  Application of the $\rm GABA_AR$ antagonist gabazine decreased the
+  incidence of SWs, increased the size of SW events measured in stratum
+  pyramidale (significant change in 4/8 slices), and increased the
+  interval-peak serial correlations. 
 
-    --- make up a figure sketch of the idea: STP, PVBC FR --- here or in the discussion
+  In contrast to previous reports \citep[i.e.,][]{Hollnagel2014, Hofer2015},
+  here I showed that the $\rm GABA_BR$ antagonist SCH50,911 increases the
+  incidence of spontaneous SWR events (10/12 slices). On average,
+  the SCH50,911 application resulted in decrease of SW amplitudes (decrease in
+  6/12; increase in 2/12 slices) and in decreased interval-peak correlation.
+  Moreover, intracellular recordings suggest that the time interval between
+  events is not controlled by postsynaptic $\rm GABA_B Rs$ on pyramids due to
+  the absence of correlation between slow hyperpolarization and inter-event
+  interval.
 
-   %disinhibitory mechanisms.... pc/PVBC ratio is 95/5 or 98/2...
+  The results above did not answer critical questions about the generation of
+  SWRs, but provided some insights about the possible mechanisms which
+  are discussed in details in what follows.
     
-    In summary, PC seems to be less excitable (due to lower FRs), while PVBCs
-    fire more when gabazine is applied. Paradox: how does it happen that
-    decreasing inhibition decreases SWR incidence, i.e., the network gets less
-    excitable or more inhibited? Possible GBr receptor activation???? higher IN
-    activity, leads to more gaba, more extrasynaptic activations...then 
+  \subsection{How gabazine affects sharp-wave ripples} 
+  \label{sec:disc_gabazine}
+    It has been shown that gabazine, which is a $\rm GABA_AR$ 
+    antagonist, leads to a lower incidence of SWRs. How to explain this
+    counterintuitive result that a reduction of inhibition leads to a reduction
+    of SWR incidence?
 
-  \subsection{Hypothesis on how GABA affects on SWR incidence} 
+    \subsubsection{Hypothesis on how gabazine affects sharp-wave amplitude} 
+      An interesting observation is that the application of gabazine tends to
+      increase the amplitudes of the field potential measured in stratum
+      pyramidale during SWRs. Similarly, \cite{Steidl2006} reported increase of
+      the stimulus-evoked field potential in the pyramidal layer after the
+      application of $500\,\rm nM$ gabazine, while no significant changes were
+      observed in other layers. The field potential in the pyramidal layer is
+      dominated by inhibitory synaptic currents \citep{Schonberger2014}, most
+      likely from the fast local perisomatic synapses \citep{Ylinen1995}.
+      Therefore, I conclude that although gabazine decreases the postsynaptic
+      currents from single presynaptic release, there is an increase in the
+      firing rate of perisomatic-targeting interneurons, resulting in a net
+      increase of inhibitory currents during a SWR. The exact identity of these
+      neurons is to be found. Further, I make the bold assumption that PVBC are
+      among the cells with increase firing rate.
+
+    \subsubsection{Hypothesis on how gabazine affects sharp-wave incidence} 
+      In the numerical simulations of 2-population network, the spontaneous
+      replay of assembly sequences was used as a model for SWRs. As intuitively
+      expected, decreasing all inhibitory conductances in the balanced network
+      (with $\sim 5 \%$) led to an increase of replay incidence.  However, a
+      differentiated role of gabazine on the inhibitory-to-excitatory (I-to-E)
+      and I-to-I synapses in the simulations could replicate the original
+      gabazine experiment. More specifically, if I-to-I synapses are affected
+      to a larger degree than the I-to-E synapses, then the incidence of
+      spontaneous bursts is decreased. Currently, it is not clear whether the
+      same argument can be applied to the 3-population hypothesis (see
+      Section~\ref{sec:3pop}). Is it possible that a gabazine application to
+      all inhibitory synapses can decrease the rate of spontaneous events in
+      the non-linear 3-population model? Or would it be required that the
+      disinhibitory synapses (from PVBCs to the mINs) are affected to a larger
+      degree? A detailed mathematical analysis, similar to the one presented in
+      Section~\ref{sec:gabazine_insilico} could answer these questions.
+
+      The increased firing of the perisomatic-targeting interneurons discussed
+      above can decrease the SW incidence through two major pathways. First,
+      repetitive firing of an interneurons can lead to excess of GABA at the
+      synaptic cleft, leading to a diffusion into the extracellular space
+      \citep{Farrant2005}. The ambient GABA can then activate the tonic $\rm
+      GABA_ARs$ that are especially sensitive to GABA \citep{Semyanov2004}, or
+      to activation of $\rm GABA_BRs$ at the pyramidal cell bodies
+      \citep{Scanziani2000}. Both of these extrasynaptic receptor types are
+      slow in comparison to phasic inhibition and can keep cells hyperpolarized
+      for longer time intervals, in the order of the inter-event time
+      intervals. Such pathway can explain how gabazine, which has an opposite
+      effect on the inhibitory transmission compared to thiopental (a
+      GABA-update blocker) results in a similar SW modulation. Both drugs lead
+      to diffusion of GABA to the extrasynaptic GABAergic receptors. For
+      example, a larger concentration of gabazine ($5\,\rm \mu M$) applied to
+      hippocampal slices leads to a persistent hyperpolarization of the
+      pyramidal cells with $\sim 9\, \rm mV$ below the membrane potential in
+      control conditions \citep{Behrens2007}. It is not known whether this is
+      the case with the lower gabazine concentrations in the SWR model analysed
+      here, but can be tested experimentally. Intracellular recordings can
+      reveal whether small concentrations of gabazine ($\sim 100 \, \rm nM$)
+      also lead to a persistent hyperpolarization. Moreover, a local
+      application of tonic $\rm GABA_AR$ antagonist \citep[e.g.,
+      DPP-4-PIO;][]{Boddum2014} or $\rm GABA_BR$ antagonist can reveal the
+      identity of the involved extrasynaptic synapses. For example, if a
+      GIRK-channel blocker applied after the gabazine normalizes the SW
+      incidence, it will be a hint that gabazine modulates SWs through
+      activation of postsynaptic $\rm GABA_BR$.
+
+      The other major mechanism explaining SW incidence modulation is in line
+      with the numerical and analytical analysis of gabazine affecting the
+      disinhibitory pathway. On the one hand, due to its antagonist properties,
+      gabazine decreases the efficacies of the PVBC-mIN synapses. On the other
+      hand, the increased spiking of PVBC during events would lead to a
+      stronger short-term depression on the PVBC-mIN synapses compared to
+      control conditions. Both mechanisms contribute to the elevation of the
+      mINs firing rate, and thus, to the increase of dendritic inhibition on
+      pyramidal neurons. The plausibility of gabazine affecting the
+      disinhibitory pathway can be tested experimentally, once the mIN
+      population is identified.
+
+    \subsubsection{Hypothesis on how gabazine affects the serial correlations} 
+      Why gabazine increases the interval-peak correlations in the majority of
+      slices? For decreased incidence, one would expect decreased correlations
+      because of the longer time for synaptic recovery from STD.  However, the
+      higher PVBCs firing rate (after gabazine) leads to a stronger synaptic
+      depression, and thus, to a longer recovery time of PVBC-PVBC and PVBC-PC
+      synapses. Therefore, it is likely that gabazine increases the STD
+      recovery time to a larger degree, that the increased inter-SW time
+      interval is not sufficient to compensate.
+      
+      %--- make up a figure sketch of the idea: STP, PVBC FR --- here or in the discussion
+      %Local gabazine puff decreases the SW peaks in Schilinglof, but is also
+      %decreases the MU firing \ref{fig:schlingloff_gabazine}. Cells are more
+      %inhibited? However in another experiment the same authors measured PVBCs in
+      %a loose patch and show that their FR is increased. This suggests some
+
+    \subsubsection{Other mechanisms} 
+      % glycine
+      Up to this point, I have considered that gabazine targets exclusively the
+      $\rm GABA_ARs$ . However, it has been shown that gabazine (as well as
+      bicuculline) blocks also the glycine receptors \citep{Wang2005, Li2007}.
+      Glycine receptors are ionotropic inhibitory receptors that upon
+      activation produce chloride flow into the cell membrane. They are present
+      in the hippocampus in smaller quantities relative to other brain areas
+      \citep{denPol1988} and cluster around the inhibitory synapses on
+      pyramidal cells and interneurons \citep{Levi2004}. Whether the incidence
+      of SW is influenced by gabazine blocking the glycine receptors can be
+      tested in experiments. In particular, does the application of a glycine
+      receptor antagonist affects the incidence similarly as gabazine or
+      bicuculline?
+      %glycine receptors \citep{Shirasaki1991} 
+      %and SK-type potassium channels \citep{Pedarzani2001}.  gabazine influencing glycine
+      %Debarbieux98: BIC blocks SK ca chans
+
+  \subsection{Hypothesis on how $\rm GABA_B$ receptors influence the sharp-wave incidence} 
+    Currently, it is not known through what mechanisms the $\rm GABA_BRs$
+    influence the SW incidence. In contrast to previous reports
+    \citep[e.g.,][]{Hollnagel2014, Hofer2015}, the slice recordings analysed
+    here showed a significant increase of SW incidence after application of the
+    $\rm GABA_BR$ antagonist SCH50,911. On the other hand, agonists of $\rm
+    GABA_BR$ led to a decrease of SW incidence \citep{Robbe2006, Maier2012,
+    Hollnagel2014}. Five different $\rm GABA_BR$-mediated pathways can explain
+    these results in the framework of the phenomenological 3-population model.
+     
+    \begin{itemize}
+      \item \textbf{Postsynaptic $\rm GABA_BRs$ on PCs.}
+        A possible location of $\rm GABA_BR$ is on the postsynaptic sites on
+        pyramidal cells. It is been shown that the activation of these
+        receptors leads to slow IPSPs with high amplitudes in CA3 principal
+        cells \citep{Knowles1984}. Such hyperpolarization would result in a
+        lower spontaneous firing rate of the PC population, and thus, a lower
+        incidence of SWs. There are experimental evidences that $\rm GABA_BR$
+        are located along the whole somato-dendritic axis on the principal
+        cells, with highest concentrations in the stratum radiatum and
+        lacunosum moleculare layer \citep{Degro2015}. Moreover, $\rm GABA_{B1}$
+        receptors cluster with GIRK channels at the dendritic spines of PCs
+        mostly in the stratum oriens, stratum radiatum and lacunosum moleculare
+        \citep{Kulik2006}. The activation of postsynaptic $\rm GABA_BRs$
+        requires a repetitive firing of one or more presynaptic interneurons
+        \citep{Scanziani2000}.
+
+      \item \textbf{Postsynaptic $\rm GABA_BRs$ on PVBCs.}
+        Postsynaptic $\rm GABA_BRs$ on the PVBCs would also suppress the
+        initiation of SWs upon activation and facilitate SW generation upon
+        suppression. Immunolabeling shows that $\rm GABA_BRs$ are co-localised
+        with GIRK channels predominantly at the dendrites and the soma of the
+        $\rm PV^+$ interneurons \citep{Booker2013}, and to a smaller degree on
+        the axons. Moreover, slow $\rm GABA_B$-mediated IPSPs are present in
+        the perisomatic-targeting, but not in the dendritic-targeting $\rm
+        PV^+INs$ \citep{Booker2013}.
+
+      \item \textbf{$\rm GABA_B$ heteroreceptors on PCs.}
+        $\rm GABA_BRs$ at the presynaptic side of the recurrent excitatory
+        synapses would suppress glutamate release, and thus, the network
+        excitability. It is been shown that both $\rm GABA_{B1}$ and $\rm
+        GABA_{B2}$ are expressed at the presynaptic terminals of CA3 recurrent
+        synapses \citep{Lopez2004}, and than these receptors can modulate the
+        AMPA receptors \citep{Lei2003}. Moreover, GIRK channels cluster with
+        $\rm GABA_{B1}$ at the excitatory axons \citep{Kulik2006}. However, the
+        functionality of these receptors is not clear. For example,
+        \cite{Lei2003} have shown that the $\rm IC_{50}$-value of
+        baclofen-mediated inhibition for EPSPs is larger than for IPSPs ($8.5\,
+        \rm \mu M$ and $1.7\, \rm \mu M$, respectively), and that the $\rm
+        GABA_{B}$ antagonist CGP55,845 enhanced the IPSPs but not the EPSPs.
+        %Blocking the heteroreceptors on PCs \citep{Maier2012} ????
+
+      \item \textbf{$\rm GABA_B$ heteroreceptors on PVBCs.}
+        Activation of presynaptic $\rm GABA_BRs$ on the PC-PVBC connections
+        would suppress the excitability of PVBCs, which would lead to a
+        suppression of SWRs. It is been shown that presynaptic $\rm GABA_BRs$
+        on the glutamatergic synapses can inhibit the excitatory transmission
+        on CA3 interneurons \citep{Lei2003}, but the identity of these
+        interneurons is unknown.
+
+      \item \textbf{$\rm GABA_B$ autoreceptors on PVBC-mIN synapses.}
+        Activation of $\rm GABA_BRs$ located presynaptically on the PVBC-mIN
+        connections would decrease the inhibition on mINs, and thus, decrease
+        the incidence of SWRs. \cite{Lei2003} have shown that inhibitory
+        transmission to hippocampal interneurons is modulated by presynaptic
+        $\rm GABA_BRs$. Particularly, \cite{Booker2013} showed that the output
+        of perisomatic-targeting $\rm PV^+$ interneurons is modulated by $\rm
+        GABA_BRs$.
+    \end{itemize}
+
+    There are anatomical evidences supporting each of the hypotheses described
+    above. However, which, if any of these $\rm GABA_BRs$ are activated indeed
+    during SWRs is unknown. Some experimental evidences from the literature
+    point to a presynaptic modulation. For example, \cite{Hollnagel2014}
+    suggest that the $\rm GABA_BR$ agonist baclofen decreases SW incidence due
+    to presynaptic glutamatergic suppression.  However, the used
+    \textit{in-vitro} model is different as SWs occur spontaneously just after
+    a train of external stimulations, and $\rm GABA_BR$ antagonist did not lead
+    to an increase in the SW incidence. A study by \cite{Maier2012} suggests
+    that adenosine (activates GIRK channels, and suppresses glutamate
+    transmitter release) suppresses SWs because of presynaptic modulation.
+    Moreover, there is no evidence that the postsynaptic $\rm GABA_BR$-mediated
+    hyperpolarization is associated with the interval until next spontaneous
+    event in the intracellular recordings analysed here. However, data (from
+    personal communication with Nikolaus Maier) points out that application of
+    GIRK-channel blocker (SCH23,390) increases SW incidence, and moreover, a
+    later application of $\rm GABA_BR$ antagonist does not suppress the SW
+    incidence. This result suggests that the postsynaptic GIRK-coupled $\rm
+    GABA_BR$ are involved in the modulation of SWs, but not the presynaptic
+    ones. 
+    
+    There are more possible location sites for the $\rm GABA_BRs$ that haven't
+    been discussed here. Through the prism of the 3-population model, the sites
+    not mentioned here (e.g., presynaptic $\rm GABA_BRs$ on the outgoing mIN
+    synapses) would modulate SW incidence in the opposite direction as observed
+    experimentally.  Only the five pathways described above would lead to the
+    experimentally observed effects of $\rm GABA_BR$ modulators. The question
+    whether one or more of these mechanisms are deployed simultaneously is to
+    be answered.  Cocktails of drugs could help us to better disentangle the
+    different mechanism of receptors modulation. For example, more experiments
+    with a GIRK-channel blocker, and $\rm GABA_BR$ antagonist should be
+    performed, where first one of the drugs applied, and after a few tens of
+    minutes the other. Another experiment to test the postsynaptic modulation
+    is to apply $\rm GABA_BR$ agonist, which will decrease the incidence, and
+    to apply a GIRK-channel blocker afterwards to check whether the incidence
+    is normalized. If the experiments favor a presynaptic modulation, the
+    differential distribution of $\rm GABA_B$ subunits (i.e., $\rm
+    GABA_{B(1a,2)}$ and $\rm GABA_{B(1b,2}$) on different neurons could help
+    narrow down the list of suspected receptors. However, one should be careful
+    with the interpretation of the results as the effects of $\rm GABA_BR$ are
+    nonlinear \citep{Brenowitz1998}. Upon activation, presynaptic
+    \citep{Schwenk2010}, as well as postsynaptic \citep{Wetherington2002} $\rm
+    GABA_BR$ can get desensitized.
+
+    Another possible influence of the $\rm GABA_{B}Rs$ is through the
+    modulation of short-term inhibitory plasticity, which is hypothesised to
+    control the SW incidence and amplitude. Short-term depression (STD) is
+    usually modulated presynaptically \citep{Kraushaar2000}. Moreover, the STD
+    of inhibitory neurons can be modulated by $\rm GABA_BRs$ \citep{Lei2003}.
+    It would be interesting to find out whether STD of PVBCs is also modulated
+    by the $\rm GABA_BRs$.
+
+    In summary, activation or inactivation of $\rm GABA_BRs$ can facilitate or
+    depress the spontaneous generation of SWRs, respectively. Here, I proposed
+    a few possible pathways of modulation. However, unlike hypothesised
+    initially at the beginning of this project, the $\rm GABA_BR$ does not seem
+    to be the crucial mechanism defining the relatively long time scale between
+    events.
+        
+  \subsection{Overview}
+    After over two decades of research, the mechanisms of sharp-wave ripple
+    generation are still debatable. While the early theories focused
+    exclusively on the role of excitation \citep[e.g.,][]{Draguhn1998,
+    Memmesheimer2010}, a number of evidences from the last years point out the
+    importance of inhibitory transmission not only for the ripple oscillation,
+    but also for the generation of the whole population event \citep{Maier2011,
+    Schlingloff2014, Stark2014, Kohus2016}. While the build-up of excitation is
+    an important requirement for the generation of spontaneous events
+    \citep{delaPrida2006, Ellender2010, Schlingloff2014, Hulse2016}, SWR-like
+    events can also be evoked by a spontaneous external stimulation
+    \citep{Schlingloff2014} in the absence of excitatory transmission. 
+    
+    A phenomenological 3-population model relying on disinhibition explains
+    some intriguing results from the literature. In particular, the model
+    relies on a network circuit that can switch between two balanced states, a
+    low firing background state maintained by principal neurons and an unknown
+    interneuron population, and a brief state of high firing rates of the
+    principal and parvalbumin-positive basket neurons. However, currently the
+    model is too general to explain all experimental findings. A number of
+    possible experiments have been proposed in the preceding sections that can
+    help us refine the model, and possibly validate or invalidate it. 
+
+    To find the missing link between the SWR events and the slow time scale of
+    the inter-event interval, one possibility is to look beyond the neural
+    circuit. The astrocyte network, in particular, operates on a slower time
+    scale \cite[$\sim 500 \,\rm ms$,][]{Sasaki2014}, and has been known to
+    modulate neural activity through complex and not well-understood
+    mechanisms. For example, astrocytes control neural excitability through
+    gliotransmitters (e.g., glutamete, \citealp{Parpura1994}; ATP,
+    \citealp{Newman2001}; GABA, \citealp{Liu2000}) and through modulation of
+    the extracellular concentration of $\rm K^+$ \citep{Wang2012}. The
+    astrocyte network can propagate $\rm Ca^{2+}$ waves triggered by
+    neurotransmitters, such as glutamate \citep[e.g.,][]{Cornell1990}.
+    Recently, \cite{Zhang2017} showed that acute induction of astrocyte $\rm
+    Ca^{2+}$ influx led to a suppression of neural activity on a second time
+    scale in a drosophila model. Whether similar mechanism take place in the
+    hippocampus in not known. Currently, the connections between SWRs and
+    astrocyte activity is largely unexplored.  It would be interesting to see
+    if the occurrence of SWRs is correlated with the calcium waves in
+    astrocytes, and if yes, through what mechanism they are coupled. In
+    particular, I expect that the \textit{in-vitro} preparation that show
+    clock-like rhythmicity of SWRs occurrence are controlled solely by slow
+    oscillations of the neural-astrocyte network. While in slices with
+    irregular SWRs (as most of the data analysed here), neural-astrocyte
+    network might underlie the slow recovery after an event, the SWRs are
+    triggered by the discussed disinhibitory circuit.
+    %newman2003 also glial inhib..
+    
+    \begin{comment}
+    $\rm Na^+$, $\rm Ca^{2+}$, 
+    An alternative extra-neuronal circuit mightjka...2,3 general sentences!! glia, astro
+    calcium, potassium, glutamate, adenosize (felin2006)
+
+    astrocites controlling extrasynaptic Ca+2, can this be another slow variable
+    for the iSWi??  Aivar2014: extracellular calcium controls the type of events: SW or epileptic bursts, their size etc.
+    Sasaki2014: astrocyte calcium signalling modulates the extrasynaptic calcium and also the neural synchronisation
+    is incidence correlated with the speed of perfusion??
+    excess or insufficient resources suppress SWRs
+    pefusion: if excess then increasing perfusion will smear it out, increases SWRs
+            if insufficient: then slowing down the perfusion, will help build up and increase SWs
+    sasaki2008: decay of calcium transients sim to 500ms; 400-600 ms
+    would be cool to check if SWs coincide with astrocyte spikes
+
+    especially in the slice models that show regular SWRs
+
+    King2001: extrasynaptic Ca as control for STD
+    also potassium;...
+    \end{comment}
+
+  \begin{comment}
+    A differential short-term depression of I-to-E and I-to-I synapses could
+    also explain the observed correlation between SWR amplitude and the
+    following interval to the next SWR. For simplicity we neglect short-term
+    depression of I-to-E synapses. The recovery from depression (after a SWR)
+    of I-to-I synapses (Kohus et al., 2016) increases these synapses with a
+    time constant on the order of hundreds of milliseconds. As a result, the
+    activity of the inhibitory neurons gradually decreases, which in turn
+    reduces the inhibition onto pyramidal cells. Pyramidal cells in CA3 slowly
+    increase their activity long before a SWR (Hulse et al, 2016) until some
+    critical activity level is reached where additional fluctuations/noise can
+    trigger a new SWR.
+  \end{comment}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %schlinglof sucks with fig 6Av,Bv,Cv:  what is incedence of 30? 30 events per 500 ms?
+    %decreased peak means decreased currents; however, blocking presynaptic gBR would lead to increased single IPSC/P; therefore likely that SCH decreases FR of perisomatic targeting INs during SW events
 
 
 \section{Methods}
 %________________
-  The results in this chapter are bases on the analysis of data kindly provided
-  by Nikolaus Maier from Schmitzlab. Here, I analyse 5 datasets of {\it in
-  vitro} recordings. All the recordings were performed in the CA3 area of
+  The results in this chapter are based on the analysis of data kindly provided
+  by Nikolaus Maier from Schmitzlab. Here, five datasets of {\it in-vitro}
+  recordings are analysed, one of which was recorded by Roberta Evangelista and
+  Nikolaus Maier. All recordings were performed in the CA3 area of horizontal
   hippocampal slices. Here I give a brief summary about the datasets and
   provide some details on the techniques applied during the analysis.
 
-  \subsection{Data}
-  %________________
-    \subsubsection{Dataset 1: gabazine}
-     
-      8? recordings.
-      extracellular field potential, a few tens of minutes after the beginning of recording gabazine is infused in the extracellular solution.
-      Sampling rates are between 5 and 10 kHz.
-      Multiple sweeps of 30/60 seconds.
-      In two recordings there was washout of the gabazine.
-      gabazine 
 
+  \subsection{Data and data analysis}
+    The slice preparations were done after `standard' procedures
+    \citep{Maier2003, Maier2012} according to the guidelines of the local
+    authorities (Berlin). The slices were obtained by cutting mice hippocampi
+    through the horizontal plane. All analyzed extracellular recordings were
+    done in the pyramidal cell layer (stratum pyramidale) of CA3.
 
-      for further analysis time windows were chosen for the comparisons:
-        -12 , -3 before and 6, 11 after the drug infusion.
-        time to go home!
+    Sharp waves (SWs) were detected as positive deflections of the in the
+    band-pass filtered signal of the extracellular electrode recordings. A
+    typical frequency band used in the analysis is 2--60 Hz (Butterworth
+    filter), but due to noise, for some recordings were filtered in the band
+    5--60 Hz. The threshold for SW detection was set manually for each slice
+    after visual inspection of the data. In recordings that show small
+    deviations of the signal, 2 standard deviations (SDs) above the mean were
+    sufficient to capture all SW events. For `noisy' recordings with
+    substantial deviations in the recorded signal, the threshold could be up to
+    5 SDs. Only events of duration between 10 and 70 ms were considered as
+    sharp-wave events. The amplitudes positive deflections of the filtered
+    signal were used to quantify the SW peaks in the result section. The
+    measure of inter-SW intervals was based on the difference of peak timing,
+    and the time interval between events from different sweeps were not
+    considered in the analysis.
+ 
+    \subsubsection{Dataset 1: hippocampal slices}
+      The first dataset consists of extracellular recordings from 20 hippocampal
+      slices. Recordings were performed in the period 2007--2014. The temporal
+      sampling frequency is 5 or 10 kHz. The recording durations are between 8
+      and 55 minutes.
 
+    \subsubsection{Dataset 2: multi-electrode arrays}
+      The second set of data was recorded by Roberta Evangelista and Nikolaus
+      Maier as part of Roberta's Master thesis. Data was recorded with
+      multi-electrode arrays (MEA) from 25 slices of 8 animals in 2014 and
+      2015. While each array consists of 32 electrodes, only recordings from
+      stratum pyramidale of CA3 are considered in this analysis, i.e., between
+      6 and 13 recording sites in different slices. Due to data preprocessing,
+      the amplitudes of the raw field-potential traces (instead of the
+      filtered) were considered for the calculation of the SW peak amplitudes.
+      Moreover, the SW amplitudes values were normalized by subtracting the
+      mean and dividing by the SD of SW peaks at the particular recording site.
 
-
-
-    \subsubsection{Dataset 2: SCH50,911}
-      The second dataset contains extracellular recordings from 13 slices.
-      Here, extracellular field potential is measured for several minutes
-      depending on the recording, and later on the drug SCH50,911 was infused
-      into the ?solution.  SCH50,911 is a ${\rm GABA_B}$ receptor antagonist
-      which acts on presynaptic as well as on postsynaptic receptors.
-
-    , but here I excluded one recording as it exhibits virtually
-    no events prior to the drug application, and thus, heavily skews the average
-    results.
-
-    \subsubsection{Dataset 3: Extra and Intra}
-      The third dataset consists of 13 pairs of recordings.  Each pair contains
-      simultaneous extracellular field recording and intracellular recording
-      from a patched pyramidal cell in a current clamp mode.  The recordings
-      consist of multiple sweeps of around 5-20 seconds.  The length of each
-      recording is rather short, ranging from 40 seconds up to 10 minutes.  The
-      sampling rates are between 5 and 40 kHz.
-
-  \subsection{Data analysis}
-  %_________________________
-      To compare the SW sizes, I took the raw peaks of
-      the events and normalize them such that for each electrode the mean peak
-      is 0, and the std is 1.  becaure of diff location of th electrode..?
+    \subsubsection{Dataset 3: gabazine}
+      The effects of gabazine on the hippocampal circuit are studies from 8
+      slice recordings performed by Nikolaus Maier in the period 2012--2014.
+      Here, the extracellular field potential in stratum pyramidale were
+      measured in intact slices. A few tens of minutes (between 16 and 40 mins)
+      after the recording onset, a low concentration ($100\,\rm nM$) of the
+      $\rm GABA_AR$ antagonist gabazine was infused in the artificial
+      cerebrospinal fluid (ACSF). In 2 of the slices, there was a washout of
+      gabazine that normalized the incidence and the amplitudes of SWs. Events
+      from the window [-7, -2] minutes (before drug application) and [6, 11]
+      minutes (after drug application) were used to compare the properties of
+      SWs.
       
-      independent 2-sample t-test applied to 5mins intervals
-      
-  \subsection{determining the sign of the determinant}
-    \subsubsection{SWR detection}
+    \subsubsection{Dataset 4: $\rm GABA_B R$ blocker}
+      This dataset contains extracellular recordings from 13 slices. Here, the
+      extracellular field potential was measured for several minutes depending
+      on the recording, after which $20\, \rm \mu M$ ${\rm GABA_BR}$ antagonist
+      (SCH50,911) was infused into the ACSF. In two of the recordings,
+      SCH50,911 was washed out after $\sim 20$ minutes of application, and in
+      one of the recording the wash-out normalized the SW incidence to the
+      levels prior to application; in the other recording, incidence increased
+      even further.  Events from the window [-5, 0] minutes (before drug
+      application) and [2, 7] minutes (after drug application) were used to
+      compare the properties of SWs. One recording was excluded as there were
+      virtually no events prior to the drug application, and thus, the average
+      results were heavily skewed. 
+
+    \subsubsection{Dataset 5: intracellular recordings}
+      The last dataset consists of 13 recording pairs performed between 2008
+      and 2012. Two simultaneous recordings were performed in CA3 area, one
+      extracellular and one intracellular recording from a patched pyramidal
+      cell in a current clamp mode. The data consists of multiple sweeps of
+      around 5--20 seconds. The length of each recording is rather short,
+      ranging from 40 seconds up to 10 minutes, with sampling rates between 5
+      and 40 kHz. At the beginning of each sweep, a large negative current
+      pulse was injected into the patched cells resulting into a negative
+      deflection ($\sim 10\, \rm mV$) of the membrane potential. Therefore,
+      events that occurred in the first 200 ms of the sweep are ignored. In a
+      couple of recordings this hyperpolarization is still present in the
+      membrane potential prior to SWs and reflected in the voltage trace
+      differences in Figure~\ref{fig:intra_means} (top panel).
+
+  \subsection{Simulations}
+    The network simulations were based on the model presented in
+    Chapter~\ref{chap:memoryreplay}. Spontaneous replays of assembly sequences
+    are used as a model for the SWR events
+    (Section~\ref{sec:gabazine_insilico}). The connectivity values were $p_{\rm
+    rc}=0.08$ and $p_{\rm ff}=0.06$. The remaining parameters were intact.  The
+    gabazine modulation was modelled by decreasing the values of inhibitory
+    conductances $g_{\rm ii}$ and  $g_{\rm ei}$ by 5 or 10\%.
+  %\subsection{determining the sign of the determinant}
     
+\begin{comment}
 \section{todo}
-  - put figures here
+  - add refs to kohus evoking SWRs by activating PVBC
+  
+  - gabaar figure 3 horizontal subplots; change legend
 
-  - make a figure of 3 population model
+  - redo 3pop fig with ee conn
 
-  - figure of synaptic recovery and SWRs amplitudes..
+  - both2008 ripples
+
+  - rm it et al commands are deprecated
 
   - find refs, or notes from vida's talk on gB receptors in hp
 
   - take the 30\% most hyperpolyrised cells and see if they are asoociated to bigger SW or longer iSWi
 
-  - kraushaar and Jonas, 2000 (in DG BC-GC synapses): presynaptic mechanisms behind BC depression 
-    - depression independent on gB antagonist?, extracell Ca+ and previous release
+    feedback for R:
+      - bicuculine decreases SW incidence 
+      - in mamalia (buzsaki and moser) they dont say anything about SWs..
 
-  - check who makes SW in the pyramidale; what arguments are for the perisomatic inhibition
-      - anatomy: Inh synapses in this area..
-      - check J.
+  - sasaki2014: low SWR incidence sim to 0.1 ev/s
 
 
-  ref on GBR:
-    - Lei and McBain20013
-      -baclofen (gB agonist) inhibited E/I PSPs
-      - presynaptic effects
-      - reduced freq of mIPSPs only
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%% refs
+    Kulik2006:
+      -Gb1 and GIRK colocolize on the dendritic spines on PCs: on the shafts they are segregated, GIRK are not GABA driven
+      -mostly in str. oriens, radiatum and lacunosum moleculare. are they active? i should have seen that in our recordings...
 
-    -Hollnagel2014
-      - baclofen suppresses SWRs
-      - CGP35846 (GB antagonist) prevents this effect
-      - only CGP.. has no major effect on SW incidence
+    Lacaille1991:
+      - slow, possibly gB-meidated ipsps on INs (pyramidal layer)
 
+    Lei2003:
+      - presynaptic gB modulation of AMPA and GABAa receptors...
+      - i50 value of baclofen is lower for i than for e synapses, suggesting i more senitive?
+      - CGP55845 gB antagonist enhanced only IPSP but not epsps
+      - activation of gB synapses normalized STD (+more refs on that; Davies1990 in in-in)
+
+    Booker2013:
+      - imunnolabeling: postsynaptic GIRk coupled on PV+ INs
+      - gB also at the axons on PVINs
+      - whole cell stimulation show large gB-mediated IPSPs on the perisomatic-targeting PVIN, but not on the DTI
+
+    Hollnagel2014
+      - gB antagonist didnt affect SWs
+      - gB agonist decreased and stoped spontan SWs, but SWs could be evoked
+      - baclofen effect was presynaptic
+
+    degro2013:
+      - postsynaptic gB over the whole somtodendritic axis of PCs
+      - mostly in radiatum and LM 
+
+    Caillard98
+        - CGP35348 (GB antagonist) partially blocked IPSP depression!
+        - baclofen reduced eIPSPs
+        - suggest that presynaptic gB might terminate SWs
+    %%%%%%%%%%%%%%%%%%%%%%%
 
     - Maier2003:
       - cgp did not alter voltage of neurons excluding postsynaptic involvement
 
-    - Hoffer2015:
-      - cgp did not change frequency of SWRs
+      open Qustions:
+        - does GBR antagonist prevent the STP of BC synapses?
+        - gaba-uptake blocker on SW incidence, duration, BC STD?
 
-
-    - Farrant2005
-      - gabazine blocks also tonic GARs
-
-    - Degro2015
-      - spatial distribution of GBR: mainly LM, Radiatum
-      (CA3 collaterals are mostly in striatum oriens?)
-
-    -Caillard98
-      - CGP35348 (GB antagonist) partially blocked IPSP depression!
-      - baclofen reduced eIPSPs
-      - suggest that presynaptic gB might terminate SWs
-
-    - English2014
-
-
-    -delaPrida2006:
-      - sugegsts GBR (postsynatptic) contribute to the initiation of GDPs
-      - GDP at threshold after population recovery
-
-    schoeneberger2014: check paper for local lamina-specific Glu/Gaba contribution
-
-
-  open Qustions:
-    - does GBR antagonist prevent the STP of BC synapses?
-    - gaba-uptake blocker on SW incidence, duration, BC STD?
-
-
+\end{comment}
 

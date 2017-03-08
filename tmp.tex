@@ -92,7 +92,7 @@
 % put ALL of them in the following file:
 \input{adjustment.tex}
 \graphicspath{{figs/}}
-
+\usepackage{verbatim}
 % The order of the parts in the document is only our suggestion,
 % you can change it, if you wish.
 % Don't put any other text between those commands.
@@ -109,13 +109,10 @@
     %\include{zusammenfassung}
     \tableofcontents    
   \mainmatter
-    \include{intro}
+    %\include{intro}
+    %\include{asss}
     \include{modulationofswrs2}
-    %\include{ch_transient_oscillations}
-    %\include{ch_probing_ca1}
-    %\include{ch_gabaergic_modulation}
-    %\include{ch_olm_recruitment}
-    %\include{ch_outlook}
+    %\include{outlook}
     %\include{appendixA}
   \backmatter
     %\nocite{*}                
@@ -123,7 +120,7 @@
     	% http://edoc.hu-berlin.de/e_autoren/latex/bedingung.php
     	% for the list of the permitted styles.
     \bibliographystyle{apalike} % create your own bibstyle jhs1
-    \bibliography{refs_intro,refs_swrs}%lit
+    \bibliography{refs_intro,refs_man,refs_swrs,refs_out}%lit
     %\listoffigures
     %\listoftables    
     %\printindex
