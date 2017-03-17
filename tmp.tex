@@ -55,10 +55,6 @@
     titlepagefont={\Large\sffamily} % Use to change the titlepage font
 }
 
-\makeatletter
-\renewcommand{\fnum@figure}{Figure \thefigure}
-\makeatother
-
 % Fill out all the metadata here:
 \hudissmetadata{%
     authorprefix={M.Sc.}, % e.g. Dipl.-Inf.
@@ -95,6 +91,8 @@
 % or define any own commands
 % put ALL of them in the following file:
 \input{adjustment.tex}
+\graphicspath{{figs/}}
+%\usepackage{verbatim}
 % The order of the parts in the document is only our suggestion,
 % you can change it, if you wish.
 % Don't put any other text between those commands.
@@ -126,10 +124,10 @@
     %\listoffigures
     %\listoftables    
     %\printindex
-    %\include{acknowledgements}
+    \include{acknowledgements}
     %\include{cv}
     %\include{publications}    % Use our template or write your own.
-    %\include{declaration}    % Use our template or write your own.
+    \include{declaration}    % Use our template or write your own.
     %\include{refs_manuscript}
     %\include{refs_new}
 \end{document}
