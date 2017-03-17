@@ -55,6 +55,10 @@
     titlepagefont={\Large\sffamily} % Use to change the titlepage font
 }
 
+\makeatletter
+\renewcommand{\fnum@figure}{Figure \thefigure}
+\makeatother
+
 % Fill out all the metadata here:
 \hudissmetadata{%
     authorprefix={M.Sc.}, % e.g. Dipl.-Inf.
@@ -80,7 +84,7 @@
     dean={Prof. Stefan Hecht, PhD}, % dean of the faculty
     president={Prof. Dr. Jan-Hendrik Obertz}, % president of the university
     datesubmitted={20.09.2012}, % the date of the submission
-    dateexam={08.04.2013}, % the date of your last exam
+    %dateexam={08.04.2013}, % the date of your last exam
     %keywordsen not working
     keywordsen={assembly, sequence, replay, sharp-wave ripple, memory}, % english keywords comma separated
     %keywordsde={Kanalrauschen, ...} % german keywords comma separated
@@ -91,8 +95,6 @@
 % or define any own commands
 % put ALL of them in the following file:
 \input{adjustment.tex}
-\graphicspath{{figs/}}
-\usepackage{verbatim}
 % The order of the parts in the document is only our suggestion,
 % you can change it, if you wish.
 % Don't put any other text between those commands.
@@ -105,14 +107,14 @@
   \frontmatter
     \maketitle
     %\include{dedication}
-    %\include{abstract2}
-    %\include{zusammenfassung}
+    \include{abstract}
+    \include{zusammenfassung}
     \tableofcontents    
   \mainmatter
-    %\include{intro}
-    %\include{asss}
+    \include{intro}
+    \include{asss}
     \include{modulationofswrs2}
-    %\include{outlook}
+    \include{outlook}
     %\include{appendixA}
   \backmatter
     %\nocite{*}                
