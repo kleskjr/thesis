@@ -1,0 +1,1931 @@
+\chapter{Memory replay in balanced recurrent networks}
+\label{chap:asss}
+
+\section{Summary}
+  Synaptic plasticity is the basis for learning and memory, and many
+  experiments indicate that memories are imprinted in synaptic connections.
+  However, basic mechanisms of how such memories are retrieved and consolidated
+  remain unclear. In particular, how can one-shot learning of a sequence of
+  events achieve a sufficiently strong synaptic footprint to retrieve or replay
+  this sequence? Using both numerical simulations of spiking neural networks
+  and an analytic approach, we provide a biologically plausible model for
+  understanding how minute synaptic changes in a recurrent network can
+  nevertheless be retrieved by small cues or even manifest themselves as
+  activity patterns that emerge spontaneously. We show how the retrieval of
+  exceedingly small changes in the connections across assemblies is robustly
+  facilitated by recurrent connectivity within assemblies. This interaction
+  between recurrent amplification within an assembly and the feed-forward
+  propagation of activity across the network establishes a basis for the
+  retrieval of memories.
+
+\section{Introduction}
+  The idea of sequential activation of mental concepts and neural populations
+  has deep roots in the history of the cognitive sciences \citep{Titchener1909,
+  Brown1914, Washburn1916} as well as its share of criticism
+  \citep{Lashley1951}. In one of the most influential works in neuroscience,
+  Donald Hebb extended this concept by suggesting that neurons that fire
+  simultaneously should be connected to each other, thus forming a cell
+  assembly that represents an abstract mental concept \citep{Hebb49}. He also
+  suggested that such assemblies could be connected amongst each other, forming
+  a network of associations in which one mental concept can ignite associated
+  concepts by activating the corresponding assemblies. Hebb referred to the
+  resulting sequential activation as well as the underlying circuitry as
+  ``phase sequence''. We will refer to such connectivity patterns as ``assembly
+  sequences''.
+
+  The notion of Hebbian assemblies has triggered a huge number of experimental
+  studies (reviewed in \citep{Wallace2010}), but relatively few experiments have
+  been dedicated to the idea of assembly sequences \citep{Kruskal2013,
+  Almeida2014}. Many theoretical studies focused on feedforward networks,
+  also known as synfire chains \citep{Abeles1991, Diesmann1999, Aviel2002,
+  Jahnke2013}. Synfire chains are characterized by a convergent-divergent
+  feedforward connectivity between groups of neurons, where pulse packets of
+  synchronous firing can propagate through the network. Few works were also
+  dedicated on synfire chains embedded in recurrent networks \citep{Aviel2003,
+  Kumar2008, Trengove2013}, however, without explicitly considering recurrent
+  connectivity within groups.
+
+  In this study, we combine the concept of feedforward synfire chains with the
+  notion of recurrently connected Hebbian assemblies to form an assembly
+  sequence. Using numerical simulations of spiking neural networks, we form
+  assemblies consisting of recurrently connected excitatory and inhibitory
+  neurons. The networks are tuned to operate in a balanced regime where large
+  fluctuations of the mean excitatory and inhibitory input currents cancel each
+  other. In this case, distinct assemblies that are sparsely connected in a
+  feedforward fashion can reliably propagate transient activity. This replay
+  can be triggered by external cues for sparse connectivities, but also can be
+  evoked by background activity fluctuations for larger connectivities.
+  Modulating the population excitability can shift the network state between
+  cued-replay and spontaneous-replay regimes.
+  %We show that recurrent connectivity within assemblies are beneficial for
+  %replay and important for the stability of network dynamics.
+  Such spontaneous events may be the basis of the reverberating activity
+  observed in the neocortex \citep{Kenet2003, Luczak2009, Contreras2013} or in
+  the hippocampus \citep{Lee2002, Dragoi2013, Stark2015}. Finally, we show
+  that assembly sequences can also be replayed in a reversed direction (i.e.,
+  reverse replay) as observed during replay of behavior sequences
+  \citep{Foster2006, Diba2007}. 
+
+
+\section{Results}
+  %\label{Results}
+  To test Hebb's hypothesis on activity propagation within a recurrent network,
+  we use a network model of excitatory and inhibitory conductance-based
+  integrate-and-fire neurons. The network has a sparse random background
+  connectivity $p_{\rm rand}=0.01$ \citep{Guzman2016}. We form a neural assembly (Figure~\ref{fig1}A)
+  by picking $M$ excitatory ($M=500$ if not stated otherwise) and $M/4$
+  inhibitory neurons and connecting them randomly with probability $p_{\rm
+  rc}$, resulting in a mutually coupled excitatory and inhibitory population.
+  The new connections are created independently and in addition to the
+  background connections. To embed an assembly sequence in the network, we
+  first form 10 non-overlapping assemblies. The assemblies are then connected
+  in a feedforward manner where an excitatory neuron from one group projects to
+  an excitatory neuron in the subsequent group with probability $p_{\rm ff}$
+  (Figure~\ref{fig1}B). Thus, by varying the feedforward and the recurrent
+  connectivities, we can set the network structure anywhere in the spectrum
+  between the limiting cases of synfire chains ($p_{\rm ff}>0$, $p_{\rm rc} =
+  0$) and uncoupled Hebbian assemblies ($p_{\rm ff} = 0$, $p_{\rm rc}>0$), as
+  depicted in Figure~\ref{fig1}C.
+
+    \begin{figure}[!h]
+      \includegraphics[width=32pc]{figs/Fig1.eps}
+      \caption{{\bf Network connectivity.}
+        \textbf{A:} Schematic of an assembly $i$ consisting of an excitatory
+        ($E_i$) and an inhibitory ($I_i$) population. Red and blue lines
+        indicate excitatory and inhibitory connections, respectively. The
+        symbols $w$ and $-kw$ denote total synaptic couplings between
+        populations.
+        \textbf{B:} Sketch of network connectivity. The inhomogeneous network
+        is randomly connected with connection probability $p_{\rm rand}$. A
+        feedforward structure consisting of 10 assemblies (only $i-1$ and $i$
+        shown) is embedded into the network. Each assembly is formed by
+        recurrently connecting its neurons with probability $p_{\rm rc}$.
+        Subsequent assemblies are connected with feedforward probability
+        $p_{\rm ff}$ between their excitatory neurons.
+        \textbf{C:} Embedded structure as a function of connectivities.
+      }
+      \label{fig1}
+    \end{figure}
+
+  To ensure that the spontaneous activity of the network is close to an
+  \textit{in-vivo} condition, we use Hebbian plasticity of inhibitory
+  connections \citep{Vogels2011}, which has been shown to generate a balance of
+  excitatory and inhibitory currents in individual neurons (Figure~\ref{fig2}A).
+  As a consequence, spikes are caused by current fluctuations
+  (Figure~\ref{fig2}B), and the network settles into a state of asynchronous
+  irregular (AI) firing (Figure~\ref{fig2}C).
+
+  \begin{figure}[!h]
+    \includegraphics[width=32pc]{figs/Fig2.eps}
+    \caption{{\bf Example of 1 second network activity.} The first $250 \,\rm
+      ms$ depict the dynamics of a network with random and recurrent
+      connections only ($p_{\rm rc} = 0.1$). The same network after embedding
+      feedforward connectivity ($p_{\rm ff} = 0.04$) is shown in the last $750
+      \,\rm ms$.
+      \textbf{A:} Input currents experienced by an example neuron. The
+      excitatory and inhibitory inputs are denoted by the red and blue traces,
+      respectively. The sum of all currents (synaptic, injected, and leak
+      currents) is shown in black.
+      \textbf{B:} Membrane potential of the same neuron. Red dots denote
+      the time of firing.
+      \textbf{C:} Raster plot of spike times of 500 neurons (50 neurons per
+      group are shown). The red dots correspond to the firing of the example
+      neuron in A and B. The stimulation times of the first assembly are
+      denoted with upward arrows.
+      \textbf{D:} Raster plot of a continuous sequence. Each neuron is
+      connected to its $M$ neighbours (in the range $[-\frac{1}{2}M, \frac{1}{2}M]$) with probability $p_{\rm rc}$ (left-hand
+      side); and afterwards (right-hand side), a feedforward connectivity $p_{\rm ff}$ to the
+      following $M$ neurons (in the range $[\frac{1}{2}M, \frac{3}{2}M]$) is
+      introduced.
+      }
+    \label{fig2}
+  \end{figure}
+
+  To simulate a one-shot sequence learning paradigm, we initially embed
+  assemblies that have recurrent connectivity $p_{\rm rc}$ only and are not
+  connected via feedforward connections (Figure~\ref{fig2}, left-hand side). A
+  stimulation of the first assembly does not evoke a replay. Then, in a sham
+  learning event, new feedforward connections are created between subsequent
+  assemblies followed by a short phase ($\sim 5 \, \rm seconds$) with
+  inhibitory plasticity turned on in order to properly balance the network. If
+  we then stimulate the first group in the embedded assembly sequence
+  (Figure~\ref{fig2}C, right-hand side), the network responds with a wave of
+  activity that traverses the whole sequence, as hypothesised by
+  \cite{Hebb49}. We refer to such a propagation of activity wave as replay. As
+  excitatory and inhibitory neurons are part of the assemblies, they both have
+  elevated firing rates during group activation. Despite the high population
+  transient firing rates ($\sim 100 \, \rm spikes/sec$ for excitatory, and
+  $\sim 60\, \rm spikes/sec$ for inhibitory neurons when using a Gaussian
+  smoothing window with width $\sigma = 2 \,\rm ms$) single neurons are firing
+  at most one spike during assembly activation. Because excitatory neurons in
+  an assembly transiently increase their population firing rate from 5 to $100
+  \, \rm spikes/sec$, a replay can be inferred from the large change in
+  activity, which resembles replay in hippocampal CA networks \citep{Lee2002}.
+  On the other hand, interneurons have higher background firing rates of $\sim
+  20 \, \rm spikes/sec$ and smaller maximum firing rates of $\sim 60 \, \rm
+  spikes/sec$ during replay. As a result, interneurons have a much lower ratio
+  of peak to background activity than excitatory neurons in our model, in line
+  with the reported lower selectivity of interneurons \citep{Wilson1993}.
+  %Moreover, single inhibitory neurons can take part in several assemblies
+  %without affecting the replay (data not shown).
+
+  We chose the particular wiring scheme of discrete assemblies partly due to
+  the resemblance of the discrete windows of activity defined by the fast
+  oscillations during hippocampal replay: ripples during sharp-wave ripples
+  (SWRs) and gamma cycles during theta sequences. Additionally, our approach
+  facilitates the model description and gives a leverage for an analytical
+  treatment. Accordingly, in Figure~\ref{fig2}A-C, we modeled discrete assemblies
+  of size $M=500$, which have a distinct recurrent connectivity $p_{\rm
+  rc}=0.1$ within each assembly, and a feedforward connectivity $p_{\rm
+  ff}=0.04$ between two assemblies in the sequence. However, in biological
+  networks, assemblies could potentially overlap, making a clear-cut
+  distinction between feedforward and recurrent connectivities difficult. To
+  study assembly sequences in a more continuously wired sequence, we use an
+  extreme case where no assemblies are defined at all. All neurons are arranged
+  in a linear sequence, and every neuron is connected to its $M=500$
+  neighbouring excitatory cells ($M/2$ preceding and $M/2$ succeeding) with
+  probability $p_{\rm rc}$. Recurrent connections to and from inhibitory
+  neurons are embedded analogously in a continuous manner. To imitate the
+  connectivity pattern from the discrete model, every excitatory neuron is
+  connected to the $M$ following neurons without overlapping with the recurrent
+  connections (i.e., the range from $\frac{1}{2}M$ to $\frac{3}{2}M$) with
+  probability $p_{\rm ff}$. After stimulating the first $M$ neurons with a
+  transient input, the whole sequence is replayed (Figure~\ref{fig2}D). Compared
+  to the discrete assembly sequence (Figure~\ref{fig2}C) where the same connection
+  probabilities were used, the replay is continuous and qualitatively similar.
+  In what follows, however, we return to the discrete assemblies because this
+  description facilitates a connection of simulations with an analytical
+  treatment.
+  
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  \subsection{Sparse feedforward connectivity is sufficient for replay}
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    Whether an assembly sequence is replayed is largely determined by the
+    connectivities within and between assemblies. Therefore, we first study how
+    the quality of replay depends on the recurrent ($p_{\rm rc}$) and the
+    feedforward ($p_{\rm ff}$) connectivities. The network dynamics can be
+    roughly assigned to regimes where the connectivity is too weak, strong
+    enough, or too strong for a successful replay. We use a quality measure of
+    replay, which determines whether activity propagates through the sequence
+    without evoking a ``pathological'' burst of activity (Figure~\ref{fig3}). In
+    such ``pathological'' cases the spatiotemporal structure of replay is often
+    preserved while the background activity deviates from the AI state, or the
+    whole network is involved in the events. To disregard such events, the
+    quality measure punishes replays that (1) evoke bursting of neurons within
+    assemblies during activation or (2) activate the whole network (for details
+    see Materials and Methods). 
+
+    \begin{figure}[!h]
+      \includegraphics[width=32pc]{figs/Fig3.eps}
+      \caption{{\bf Evoked replay.}
+        Assembly-sequence activation as a function of the feedforward $p_{\rm
+        ff}$ and the recurrent $p_{\rm rc}$ connectivities. The color code
+        denotes the quality of replay, that is, the number of subsequent groups
+        firing without bursting (see Materials and Methods). The black curve
+        corresponds to the critical connectivity required for a replay where
+        the slope $c$ of the transfer function (See Materials and Methods and
+        Equation~\ref{eq:kappa2}) is matched manually to fit the simulation results
+        for connectivities $p_{\rm rc}=0.08$ and $p_{\rm ff}=0.04$. The slope
+        $c$ is also estimated analytically (dashed white line). The raster
+        plots (\textbf{a-f}) illustrate the dynamic regimes observed for
+        different connectivity values; neurons above the gray line belong to
+        the background neurons.
+      }
+      \label{fig3}
+    \end{figure}
+
+    Naturally, for a random network ($p_{\rm ff} = 0$, $p_{\rm rc} = 0$,
+    Figure~\ref{fig3}a) the replay fails because the random connections are not
+    sufficient to drive the succeeding groups. In the case of uncoupled
+    Hebbian assemblies (e.g., $p_{\rm ff}=0,\, p_{\rm rc} = 0.30$), groups of
+    neurons get activated spontaneously (Figure~\ref{fig3}c), which is reminiscent
+    to the previously reported cluster activation \citep{Litwin2012} but
+    on a faster time scale. Already for sparse connectivity (e.g., $p_{\rm ff}=
+    p_{\rm rc} = 0.06$) the assembly-sequence replay is successful
+    (Figure~\ref{fig3}b). In the case of denser recurrence ($p_{\rm rc} \approx
+    0.10$), a pulse packet propagates for even lower feedforward connectivity
+    ($p_{\rm ff} \approx 0.03$). The feedforward connectivity that is required
+    for a successful propagation decreases with increasing recurrent
+    connectivity because assemblies of excitatory and inhibitory neurons can
+    increase small fluctuations of the input through ``balanced amplification''
+    \citep{Murphy2009, Hennequin2012} as summarized in Materials and methods,
+    section ``Balancing the Network''.
+
+    For high feedforward ($p_{\rm ff} \gtrsim 0.10$) but low recurrent ($p_{\rm
+    rc} \lesssim  0.10$) connectivity, the replay has low quality. In this
+    case, excitatory neurons receive small recurrent inhibitory input compared
+    to the large feedforward excitation, because the recurrent connection
+    probability is lower than the feedforward one. Due to the lack of
+    sufficiently strong inhibitory feedback within the assembly (compared to
+    the strong feedforward excitation), the propagating activity either leads
+    to run-away excitation (Figure~\ref{fig3}e), also called synfire explosion
+    \citep{Mehring2003, Aviel2004}, or to epileptiform bursting
+    (Figure~\ref{fig3}d). When both recurrent and feedforward connectivities are
+    high, the inhibition is able to keep the propagating activity transient
+    (Figure~\ref{fig3}f). However, because of the strong input each neuron is
+    firing multiple times within a small time window. The fact that neurons in
+    each group (except the first) are firing multiple times during a replay
+    alters the spatio-temporal structure of the sequence. While activity
+    propagates from one group to another, neurons do not necessary spike in
+    order due to the many emitted spikes. Another reason to assign low quality
+    to such replays is the fact that the network dynamics is deviating from the
+    AI background state because neurons that are part of the sequence tend to
+    fire almost exclusively during replays but not outside replays.
+
+    To get an analytical understanding of the network, we use a linear
+    approximation of the network dynamics to derive conditions under which
+    replay is successful. The key determinant for replay is an amplification
+    factor $\kappa(p_{\rm ff},p_{\rm rc}) = \frac{r_{i+1}}{r_i}$, which
+    measures how large is the rate $r_{i+1}$ in group $i+1$ in relation to the
+    rate in the previous group $i$.
+
+    In the case where the amplification factor is smaller than one
+    ($r_{i+1}<r_i$), the activity propagating through the assembly sequence
+    will decrease at each step and eventually vanish, while for amplification
+    larger than one ($r_{i+1}>r_i$) one would expect propagating activity that
+    increases at each step in the sequence. An amplification factor
+    $\kappa(p_{\rm ff},p_{\rm rc})=1$ represents the critical value of
+    connectivity for which the replay is marginally stable, and the magnitude
+    of activations is similar across groups. In the Materials and Methods we
+    show that a linear model can approximate the amplification factor by
+    \begin{equation}
+      \kappa = c M p_{\rm ff}\, g^{E} (1 + c M p_{\rm rc} \,g^E)  
+      \label{eq:kappa2}
+    \end{equation}
+    where $c = 0.25\, \rm{nS^{-1}}$ is a constant that fits the model to the
+    data (see Materials and Methods).  We can interpret $\kappa$ as an
+    ``effective feedforward connectivity'' because the recurrent connectivity
+    ($p_{\rm rc}$) effectively scales up the feedforward connectivity $p_{\rm
+    ff}$.  We can match the analytical results for critical connectivities to
+    the numerical simulation, and show a qualitative fit between the approaches
+    (black line in Figure~\ref{fig3}).
+
+    We note that the number of excitatory synapses that is needed for an
+    association, $M^2(p_{\rm rc}+p_{\rm ff})$, weakly depends on the position
+    on the line $\kappa = 1$. By solving $\argmin_{ p_{\rm rc}, p_{\rm ff} \in
+    \kappa=1} M^2(p_{\rm rc} + p_{\rm ff})$ we find that the minimum number of
+    new connections required for a replay is obtained for $p_{\rm rc}= 0$
+    because lines for which $p_{\rm rc} + p_{\rm ff} = \rm const$ have slope of
+    $-1$ in Figure~\ref{fig3}, and the slope of the line defined by
+    $\kappa=1$ is more negative. For example, when $p_{\rm rc}=0.0$,
+    we need 40 new synapses; for $p_{\rm rc}=0.05$, we need 50 new synapses;
+    and for $p_{\rm rc}=0.2$, 111 synapses are required for a new association.
+    However, as feedforward connections might be created/facilitated on demand
+    in one-shot learning, it is advantageous to keep their number low at the
+    cost of higher recurrent connectivity, which has more time to develop {\em
+    prior} to the learning. We extend this arguments further in the Discussion.
+
+    In summary, the recurrent connections within an assembly play a crucial
+    role in integrating and amplifying the input to the assembly. This
+    facilitation of replay is predominantly due to the excitatory-to-excitatory
+    (E-E) recurrent connections, and not due to the excitatory-to-inhibitory
+    (E-I) connections, a connectivity also known as ``shadow pools''
+    \citep{Aviel2004}. We tested that embedding shadow pools and omitting the
+    E-E connectivity within assemblies has no beneficial effect on the quality
+    of replay.
+
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  \subsection{Recurrent connections are important for pattern completion}
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    Neural systems have to deal with obscure or incomplete sensory cues.  A
+    widely adopted solution is pattern completion, that is, reconstruction of
+    patterns from partial input. We examine how the network activity evolves
+    in time for a partial or asynchronous activation of the first assembly.
+
+    To determine the capability of our network to complete patterns, we
+    quantify the replay when only a fraction of the first group
+    is stimulated by external input. If 60 \% of the neurons in the first
+    group (strong cue) are synchronously activated (Figure~\ref{fig4}A, left
+    panel), the quality of replay is virtually the same as in the case of full
+    stimulation (100\% activated) in Figure~\nolinebreak\ref{fig3}.
+    However, when only 20 \% of the neurons (weak cue) are simultaneously
+    activated (Figure~\ref{fig4}A, middle panel), we see a deterioration of
+    replay mostly for low recurrent connectivities. The effect of the
+    recurrent connections is illustrated in the right-most panel in
+    Figure~\ref{fig4}A where quality of replay is shown as a function of
+    $p_{\rm rc}$ while the feedforward connectivity was kept constant ($p_{\rm
+    ff}=0.05$).
+
+    \begin{figure}[!h]
+      \includegraphics[width=32pc]{figs/Fig4.eps}
+      \caption{{\bf Pattern completion.}
+        \textbf{A:} Quality of replay after partial activation of the first
+        group for cue size $60\%$ (left panel) and $20\%$ (middle) as a
+        function of feedforward and recurrent connectivity.  The right-most
+        panel shows the quality replay after a cue activation (20\% and 60\%)
+        as a function of the recurrent connectivity ($p_{\rm rc}$) while the
+        feedforward connectivity is constant ($p_{\rm ff} = 0.05$).
+        \textbf{B:} Examples of network activity during 60\% (left) and 20\%
+        (right) cue activation.  The top and bottom raster plots correspond to
+        assembly sequences with higher ($p_{\rm rc} = 0.10$, top) and lower
+        ($p_{\rm rc} = 0.06$, bottom) recurrent connectivity, highlighted in A
+        with white and black rectangles, respectively.
+        \textbf{C:} State-space portraits representing the pulse-packet
+        propagation.  The activity in each group is quantified by the fraction
+        of firing excitatory neurons ($\alpha$) and the standard deviation of
+        their spike times ($\sigma$).  The initial stimulations are denoted
+        with small black dots while the colored dots denote the response of the
+        first group to the stimulations; red dot if the whole sequence is
+        activated, and blue otherwise.  Stimulations in the region with white
+        background result in replays, while stimulating in the gray region
+        results in no replay.  The black arrows illustrate the evolution of
+        pulse packets during the replays in B.  Top: $p_{\rm rc} = 0.10$;
+        bottom: $p_{\rm rc} = 0.06$.
+          }
+      \label{fig4}
+    \end{figure}
+    
+    Small input cues lead to a weak activation of the corresponding assembly.
+    In the case of stronger connectivity (e.g., $p_{\rm rc}$) this weak
+    activity can build up and result in a replay as shown in the example from
+    Figure~\ref{fig4}B. The top and bottom rows of raster plots correspond to two
+    assembly sequences with different recurrent connectivities, as highlighted
+    by the rectangles in Figure~\nolinebreak\ref{fig4}A, while left and right
+    columns show the activity during strong and weak cues, respectively. In the
+    case of $p_{\rm ff}=0.05$ and $p_{\rm rc}=0.10$ (Figure~\ref{fig4}B,
+    top-right), the weak cue triggers a wide pulse packet with large temporal
+    jitter in the first groups, which gradually shapes into a synchronous pulse
+    packet as it propagates through the network. On the other hand, for a
+    smaller recurrent connectivity ($p_{\rm rc}=0.06$), the 20\% partial
+    activation triggers a rather weak response that does not result in replay
+    (Figure~\ref{fig4}B, bottom-right).
+    
+    The quality of replay depends not only on the number of neurons that are
+    activated but also on the temporal dispersion of the pulse packet. Here,
+    we adopt a quantification method that represents the activity evolution in
+    a state-space portrait \citep{Diesmann1999}.  Figure~\ref{fig4}C shows the
+    time course of the fraction $\alpha$ of cells that participate in the pulse
+    packet and the temporal dispersion $\sigma$ of the packet as the pulse
+    propagates through the network.  The state-space representation of two
+    assembly sequences with equal feedforward ($p_{\rm ff}=0.05$) but different
+    recurrent connectivity are shown in Figure~\ref{fig4}C (top: $p_{\rm
+    rc}=0.10$, bottom: $p_{\rm rc}=0.06$).  For each assembly sequence we
+    repeatedly stimulated the first group with varying cue size $\alpha$ and
+    time dispersion $\sigma$, depicted by the black dots.  Depending on the
+    strength and dispersion of the initial stimulation, the dynamics of a
+    network can enter one of two attractor points. For high $\alpha$ and low
+    $\sigma$ the pulse packet propagates, entering the so-called synfire
+    attractor (white background).  On the other hand, for low $\alpha$ and high
+    $\sigma$ the pulse packet dies out resulting in low asynchronous firing
+    (gray background).  The black-arrow traces in Figure~\ref{fig4}C are
+    example trajectories that describe the propagating pulse packets from
+    Figure~\ref{fig4}B in the ($\alpha-\sigma$) space.
+
+    To summarize, increasing both the recurrent and feedforward connectivity
+    facilitates the replay triggered by weak and dispersed inputs. Recurrent
+    connectivity is particularly important for pattern completion.
+    %Naturally, the effects of changing the feedforward connections are even stronger.
+    %However, for artificially high connectivities, the separatrix approaches
+    %very low values of $\alpha$, so that even small noise fluctuations drive
+    %the network into the synfire attractor, resulting in spontaneous replays.
+
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  \subsection{Spontaneous replay}
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    An interesting feature of assembly sequences is the potential emergence of
+    spontaneous activations, that is, a replay when no specific input is given
+    to the network.  Random fluctuations in the network can be amplified by
+    the feedforward structure and give rise to a spontaneous wave of
+    propagation.
+
+    We find that spontaneous and evoked replay share various features such as
+    sequential group activation on the background of AI network activity
+    (Figure~\ref{fig5}A, rasters a and b). As in the case of evoked replay, for
+    exceedingly large connectivities the network dynamics can be dominated by
+    epileptiform bursting activity (Figure~\ref{fig5}A, rasters c and d).
+
+    \begin{figure}[!h]
+      \includegraphics[width=32pc]{figs/Fig5_con.pdf}
+      \caption{{\bf Spontaneous network activity.}
+        \textbf{A:} The rate of spontaneous sequence activation is measured in
+        the unperturbed network.  The black curve is the analytical result for
+        the lower bound of successful propagation from Figure~\ref{fig3}.  Examples
+        of spontaneous replays for different connectivities are shown in the
+        raster plots \textbf{a-d}.
+        Synchrony~(\textbf{B}), coefficient of variation~(\textbf{C}), and firing
+        rate~(\textbf{D}) are averaged over the neurons in the last group of the
+        sequence.
+        \textbf{E:} Spontaneous events modulated by an external input.  For low
+        enough connectivities no spontaneous events occur (left). A small
+        additional constant current input to the whole excitatory population
+        ($I^e=1\,\rm pA$) generates spontaneous replays (right).
+        \textbf{F:} A densely connected network shows replays (left). Once the
+        inhibitory population receives an additional constant current input
+        ($I^i=3\,\rm pA$), the firing rate decreases and no spontaneous events
+        occur (right).
+      }
+      \label{fig5}
+    \end{figure}
+
+    To assess spontaneous replay, we quantify the number of replay events per
+    time taking into account their quality, i.e., huge bursts of propagating
+    activity are disregarded as replay. The rate of spontaneous activation
+    increases as a function of both the feedforward ($p_{\rm ff}$) and the
+    recurrent ($p_{\rm rc}$) connectivity (Figure~\ref{fig5}A). For large
+    connectivities ($p_{\rm ff}$, $p_{\rm rc}> 0.20$) the quality of the
+    spontaneous events is again poor and mostly dominated by strong bursts
+    (Figure~\ref{fig5}A, raster~c). The dynamics of networks with large
+    feedforward and low recurrent connections is dominated by long-lasting
+    bursts of activity consisting of multiple sequence replays within each
+    burst (Figure~\ref{fig5}A, raster~d). The maximum rate of activations does not
+    exceed 4 events per second because the inhibitory synaptic plasticity
+    adjusts the inhibition such that the excitatory firing rate is close to $5
+    \, \rm spikes/sec$.
+
+    %% starting positions
+    The starting position of spontaneous replays largely depends on the network
+    connectivity. Sequences with low $p_{\rm rc}$ are seldom initiated in the
+    first group(s), while for high $p_{\rm rc}$ spontaneous replays occur
+    predominantly at the beginning of the embedded sequence. Spontaneous
+    replays for sequences with low $p_{\rm rc}$ arise from noise fluctuations
+    that are amplified mainly by the underlying feedforward connections.
+    Fluctuations propagate through a few groups until they result in a
+    full-blown replay. On the other hand, to explain the preference of starting
+    position at the beginning of the sequence for high $p_{\rm rc}$, we refer
+    to the case of disconnected Hebbian assemblies (Figure~\ref{fig3}A, panel c)
+    that get activated by the noise fluctuations. In case of weak feedforward
+    connectivity (e.g., $p_{\rm ff} < 0.02$), these fluctuations do not always
+    activate the following assemblies due to insufficient feedforward drive. On
+    the other hand, for $p_{\rm ff} > 0.03$ even a weak activation of an
+    assembly will lead to a replay of the rest of the sequence. If replays were
+    to start at random locations in the sequence, neurons in the later section
+    of the sequence would participate in more replays than those earlier in the
+    sequence, increasing the firing rate in these neurons. The inhibitory
+    plasticity, which homeostatically regulates the rate, will hence increase
+    the amount of inhibition in these later assemblies, with the effect of
+    reducing the background activity. Because this in turn suppresses the
+    fluctuations that trigger replays, spontaneous replays are less likely to
+    be initiated in later assemblies.
+
+    %%%%%%% Synchrony
+    To better characterize spontaneous dynamics, we refer to more extensive
+    measures of the network dynamics. First, to account for deviations from the
+    AI network state, we measure the synchrony of firing among neurons within
+    the assemblies. To this end, we calculate the average pairwise correlation
+    coefficient of spike trains of neurons within the same group. A low
+    synchrony (value $\sim 0$) means that neurons are uncorrelated, while a
+    high synchrony (value $\sim 1$) reveals that neurons fire preferentially
+    together and seldom (or not at all) outside of an assembly activation.
+    Because the synchrony builds up while activity propagates from one group to
+    the next, a synchronization is most pronounced in the latter groups of the
+    sequence. Therefore, we use correlations within the last group of the
+    sequence as a measure of network synchrony (Figure~\ref{fig5}B). The average
+    synchrony is low ($\sim 0$) for low connectivities ($p_{\rm ff},p_{\rm rc}
+    < 0.10$) and increases as a function of both $p_{\rm ff}$ and $p_{\rm rc}$.
+    In the case of high $p_{\rm rc}$, neurons participating in one assembly
+    excite each other, and hence tend to fire together. On the other hand, for
+    high $p_{\rm ff}$, neurons within an assembly receive very similar input
+    from the preceding group, so they fire together. This attachment of single
+    neurons to group activity has two major consequences: first, it alters the
+    AI state of the network, and second, it alters the stochastic behavior of
+    the neurons, leading to more deterministic firing and bursting.
+
+    %%%%%%% Bursting
+    The network exhibits frequent epileptiform bursting in the case of high
+    feedforward and low recurrent connectivities (raster plot examples in
+    Figure~\ref{fig3}, panel d, and Figure~\ref{fig5}A, panel d). To assess this
+    tendency of neurons to fire in bursts, we calculate the coefficient of
+    variation (CV) for individual neurons' spike trains. The average CV of
+    neurons in the last group of the sequence exhibits Poisson-like irregular
+    firing (CV value~$\sim~1$) for a large range of parameters
+    (Figure~\ref{fig5}C). However, for high $p_{\rm ff}$ ($\ge 0.10$) and low
+    $p_{\rm rc}$ ($\le 0.10$), the CV value exceeds 1, in line with irregular
+    and bursting firing. In this parameter region, small fluctuations of
+    activity in the first groups of the sequence are strongly amplified by the
+    underlying feedforward connectivity, leading to ever increasing activity in
+    the following groups (Figure~\ref{fig5}A, panel d). Because of the variable
+    shapes and sizes of these bursts, they are not always classified as
+    spontaneous activations in Figure~\ref{fig5}A. Highly bursty firing (CV $>3$)
+    and high synchrony ($\sim~1$) suggest that the network cannot be properly
+    balanced.
+
+    %%%%%%% FR
+    To test whether the inhibitory plasticity can balance the network activity
+    when assembly sequences are embedded, we measure the average firing rate in
+    the last group of the sequence (Figure~\ref{fig5}D). The firing rate deviates
+    from the target rate of $5 \, \rm spikes/sec$ mostly for high feedforward
+    connectivity ($p_{\rm ff} \gtrsim~0.15$). This inability of inhibition to
+    keep the firing rate at the target value can be explained by the frequent
+    replays that shape a stronger inhibitory input during the balancing of the
+    network. Once the inhibition gets too strong, neurons can fire only when
+    they receive excessive amount of excitation. Thus, in the case of high
+    clustering, e.g., strong assembly connectivity, the inhibitory plasticity
+    prevents the neurons from reaching high firing rates, but is unable to
+    sustain an AI state of the network.
+
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  \subsection{Control of spontaneous and cued replay by external input}
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    Further, we investigate how spontaneous and cued replay are related. The
+    black line in Figure~\ref{fig5}A refers to the analytical approximation for
+    connectivities that enable evoked replay. Compared to the connectivity
+    region of successfully evoked replays in Figure~\ref{fig3}, the region for
+    spontaneous replays in Figure~\ref{fig5} is slightly shifted to the top and to
+    the right. Therefore, in only a narrow area of the parameter space,
+    sequences can be replayed by external input but do not get spontaneously
+    activated. This finding suggests that to embed a sequence with high
+    signal-to-noise ratio of propagation, the connectivities should be chosen
+    appropriately, in line with previous reports \citep{Kumar2010}. In what
+    follows we show that the size of this region can be controlled by external
+    input to the network.
+
+    We demonstrate how a small amount of global input current to all excitatory
+    or all inhibitory neurons can modulate the network and shift it between AI
+    and spontaneous-replay regimes (Figure~\ref{fig5}E~and~F). In the first
+    example, the connectivities are relatively low ($p_{\rm ff}=p_{\rm rc} =
+    0.06$) such that replay can be evoked (Figure~\ref{fig3}) but no spontaneous
+    activations are present (Figure~\ref{fig5}A and Figure~\ref{fig5}E,~left). After
+    injecting a small additional current of only $1 \, \rm pA$ into the whole
+    excitatory population, the network becomes more excitable, i.e., the firing
+    rate rises from 5 to $12 \, \rm spikes/sec$ and spontaneous replays do
+    arise (Figure~\ref{fig5}E,~right).
+
+    On the other hand, in a network with high connectivities ($p_{\rm
+    ff}=p_{\rm rc} = 0.12$), replay can be reliably evoked
+    (Figures~\ref{fig3}~and~\ref{fig4}A) and also occurs spontaneously
+    (Figure~\ref{fig5}A). An additional input current of $3 \, \rm pA$ to the
+    inhibitory population decreases the firing rate of the excitatory
+    population from 5 to $0.33 \, \rm spikes/sec$ and shifts the network from a
+    regime showing frequent spontaneous replays to a no-replay, AI regime
+    (Figure~\ref{fig5}F, left and right, respectively). Nevertheless, replays can
+    still be evoked as in Figure~\ref{fig3}. Hence, the spontaneous-replay regime
+    and the average firing rate in the AI state can be controlled by global or
+    unspecific external current.
+
+    %summary fig 5.
+    In summary, the balanced AI network state and successfully evoked replay of
+    assembly sequences can coexist for a range of connectivities.  For higher
+    connectivities, the underlying network structure amplifies random
+    fluctuations, leading to spontaneous propagations of activity between
+    assemblies.  A dynamical control of the rate of spontaneous events is
+    possible through external input, which modulates the network activity and
+    excitability.  In the brain, such a switching between regimes could be
+    achieved via neuromodulators, in particular via the cholinergic or
+    adrenergic systems \citep{Hasselmo1995, Thomas2015}.
+
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  \subsection{Smaller assemblies require higher connectivity}
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    So far, we have shown basic properties of sequences at fixed assembly size
+    $M=500$. To determine the role of this group size in replay, we vary $M$
+    and the connectivity while keeping the size of the network fixed. As we
+    have already explored how recurrent and feedforward connections determine
+    replay individually, we now consider the case where they are equal, i.e.,
+    $p_{\rm ff}= p_{\rm rc}=p$.
+
+    Assembly sequences can be successfully replayed after stimulation for
+    various assembly sizes (Figure~\ref{fig6}A). Smaller assemblies require denser
+    connectivity (e.g., $p = 0.25$ for $M=100$), while larger assemblies allow
+    sparser connectivity (e.g., $p=0.05$ for $M=500$). Moreover, assemblies as
+    small as 20 neurons are sufficient to organize a sequence given the
+    condition of all-to-all connectivity within and between assemblies. The
+    analytically derived critical value of effective connectivity $\kappa=1$ is
+    in agreement with the numerical simulations (black line in
+    Figure~\ref{fig6}A).
+
+    \begin{figure}[!h]
+      \includegraphics[width=32pc]{figs/Fig6.eps}
+      \caption{{\bf Assembly-sequence activation for various group sizes and
+        connectivities.}
+        \textbf{A:} Simulation results for the quality of replay.
+        \textbf{B:} Rate of spontaneous replay.
+        \textbf{C:} Synchrony.
+        \textbf{D:} Coefficient of variation 
+        \textbf{E:} Firing rate. $\rho_0=5 \,\rm spikes/sec$ is the target firing
+        rate. In C, D, and E quantities are averaged over the neurons in the last
+        group of the sequence. The black line is an analytical estimate for the
+        evoked replay as in Figures~\ref{fig3}~and~\ref{fig5}.
+      }
+      \label{fig6}
+    \end{figure}
+    
+    To further characterize the network dynamics for varying group size, we
+    measure the rate of spontaneous activations of assembly sequences in
+    undisturbed networks driven solely by constant input. As indicated in
+    Figure~\ref{fig6}B, spontaneous replays occur for a limited set of parameters
+    resembling a banana-shaped region in the ($M$, $p$) plane. The parameter
+    region for spontaneous replays partly overlaps with that of evoked replay.
+    Again, there is a narrow range of parameters to the right of the black line
+    in Figure~\ref{fig6}B for which sequences can be evoked by external input
+    while not being replayed spontaneously. As shown above, the size of this
+    region can be controlled by external input to the whole network
+    (Figure~\ref{fig5}E, F).
+
+    To further assess the spontaneous dynamics, we measure the firing synchrony
+    of neurons within the last group. The synchrony grows as function of both
+    connectivity and group size (Figure~\ref{fig6}C). The fact that the synchrony
+    approaches the value one for higher connectivity and group size indicates
+    that the network dynamics gets dominated by spontaneous reactivations. The
+    simulation results reveal that neurons always fire rather irregular with
+    coefficient of variation (CV) between 0.7 and 1.4 (Figure~\ref{fig6}D).
+    Because the recurrent and the feedforward connectivities are equal ($p_{\rm
+    ff} = p_{\rm rc} = p$), the inhibition is always strong enough and does not
+    allow epileptiform bursting activity. This behavior is reflected in a
+    rather low maximal value of the (CV$<$1.4) compared to the results from
+    Figure~\ref{fig5}, where the CV could exceed values of $4$ for low $p_{\rm
+    rc}$. The measured firing rates in the last assembly are at the target
+    firing rate of $\rho_0=5 \, \rm spikes/sec$ for parameter values around and
+    below the critical value $\kappa=1$ (Figure~\ref{fig6}E). However, for
+    increasing connectivity $p$ and increasing group size $M$, the firing rate
+    deviates from the target, indicating that the inhibitory plasticity cannot
+    keep the network fully balanced.
+
+    To conclude, the assembly size $M$ plays an important role in the network
+    activity. The critical values of connectivity and group size for
+    successful propagation are inversely proportional. Thus, the analytics
+    predicts that larger assemblies of several thousands neurons require only a
+    fraction of a percent connectivity in order to propagate synchronous
+    activity. However, for this to happen, the group size $M$ must be much
+    smaller than the network size $N^E$. Here $N^E$ was fixed to 20,000
+    neurons for easier comparison of scenarios, but results are also valid for
+    larger networks (see Materials and Methods). The good agreement between
+    the mean-field theory and the numerical results suggests that the crucial
+    parameter for assembly-sequence replay is the total input one neuron is
+    receiving, e.g., the number of input synapses.
+
+  \subsection{Stronger synapses are equivalent to more connections}
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    Up to this point, all excitatory synaptic connections in our model had
+    constant and equal strengths.  By encoding an assembly sequence we
+    implicitly altered the structural connectivity by creating new synaptic
+    connections.  This case of structural plasticity can also occur when silent
+    synapses are turned into functionally active connections upon learning
+    \citep{Atwood1999, Hanse2013}.  However, learning new associations might
+    also be possible through a change of synaptic strength of individual
+    connections \citep{Bliss1973, Malenka2004}.  If a sequence is to be learned
+    through synaptic plasticity, then instead of increasing the connectivity
+    between groups of neurons, the synaptic conductances could be increased as
+    well.  To test whether these two types of plasticity are equivalent in our
+    approach, we embed assembly sequences with various feedforward
+    connectivities $p_{\rm ff}$ and various feedforward conductances
+    $g^{E}_{\rm ff}$, while keeping the recurrent connectivity ($p_{\rm
+    rc}=0.06$) and recurrent conductances ($g^E=0.1 \, \rm nS$) constant.
+
+    Numerical results show that feedforward connectivity and feedforward
+    conductance have identical roles in the replay of a sequence.  That is, the
+    sparser the connections, the stronger synapses are required for the
+    propagation of activity.  The analytical estimate (Figure~\ref{fig7}A,
+    black line corresponds to $\kappa \sim p_{\rm ff} \, g^{E}_{\rm ff} = {\rm
+    const.}$) predicts that the product of $p_{\rm ff}$ and $g^{E}_{\rm ff}$ is
+    the essential parameter for replay.
+
+    \begin{figure}[!h]
+      \includegraphics[width=32pc]{figs/Fig7.eps}
+      \caption{{\bf Feedforward conductance versus feedforward connectivity.}
+        \textbf{A:} Quality of replay as a function of connectivity and synaptic
+        strength.
+        \textbf{B:} The replay as a function of connectivity and total
+        feedforward conductance input shows that the propagation is independent
+        of connectivity as long as the total feed-forward input is kept constant.
+        \textbf{C:} Spontaneous network dynamics described by the rate of
+        spontaneous replay, synchrony, CV, and firing rate.}
+      \label{fig7}
+    \end{figure}
+    
+    That this analytical prediction is fulfilled in the numerical simulations
+    becomes clearer when we show the replay quality as a function of the
+    feedforward connectivity and the total feedforward input $p_{\rm ff}\,
+    g^{E}_{\rm ff} / {g^E}$ a neuron is receiving (Figure~\ref{fig7}B). It is
+    irrelevant whether the number of connections are changed or their strength,
+    what matters is their product. This rule breaks only for sparse
+    connectivities ($p_{\rm ff}<0.01$), i.e. when the mean number of
+    feedforward connections between two groups is low ($<5$). Therefore, the
+    number of relevant connections cannot be reduced to very low numbers.
+
+    Consistent with earlier findings, the quality of replay is high above a
+    certain strength of the total feedforward conductance ($\gtrsim 0.05$ in
+    Figure~\ref{fig5}B) and for $p_{\rm ff} \ge 0.01$. However, for sufficiently large
+    feedforward input ($p_{\rm ff}\, g^{E}_{\rm ff} / {g^E} >0.12$), the replay
+    of sequences is severely impaired as the network is in a state of highly
+    synchronous bursting activity (Figure~\ref{fig7}B), which is similar to the
+    results shown in Figures~\ref{fig5}~and~\ref{fig6}.
+
+    We also examined sequences that are formed by increasing existing
+    background connections between the assemblies by a factor $p_{\rm
+    ff}/p_{\rm rand}$, rather than by adding additional connections. Replays
+    are possible also in this condition and they are indistinguishable from
+    networks with increased feedforward connectivities.
+
+    The rule that the total input $p_{\rm ff}\,g^{E}_{\rm ff}$ determines the
+    network behavior also holds for spontaneous activity. Spontaneous replay
+    rate, CV, synchrony, and firing rate all vary as a function of the total
+    input (Figure~\ref{fig7}C), and only weakly as a function of the connectivity
+    or the conductance alone. Similar to the previous results in
+    Figures~\ref{fig5}~and~\ref{fig6}, for $0.05 \le  p_{\rm ff}\, g^{E}_{\rm ff}
+    /  {g^E} < 0.10 $ it is possible to evoke a replay while preserving the AI
+    state of the network. Increasing the total input beyond this value drives
+    the network into a state of spontaneous replay with increased synchrony.
+  
+  \subsection{Forward and reverse replay in assembly sequences with symmetric connections}
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    The assembly-sequence model discussed until now contains asymmetric
+    connections, i.e., neurons from one group project extensively within the
+    same and the subsequent group but not to the previous group. We showed that
+    such feedforward assembly sequences are capable of propagating activity,
+    which we call replay. Thus, the proposed model may give an insight on the
+    replay of behavioral sequences that have been observed in the hippocampus
+    \citep{Lee2002}. However, further experiments revealed that sequences are
+    also replayed in the inverse temporal order than during behavior, so-called
+    reverse replay \citep{Foster2006, Diba2007}. The direction of this replay
+    also depended on the context, i.e., when the animal was at the beginning of
+    the path, forward replays prevailed; while after traversing the path, more
+    reverse replays were detected (but see \cite{Karlsson2009}). This suggests
+    that the replay activity might be cued by the sensory input experienced at
+    the current location of the animal.
+
+    As the feedforward structure adopted in the network model is largely
+    asymmetric, the assembly sequence is incapable of reverse replay in its
+    current form. To be able to activate a sequence in both directions, we
+    modify the network and add symmetric connectivity between assemblies
+    \citep{Litwin2014, Sadeh2015}. The symmetric STDP window that has been
+    reported recently in the hippocampal CA3 area \textit{in vivo}
+    \citep{Mishra2016} would allow for strong bidirectional connections. In such
+    a model, an assembly of neurons does not project only to the subsequent
+    assembly but also to the preceding, and both projections are random with
+    probability $p_{\rm ff}$ (Figure~\ref{fig8}A). While this connectivity pattern
+    decreases the group clustering and makes the sequence more continuous, it
+    does not lead to full merge of the assemblies because the inhibition
+    remains local for each group.
+
+    \begin{figure}[!h]
+      \includegraphics[width=32pc]{figs/Fig8.eps}
+      \caption{{\bf Symmetric assembly sequence.}
+        \textbf{A:} Schematic of an assembly sequence with symmetric connections
+        between groups.
+        \textbf{B:} Virtual rat position on a linear track (top) and the
+        corresponding neuronal activity (bottom) as a function of time for 2
+        seconds. The rat rests at position ``b'' for half a second, then moves
+        from ``b'' to ``e'' with constant speed for one second, where it rests
+        for another $500 \, \rm ms$. While the rat is immobile at both ends of
+        the track, a positive current input $I^e=2 \,\rm pA$ is applied to the
+        excitatory population of the first and last assembly as shown by the
+        red background in the raster plot. Spontaneous replays start from the
+        cued assemblies. During exploration, however, the network activity is
+        decreased by a current $I^e=-10 \,\rm pA$ injected to the whole
+        excitatory population, denoted with a blue horizontal bar. Strong
+        sensory input during traversal activates the location-specific
+        assemblies but does not result in any replay. The timing and location
+        of the stimulations is denoted with red vertical bars in the raster
+        plot.  Recurrent and feedforward connectivities are $p_{\rm rc}=0.15$
+        and $p_{\rm  ff}=0.03$, respectively.
+      }
+    \label{fig8}
+    \end{figure}
+
+    Interpreting this network as a model for hippocampal activity during spatial
+    navigation of a virtual rat on a linear track (Figure~\ref{fig8}B,
+    top), we test the idea that external input can switch the network between a
+    spontaneous-replay state during rest and a non-replay, spatial-representation
+    state during locomotion. During immobility at the beginning of the track, a
+    context-dependent input cue is mimicked by a constant current $I^e=2 \, \rm
+    pA$ injected into the excitatory neurons of the first assembly
+    (Figure~\ref{fig8}B, red bar from 0 to $500 \, \rm ms$). The elevated
+    firing rate of the first assembly results in a spontaneous forward replay,
+    similar to the experimental findings during resting states at the beginning
+    of a linear track \citep{Foster2006, Diba2007}.
+
+    After the initial $500 \, \rm ms$ resting period, an external global
+    current of $-10 \, \rm pA$ is injected into the whole excitatory population
+    to decrease network excitability and to mimic a state in which the rat
+    explores the environment.  In addition, to model place-specific sensory
+    input that is locked to theta oscillations, we apply a strong and brief
+    conductance input (as in Figure~\ref{fig2}) every $100 \, \rm ms$ to the
+    assembly that represents the current location. In this situation, the
+    assemblies fire at their corresponding locations only. There is, however, a
+    weak activation of the neighboring assemblies that does not result in a
+    replay. An extension of the model including lateral inhibition and
+    short-term plasticity would possibly enable theta sequences that span in
+    one direction only \citep{Romani2015}. Such an extension is, however, beyond
+    the scope of the current manuscript.
+%RK 15.05.15 Here is an idea that we could simulate and test in the near future (but not for this manuscript before resubmission): We could try to simulate ``theta sequences'' during exploration, i.e., short replays of sequences. This scenario could be achived possibly by a constant-current injection to the place-specific group (as in the first and last 500 ms of the simulation) and an oscillating (theta) inhibitory current to the whole population. An open question then would be to explain forward-only replay during exploration, which might require some further adaptation mechanism to prevent reverse replay. One candidate could be synaptic short-term depression of excitatory synapses. I think that there exists a Tsodyks paper on this topic (mainly on phase precession) already...  
+        
+    At the end of the track, we retract the global external current to return
+    to the virtual resting state for the last $500 \, \rm ms$ of the
+    simulation, and the network switches back to higher mean firing rates. A
+    context-dependent sensory cue to the last group ($I^e=2 \, \rm pA$ current
+    injected continuously) then leads to a spontaneous reverse replay, similar
+    to experimental findings at the end of a linear track \citep{Foster2006,
+    Diba2007}.
+
+    In the absence of a context-dependent current injection during virtual
+    resting state, spontaneous replays start at around the middle of the
+    sequence (as in Figure~\ref{fig5}) and propagate in forward or reverse
+    direction. As noise fluctuations are gradually amplified while propagating
+    between assemblies, it is rare to find a spontaneous event that is
+    simultaneously replayed in both directions. In our simulations
+    (Figure~\ref{fig8}), we assumed that the starting position of replay is cued
+    by the sensory input from the current location. However, it has been shown
+    that replays during theta sequences are rather segmented and represent the
+    environment in discrete ``chunks'' \citep{Gupta2012}. These segments are not
+    uniformly distributed but tend to cover the space between physical
+    landmarks, noteworthy positions in the environment. The finding of
+    \cite{Gupta2012} suggests that there might be other mechanisms
+    controlling the starting position of replay other than the sensory input.
+    Currently, it is an open question whether SWR replays represent the
+    environment also in a segmented manner from a landmark to a landmark.
+
+    In summary, we show that given symmetric connectivity between assemblies,
+    transient activity can propagate in both directions. Large negative external
+    currents injected into all excitatory neurons can decrease network
+    excitability and thus block the replay of sequences. On the other hand,
+    spontaneous replay can be cued by a small increase in the firing rate of a
+    particular assembly. Interestingly, once a replay is initiated, it does not
+    change direction, in spite of the symmetric connectivity. An active assembly
+    receives feedback inhibition from its inhibitory subpopulation, which
+    prevents immediate further activations and hence a reversal of the direction
+    of propagation.
+
+\section{Discussion} 
+  We revived Hebb's idea on assembly sequences (or ``phase sequences'') where
+  activity in a recurrent neural network propagates through assemblies
+  \citep{Hebb49}, a dynamics that could underlie the recall and consolidation of
+  memories. An important question in this context is how learning of a series
+  of events can achieve a strong enough synaptic footprint to replay this
+  sequence later.  Using both numerical simulations of recurrent spiking neural
+  networks and an analytical approach, we provided a biologically plausible
+  model for understanding how minute synaptic changes can nevertheless be
+  uncovered by small cues or even manifest themselves as activity patterns that
+  emerge spontaneously. We showed how the impact of small changes in the
+  connections between assemblies is boosted by recurrent connectivity within
+  assemblies.  This interaction between recurrent amplification within an
+  assembly and the feedforward propagation of activity establishes a possible
+  basis for the retrieval of memories. Our theory thus provides a unifying
+  framework that combines the fields of Hebbian assemblies and assembly
+  sequences \citep{Hebb49}, synfire chains \citep{Abeles1991, Diesmann1999}, and fast
+  amplification in balanced recurrent networks that are in an
+  asynchronous-irregular state \citep{Murphy2009, Vogels2011}.
+
+  Main conclusions from our work are that the effective coupling between
+  assemblies is a function of both feedforward and recurrent connectivities,
+  and that the network can express three main types of behavior: 1. When the
+  coupling is weak enough, assembly sequences are virtually indistinguishable
+  from the background random connections, and no replays take place. 2. For
+  sufficiently strong coupling, a transient input to some assembly propagates
+  through the sequence, resulting in a replay. 3. For even stronger coupling,
+  noise fluctuations get amplified by the underlying structure, resulting in
+  spontaneous replays. Each of these three regimes has a certain advantage in
+  performing a particular task. Weak coupling is appropriate for imprinting new
+  sequences if the network dynamics is driven by external inputs rather than
+  controlled by the intrinsically generated activity. Intermediate coupling is
+  suitable for recollection of saved memories; sequences remain concealed and
+  are replayed only by specific input cues; otherwise, the network is in the
+  asynchronous-irregular, spontaneous state. For strong coupling, spontaneous
+  replays might be useful for offline recollection of stored sequences when
+  there are no external input cues. Importantly, the network behaviour and the
+  rate of spontaneous events depends not only on the coupling but can be
+  controlled by modulating the network excitability through external input.
+  Neuromodulator systems, for example the cholinergic and the adrenergic
+  systems \citep{Hasselmo1995, Thomas2015} might therefore mediate the retrieval
+  process.
+
+  \subsection{Related models}
+    Assembly sequences are tightly related to synfire chains, which were
+    proposed \citep{Abeles1991} as a model for the propagation of synchronous
+    activity between groups of neurons. \cite{Diesmann1999}
+    showed for the first time that synfire chains in a noisy network of spiking
+    neurons can indeed support a temporal code. It has been shown, however,
+    that the embedding of synfire chains in recurrent networks is fragile
+    \citep{Aviel2003, Mehring2003}, because on the one hand, synfire chains
+    require a minimal connectivity to allow propagation, while on the other
+    hand, a dense connectivity between groups of neurons can generate unstable
+    network dynamics. Therefore, \cite{Aviel2004} introduced
+    ``shadow pools'' of inhibitory neurons that stabilize the network dynamics
+    for high connectivity. The network fragility can also be mitigated by
+    reducing the required feedforward connectivity: inputs from the previous
+    assembly are boosted by recurrent connections within the assembly. This
+    approach was followed by \cite{Kumar2008}, who examined
+    synfire chains embedded in random networks with local connectivity, thus,
+    implicitly adopting some recurrent connectivity within assemblies as
+    proposed by the assembly-sequence hypothesis; nevertheless, their
+    assemblies were fully connected in a feedforward manner. Recently, it was
+    shown that replay of synfire chains can be facilitated by adding feedback
+    connections to preceding groups \citep{Moldakarimov2015}. However, this
+    Hebbian amplification significantly increased the duration of the spike
+    volleys and thus decreased the speed of replay. Our model circumvents this
+    slowing effect by combining the recurrent excitation with local feedback
+    inhibition, effectively replacing Hebbian amplification by a transient
+    ``balanced amplification'' \citep{Murphy2009}. 
+
+    Other analytical studies have used the Fokker-Planck approach to describe
+    the propagation of pulse packets in synfire chains \citep{Cateau2001,
+    Gerstner2002}. In particular, \cite{Monasson2014} have
+    used diffusion analysis to explore the interplay between different
+    environments encoded in the network and their effects on the activity
+    propagation during replay. To store sequences, further classes of models
+    were proposed, e.g., ``winner-takes-all'' \citep{Klampfl2013, Kappel2014,
+    Mostafa2014} and ``communication through resonance'' \citep{Hahn2014}.
+    However, the activity propagation in these models has an order of magnitude
+    slower time scales than the synfire chain or the assembly sequence, and
+    thus, are not suitable for rapid transient replays.
+
+    The spontaneous replay in our network bears some resemblance with the
+    population bursts that occur in a model with supralinear amplification of
+    precisely synchronised inputs \citep{Memmesheimer2010, Jahnke2015}. Adding
+    such nonlinearities to the conductances in our model might decrease even
+    further the connectivity required for the assembly-sequence replay. Another
+    model class, which relies on lognormal conductance distributions, has been
+    proposed as a burst generator for sharp-wave ripples (SWRs)
+    \citep{Omura2015}. The model accounts for spontaneously generated
+    stereotypical activity that propagates through neurons that are connected
+    with strong synapses.
+
+    Other computational models have focused more on different aspects of the
+    SWR events. \cite{Taxidis2012}, for example, have proposed a
+    hippocampal model where a CA3 network rhythmically generates bursts of
+    activity, which propagate to a predominantly inhibitory CA1 network that
+    generates fast ripple oscillations. The ripple generation by inhibitory
+    networks is studied in a greater detail in
+    \cite{Malerba2016}. \cite{Azizi2013} have explored the
+    properties of a network that stores the topology of several environments
+    and have shown that spike-frequency adaptation is an important mechanism
+    for the movement of the activity bump within and between environments. In
+    another modeling study, \cite{Romani2015} proposed that
+    short-term synaptic depression is a potential mechanism for explaining the
+    hippocampal activity both during mobility (theta-driven activity) and
+    during immobility (fast replays).
+
+    Another class of models that aims to explain the origin of SWR events
+    relies on the electrical coupling between axons of pyramidal cells in the
+    CA3/CA1 regions \citep{Draguhn1998, Schmitz2001, Traub2012}. In a numerical
+    model \citep{Vladimirov2013} it has been shown that the axonal plexus could
+    explain the occurrence of SWs, the fast ripple oscillation, and moreover,
+    account for the forward and reverse replay of sequences. Nevertheless,
+    anatomical data to show the existence of such connections is still scarce
+    \citep{Hamzei2007}.
+
+  \subsection{Relation between recurrent and feedforward connectivity} What is
+    the most efficient set of connectivities in terms of numbers of synapses
+    used? To create an assembly of $M$ neurons and to connect it to another
+    assembly of the same size, we need $M^2 (p_{\rm rc} + p_{\rm ff})$
+    excitatory-to-excitatory synapses. The constraint $\kappa =1$
+    (Equation~\ref{eq:kappa_def}) then leads to a minimum total number of synapses at
+    $p_{\rm rc} = 0$. This result is somewhat surprising because it suggests
+    that our proposed recurrent amplification provides a disadvantage.
+
+    However, another constraint might be even more important: to imprint an
+    association in one-shot learning, as for example required for episodic
+    memories, it might be an advantage to change as few synapses as possible so
+    that one can retrieve the memory later via a replay. Therefore, $p_{\rm
+    ff}$ should be low, in particular lower than the recurrent connectivity
+    that is bound by the morphological connectivity that includes also weak or
+    silent synapses. Minimizing $p_{\rm ff}$ under the constraint $\kappa =1$
+    implies, however, maximizing $p_{\rm rc}$. Such large connectivities might
+    require longer time to develop. A large $p_{\rm rc}$ is compatible with
+    one-shot learning only if assemblies (that are defined by increased $p_{\rm
+    rc}$ among a group of neurons) can be set up {\em prior} to the
+    (feedforward) association of assemblies. Thus, episodic memories could
+    benefit from strong preexisting assemblies. For setting up such assemblies,
+    long time periods might be available to create new synapses and to
+    morphologically grow synapses. Thus, we predict that for any episodic
+    memory to be stored in one-shot learning in hippocampal networks such as
+    CA3, a sufficiently strong representation of the events to be associated
+    does exist {\em prior} to successful one-shot learning. In this case,
+    $p_{\rm ff}$ (i.e., connectivity in addition to $p_{\rm rand}$) can be
+    almost arbitrarily low. A natural lower limit is that the number of
+    synapses per neuron $M p_{\rm ff}$ is much larger than 1, say 10 as a rough
+    estimate (in Figure~\ref{fig3} we have $M p_{\rm ff} \sim 30$ for a
+    rather low value of $p_{\rm rc}=p_{\rm ff}$, and 10 for $p_{\rm rc}=0.30$;
+    even 5 or more very strong synapses are sufficient in
+    Figure~\ref{fig7}). This can be interpreted in two ways: (1) Every
+    neuron should activate several neurons in the subsequent
+    assembly, and (2) every neuron in an assembly to be activated should
+    receive several synapses from neurons in the previous assembly.
+
+    For example in the modeled network, for $p_{\rm ff} = 0.02$ and $M p_{\rm
+    ff} > 10$ we obtain $M > 500$, which is in agreement with an estimated
+    optimal size of assemblies in the hippocampus \citep{Leibold2006}. The total
+    number of feedforward synapses required for imprinting an association is
+    then $M^2 p_{\rm ff} > 5,000$, which is a relatively small number compared
+    to the total number of background synapses $\left( N^E \right)^2 p_{\rm
+    rand}= 4 \cdot 10^6$ for $N^E=20,000$ and $p_{\rm rand}=0.01$. Scaling up
+    the network accordingly (see Materials and Methods) to the size of a rodent
+    CA3 network, i.e., $N^E = 240,000$ (a typical number for the rat
+    hippocampus, e.g., \citealp{West1991, Rapp1996}), the number of new associative
+    synapses is $M^2 p_{\rm ff} > 17,000$, while the total connections are more
+    than $0.5 \cdot 10^9$.
+
+    To conclude, abundant recurrent connections within assemblies can decrease
+    the feedforward connectivity required for a replay to almost arbitrary low
+    values. Moreover, the ratio of memory synapses to background synapses
+    decreases as the network is scaled to bigger size.
+
+  \subsection{Mechanisms for assembly-sequence formation}
+    For sequence replay, increasing the number of connections between groups
+    has the same effect as scaling up the individual connection strengths. We
+    conclude that structural and synaptic plasticity could play an equivalent
+    role in the formation of assembly sequences. In the current study we have
+    not considered plasticity mechanisms that could be mediating the formation
+    of assembly sequences. Previous attempts of implementing a
+    spike-timing-dependent plasticity (STDP) rule with an asymmetric temporal
+    window \citep{Bi1998, Gerstner1996, Kempter1999} in recurrent networks led to
+    structural instabilities \citep{Horn2000, Morrison2007, Lazar2009}. However,
+    it has been shown that under certain conditions the asymmetric STDP rule
+    could encode sequences of connections \citep{Jahnke2015}, and moreover,
+    maintain strong bidirectional synapses \citep{Bush2010}. More sophisticated
+    learning rules better matched the experimentally observed plasticity
+    protocols \citep{Pfister2006, Clopath2010, Graupner2012}, and these rules
+    combined with various homeostatic mechanisms could form Hebbian assemblies
+    that remained stable over long time periods \citep{Litwin2014,
+    Sadeh2015, Zenke2015}. Moreover, it has been shown that the triplet-based
+    STDP rules \citep{Pfister2006, Clopath2010} lead to strong bidirectional
+    connections \citep{Litwin2014, Sadeh2015}, a network motif that has
+    been reported in multiple brain regions \citep{Song2005, Ko2011,
+    Sadovsky2013, Cossell2015, Guzman2016}. Recent experimental work on the
+    plasticity of the CA3-to-CA3 pyramidal cell synapses has revealed a
+    symmetric STDP temporal curve \citep{Mishra2016}. Such a plasticity rule can
+    be responsible for the encoding of stable assembly representations in the
+    hippocampus.
+
+    Several plasticity rules have been successfully applied in learning
+    sequences \citep{Bush2010, Waddington2012, Brea2013, Kruskal2013,
+    Rezende2014, Scarpetta2015, Jahnke2015}. However, these studies focused
+    purely on sequence replay and did not take into account its interaction
+    with a balanced, asynchronous irregular background state.
+
+  \subsection{Relations to hippocampal replay of behavioral sequences}
+    The present model may explain the fast replay of sequences associated with
+    the sharp-wave ripple (SWR) events, which originate in the CA3 region of
+    the hippocampus predominantly during rest and sleep \citep{Buzsaki1989}.
+    SWRs are characterized by a massive neuronal depolarization reflected in
+    the local field potential \citep{Csicsvari2000}. Moreover, during SWRs,
+    pyramidal cells in the CA areas fire in sequences that reflect their firing
+    during prior awake experience \citep{Lee2002}. Cells can fire in the same or
+    in the reverse sequential order, which we refer to as forward and reverse
+    replay, respectively \citep{Foster2006, Diba2007}. Our model, however, can
+    not account for the slower replays that occur at near behaviour time scales
+    during REM sleep \citep{Louie2001}.
+
+    According to the two-stage model of memory trace formation
+    \citep{Buzsaki1989}, the hippocampus is encoding new episodic memories
+    during active wakefulness (stage one). Later, these memories are gradually
+    consolidated into neocortex through SWR-associated replays (stage two). It
+    has been proposed that acetylcholine (ACh) modulates the flow of
+    information between the hippocampus and the neocortex and thereby mediates
+    switches between these memory-formation stages \citep{Hasselmo1999}. During
+    active wakefulness, the concentration of ACh in hippocampus is high,
+    leading to partial suppression of excitatory glutamatergic transmission
+    \citep{Hasselmo1995} and promoting synaptic plasticity \citep{Halff2014}. In
+    this state, a single experience seems to be sufficient to encode
+    representations of the immediate future in an environment \citep{Feng2015}.
+    On the other hand, the level of ACh decreases significantly during
+    slow-wave sleep \citep{Marrosu1995}, releasing the synaptic suppression and
+    resulting in strong excitatory feedback synapses, which suggests that this
+    boost of recurrent and feedback connections leads to the occurrence of
+    SWRs. In line with this hypothesis, the present model shows that increasing
+    the synaptic strengths shifts the assembly-sequence dynamics from a
+    no-replay regime to a spontaneous-replay regime. Also, we demonstrated that
+    this regime supports both forward and reverse replay if assemblies are
+    projecting symmetrically to each other and if recurrent connectivity
+    exceeds severalfold the feedforward coupling.
+    
+    \cite{Dragoi2011, Dragoi2013} showed that sequences can
+    be replayed during SWRs also prior to the first exposure of the environment
+    in which these sequences are represented. This finding challenges the
+    standard framework according to which sequences are imprinted during
+    exploration of the environment, i.e., the two-stage memory model
+    \citep{Buzsaki1989}. An alternative model was presented by Sen Cheng
+    \citep{ChengS2013} proposing that the recurrent CA3 synaptic weights are
+    relatively constant during learning, and no plasticity in CA3 is required
+    during the formation of new memories. According to the CRISP model
+    \citep{ChengS2013}, the storage of sequences is an intrinsic property of the
+    CA3 network, and these sequences are formed offline prior to utilization
+    due to the maturation of newly generated granule cells in the dentate
+    gyrus. The model presented in this manuscript concerns the storage of
+    sequences in a recurrent network and is not in contradiction with the idea
+    of preexisting sequences.
+
+    Our model deploys a single uniform inhibitory population which is, likely,
+    an oversimplification of cortical and subcortical networks that are rich in
+    expressing various interneuron types \citep{Klausberger2008, Kullmann2011}.
+    However, the roles of the different inhibitory neurons during various brain
+    states, and in particular, during SWRs are not well known. Strong
+    candidates for interneurons that might be balancing the run-away excitation
+    during SWR replay are the basket cells due to their fast dynamics and
+    strong synapses. Moreover, they are one of the most active inhibitory
+    neurons during SWRs. OLM cells with their slower input on the distal
+    dendrites are good candidates for priming which assemblies/sequence might
+    be replayed prior to the event.
+
+    In summary, a prediction of our assembly-sequence model is that prior to
+    being able to store and recall a memory trace that connects events, strong
+    enough representations of events in recurrently connected assemblies are
+    necessary because recalling a minute memory trace requires amplification
+    within assemblies. Another prediction of this model is based on the fact
+    that the network is in an asynchronous-irregular state during the time
+    intervals between replays. Hence, by increasing the activity of the
+    excitatory neurons or by disinhibiting the network, e.g., by decreasing the
+    activity of the interneuron population specialized in keeping the balance,
+    one could increase the rate of spontaneous replays. Such disinhibition
+    might explain the counter-intuitive observation that SWRs can be evoked by
+    the activation of interneurons \citep{Ellender2010, Schlingloff2014}. Our
+    model thus links a diverse set of experimental results on the cellular,
+    behavioral, and systems level of neuroscience on memory retrieval and
+    consolidation \citep{Diekelmann2010}.
+
+  \enlargethispage{3ex}
+
+
+%\section*{Conclusion}
+%\section*{Supporting Information}
+
+\section{Materials and Methods}
+  The network simulations as well as the data analyses were performed in Python
+  (www.python.org). The neural network was implemented in Brian
+  \citep{Goodman2009}. For managing the simulation environment and data
+  processing, we used standard Python libraries such as NumPy, SciPy,
+  Matplotlib, and SymPy.
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  \subsection{Neuron model}
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    Neurons are described by a conductance-based leaky integrate-and-fire model,
+    where the subthreshold membrane potential $V_i(t)$ of cell $i$ obeys
+    \begin{equation}
+      C\frac{{\rm d}V_i}{{\rm d}t} = G^{\rm leak}(V^{\rm rest}-V_i) + G_i^E(V^E-V_i) + G_i^I(V^I-V_i)  + I^{\rm ext} .
+      \label{eq:IF}
+    \end{equation}
+    The cells' resting potential is $V^{\rm rest}=-60\, {\rm mV}$, its
+    capacitance is $C = 200 \, {\rm pF}$, and the leak conductance is $G^{\rm
+    leak}=10{\rm\, nS}$, resulting in a membrane time constant of $20 \, \rm
+    ms$ in the absence of synaptic stimulation. The variables $G_i^E$ and
+    $G_i^I$ are the total synaptic conductances describing the time-dependent
+    synaptic inputs to neuron $i$. The excitatory and inhibitory reversal
+    potentials are $V^E = 0\, {\rm mV}$ and $V^I=-80\, {\rm mV}$, respectively.
+    $I^{\rm ext} = I^{\rm const} + I^x$ is an externally applied current. To
+    evoke activity in the network, a constant external current $I^{\rm
+    const}=200 \rm\, pA$ is injected into each neuron, which evokes a regular,
+    intrinsically oscillating activity in the neuron, if considered in
+    isolation. However, embedding such neurons in random recurrent networks can
+    lead to irregular activity, as outlined below in the following two
+    subsections. Only if explicitly stated (e.g.,
+    Figures~\ref{fig5}~and~\ref{fig8}), small additional current inputs $I^{x}$
+    are applied to excitatory or inhibitory neurons, which we denote as $I^e$
+    and $I^i$, respectively. As the membrane potential $V_i$ reaches the
+    threshold $V^{\rm th}=-50\, {\rm mV}$, neuron $i$ emits an action
+    potential, and the membrane potential $V_i$ is reset to the resting
+    potential $V^{\rm rest}$ for a refractory period $\tau_{\rm rp} = 2 \, {\rm
+    ms}$.
+
+    The dynamics of the conductances $G_i^E$ and $G_i^I$ of a postsynaptic cell
+    $i$ are determined by the spiking of the excitatory and inhibitory
+    presynaptic neurons. Each time a presynaptic cell $j$ fires, the synaptic
+    input conductance of the postsynaptic cell $i$ is increased by $g_{ij}^E$
+    for excitatory synapses and by $g_{ij}^I$ for inhibitory synapses. The
+    input conductances decay exponentially with time constants $\tau^E = 5\,
+    {\rm ms}$ and $\tau^I = 10\, {\rm ms}$. The dynamics of the total
+    excitatory conductance is described by
+    \begin{equation}
+      \frac{{\rm d} G_i^E(t)}{{\rm d} t} = \frac{-G_i^E(t)}{\tau^E} + \sum_{j,f} g_{ij}^{E} \, \delta(t-t_{j}^{(f)}) .
+      \label{eq:conductance}
+    \end{equation}
+    Here the sum runs over the presynaptic projections $j$ and over the
+    sequence of spikes $f$ from each projection. The time of the $f^{\rm th}$
+    spike from neuron $j$ is denoted by $t_{j}^{(f)}$, and $\delta$ is the
+    Dirac delta function. The inhibitory conductance $G^I_i$ is described
+    analogously.
+  
+    Amplitudes of recurrent excitatory conductances and excitatory conductances
+    on inhibitory neurons are denoted with $g_{ij}^E$ and $g_{ij}^{IE}$,
+    respectively. If not stated otherwise, all excitatory conductance
+    amplitudes are fixed and equal ($g_{ij}^E = g_{ij}^{IE} = g^E = 0.1\, {\rm
+    nS}$), which results in EPSPs with an amplitude of $\approx 0.1\, {\rm mV}$
+    at resting potential. The recurrent inhibitory synapses are also constant
+    ($g_{ij}^I =0.4\, {\rm nS}$) while the inhibitory-to-excitatory
+    conductances $g_{ij}^{EI}$ are variable (see below). Irrespectively of the
+    synaptic type, the delay between a presynaptic spike and a postsynaptic
+    response onset is always $2\, {\rm ms}$.
+
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  \subsection{Network model}
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    The modeled network consists of $N^E=20,000$ excitatory and $N^I=5,000$
+    inhibitory neurons.  Our results do not critically depend on the network
+    size (see Section~``Scaling the network size'' below).  Initially, all
+    neurons are randomly connected with a sparse probability $p_{\rm
+    rand}=0.01$.
+
+    A cell assembly is defined as a group of recurrently connected excitatory
+    and inhibitory neurons (Figure~\ref{fig1}A). The assembly is formed by picking
+    $M$ excitatory and $M/4$ inhibitory neurons from the network; every pair of
+    pre- and post-synaptic neurons within the assembly is randomly connected
+    with probability $p_{\rm rc}$. The new connections are created
+    independently and in addition to the already existing ones. Thus, if by
+    chance two neurons have a connection due to the background connectivity and
+    are connected due to the participation in an assembly, then the synaptic
+    weight between them is simply doubled. Unless stated otherwise, assemblies
+    are hence formed by additional connections rather than stronger synapses.
+
+    In the random network, we embed 10 non-overlapping assemblies with size
+    $M=500$ if not stated otherwise. The groups of excitatory neurons are
+    connected in a feedforward fashion, and a neuron from one group projects to
+    a neuron of the subsequent group with probability $p_{\rm ff}$
+    (Figure~\ref{fig1}B). Such a feedforward connectivity is reminiscent of a
+    synfire chain. However, classical synfire chains do not have recurrent
+    connections ($p_{\rm rc}=0$, $p_{\rm ff}>0$), while here, neurons within a
+    group are recurrently connected even beyond the random background
+    connectivity ($p_{\rm rc}>0$, $p_{\rm ff}>0$). We will refer to such a
+    sequence as an ``assembly sequence''. By varying the connectivity
+    parameters $p_{\rm rc}$ and $p_{\rm ff}$, the network structure can be
+    manipulated to obtain different network types (Figure~\ref{fig1}C).  In the
+    limiting case where feedforward connections are absent ($ p_{\rm rc}>0,\,
+    p_{\rm ff}=0$) the network contains only largely disconnected Hebbian
+    assemblies. In contrast, in the absence of recurrent connections ($p_{\rm
+    rc}=0,\, p_{\rm ff}>0$), the model is reduced to a synfire chain embedded
+    in a recurrent network. Structures with both recurrent and feedforward
+    connections correspond to Hebbian assembly sequences.
+
+    To keep the network structure as simple as possible and to be able to focus
+    on mechanisms underlying replay, we use non-overlapping assemblies and we
+    do not embed more than 10 groups. Nevertheless, additional simulations with
+    overlapping assemblies and longer sequences indicate that our approach is
+    in line with previous results on memory capacity \citep{Leibold2006,
+    Leibold2008, Trengove2013}. Advancing the theory of memory capacity is,
+    however, beyond the scope of this manuscript.
+    
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  \subsection{Balancing the network}
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    A naive implementation of the heterogeneous network as described above
+    leads, in general, to dynamics characterized by large population bursts of
+    activity. To overcome this epileptiform activity and ensure that neurons
+    fire asynchronously and irregularly (AI network state), the network should
+    operate in a balanced regime. In the balanced state, large excitatory
+    currents are compensated by large inhibitory currents, as shown \textit{in
+    vivo} \citep{Okun2008, Cafaro2010} and \textit{in vitro} \citep{Xue2014}. In
+    this regime, fluctuations of the input lead to highly irregular firing
+    \citep{vanVreeswijk1996, vanVreeswijk1998}, a pattern observed in the cortex
+    \citep{Abeles1991, Softky1993} as well as in the hippocampus during non-REM
+    sleep \citep{Csicsvari1999, Poe2010}.
+    
+    Several mechanisms were proposed to balance numerically simulated neural
+    networks. One method involves structurally modifying the network
+    connectivity to ensure that neurons receive balanced excitatory and
+    inhibitory inputs \citep{Renart2007, Roudi2007}. It was shown that a
+    short-term plasticity rule \citep{Tsodyks1997} in a fully connected network
+    can also adjust the irregularity of neuronal firing \citep{Barbieri2008}.
+    % newline above is put only to insure a line break in the diff file, to be
+    % removed for the manuscript!!!!!!!
+
+    Here, we balance the network using the inhibitory-plasticity rule
+    \citep{Vogels2011}. All inhibitory-to-excitatory synapses are subject to a
+    spike-timing-dependent plasticity (STDP) rule where near-coincident pre-
+    and postsynaptic firing potentates the inhibitory synapse while presynaptic
+    spikes alone cause depression. A similar STDP rule with a symmetric
+    temporal window was recently reported in the layer 5 of the auditory cortex
+    \citep{Damour2015}.
+
+    To implement the plasticity rule in a synapse, we first assign a synaptic
+    trace variable $x_i$ to every neuron $i$ such that $x_i$ is incremented
+    with each spike of the neuron and decays with a time constant $\tau_{\rm
+    STDP}=20\,{\rm ms}$:
+    \begin{align*}
+      x_i \rightarrow x_i+1 {\text{ , if neuron $i$ fires}}\text{,} \\
+      \tau_{\rm STDP}\frac{{\rm d}x_i }{{\rm d}t}=-x_i \, {\text{, otherwise}}.
+    \end{align*}
+    The synaptic conductance $g_{ij}^{EI}(t)$ from inhibitory neuron $j$ to
+    excitatory neuron $i$ is initialized with value $g_0^I=0.4 \, \rm nS$ and is
+    updated at the times of pre/post-synaptic events:
+    \begin{align*}
+      g_{ij}^{EI} = g_{ij}^{EI} + \eta(x_i-\alpha) &{\text{    , for a presynaptic spike in neuron $j$,}}\\
+      g_{ij}^{EI} = g_{ij}^{EI} + \eta x_j  &{\text{    , for a postsynaptic spike in neuron $i$}}
+    \end{align*}
+    where $0< \eta \ll 1$ is the learning-rate parameter, and the bias
+    $\alpha=2\rho_0\tau_{\rm STDP}$ is determined by the desired firing rate
+    $\rho_0$ of the excitatory postsynaptic neurons. In all simulations,
+    $\rho_0$ has been set to $5 {\text{ spikes/sec}}$, which is at the upper
+    bound of the wide range of rates that were reported in the literature:
+    e.g., $1-3 \, \rm spikes/sec$ in \cite{Csicsvari2000}; $3-6 \, \rm
+    spikes/sec$ in \cite{Kowalski2015}; $1-76 \, \rm spikes/sec$ in
+    \cite{Felsen2005}; $0.43-3.60 \, \rm spikes/sec$ in \cite{Cheng2013}; $1-11
+    \, \rm spikes/sec$ in \cite{English2014}.
+    
+    Existence of background connections and an implementation of the described
+    inhibitory STDP rule drives typically the network into a balanced AI state.
+    The excitatory and the inhibitory input currents balance each other and
+    keep the membrane potential just below threshold while random fluctuations
+    drive the firing (Figure~\ref{fig2}A, B). The specific conditions to be met
+    for a successful balance are discussed in the Results section. Similar
+    effects could be achieved also in the absence of random background
+    connections when input with appropriate noise fluctuations is applied to
+    the neurons. We find this scenario, however, less realistic as neurons
+    would be largely disconnected.
+
+    In the AI network regime, any perturbation to the input of an assembly will
+    lead to a transient perturbation in the firing rate of the neurons within
+    it. In the case of strong recurrent connections within the assembly, a small
+    excitatory perturbation will lead to a stronger firing of both the
+    excitatory as well as the inhibitory neurons. This amplification of input
+    fluctuations into larger activity fluctuations is, unlike the Hebbian
+    amplification, fast and does not show slowing of the activation dynamics
+    for large connectivities. This phenomenon of transient pattern completion
+    is known as balanced amplification \citep{Murphy2009}, where it is essential
+    that each assembly has excitatory and inhibitory neurons and strong
+    recurrent connectivity. Another advantage of the inhibitory subpopulations
+    is the rapid negative feedback that can lead to enhanced memory capacity of
+    the network \citep{Kammerer2013}.
+
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  \subsection{Simulations and data analysis}
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    Each network simulation consists of 3 main phases:\\
+    %\begin{list}{\labelitemi}{\leftmargin=0em}
+    %\begin{itemize}[\leftmargin=0pt]
+      %\setlength{\leftmargin}{0pt}
+    \textbf{1. Balancing the network.} Initially, the population activity is
+      characterized by massive population bursts with varying sizes
+      (avalanches). During a first phase, the network (random network with
+      embedded phase sequence) is balanced for 50 seconds with decreasing
+      learning rate ($0.005 \geq \eta \geq 0.00001$) for the plasticity on the
+      inhibitory-to-excitatory synapses. During this learning, the inhibitory
+      plasticity shapes the activity, finally leading to AI firing of the
+      excitatory population. Individual excitatory neurons then fire roughly
+      with the target firing rate of $5 \, \rm spikes/sec$, while inhibitory neurons
+      have higher firing rates of around $20 \, \rm spikes/sec$, which is close to
+      rates reported in the hippocampus \citep{Csicsvari2000, Cheng2013}.
+      After 50 seconds simulation time, the network is typically balanced.
+
+    \textbf{2. Reliability and quality of replay.}
+      In a second phase, the plasticity is switched off to be able to probe an
+      unchanging network with external cue stimulations. All neurons from the
+      first group/assembly are simultaneously stimulated by an external input
+      so that all neurons fire once. The stimulation is mimicked by adding an
+      excitatory conductance in Equation~\ref{eq:conductance} ($g_{max}= 3 \, \rm
+      nS$) that is sufficient to evoke a spike in each neuron. For large enough
+      connectivities ($p_{\rm rc}$ and $p_{\rm ff}$), the generated pulse
+      packet of activity propagates through the sequence of assemblies,
+      resulting in a replay. For too small connectivities, the activity does
+      not propagate. For excessively high connectivities, the transient
+      response of one group results in a burst in the next group and even
+      larger responses in the subsequent groups, finally leading to
+      epileptiform population bursts of activity (Figure~\ref{fig3}).
+
+      To quantify the propagation from group to group and to account for
+      abnormal activity, we introduce a quality measure of replay. The activity
+      of a group is measured by calculating the population firing rate of the
+      underlying neurons smoothed with a Gaussian window of $2 \, \rm ms$
+      width. We extract peaks of the smoothed firing rate that exceed a
+      threshold of $30 \, \rm spikes/sec$. A group is considered to be
+      activated at the time at which its population firing rate hits its
+      maximum and is above the threshold rate. Activity propagation from one
+      group to the next is considered to be successful if one group activates
+      the next one within a delay between 2 and $20 \, \rm ms$. A typical delay
+      is about $5 \, \rm ms$, but in the case of extremely small $p_{\rm ff}$
+      and large $p_{\rm rc}$ the time of propagation can take $\sim 15 \, \rm
+      ms$. Additional rules are imposed to account for exceeding activity and
+      punish replays that lead to run-away firing.  First, if the activity of
+      an assembly exceeds a threshold of $180 \, \rm spikes/sec$ (value is
+      chosen manually for best discrimination), the group is considered as
+      bursting, and thus, the replay is considered as failed. 
+      %Due to noise, neurons never fire simultaneously on a sub-millisecond scale, and therefore, the theoretical maximal rate of $200 \, \rm spikes/sec$ is never reached.
+      %This threshold value is chosen manually as a good approximation 
+      Second, if the assembly activity displays 2 super-threshold peaks that
+      succeed each other within $30\,\rm ms$, the replay is unsuccessful.
+      Third, a ``dummy group'' (of size $M$) from the background neurons is
+      used as a proxy for detecting activations of the whole network. In case
+      that the dummy group is activated during an otherwise successful replay,
+      the replay is failed. Thus, for each stimulation the ``quality of
+      replay'' has a value of 1 for successful and a value of 0 for
+      unsuccessful replays. The quality of replay for each set of parameters
+      (Figure~\ref{fig3}) is an average from multiple ($ \gtrsim 5$) stimulations
+      of 5 different realizations of each network.
+
+      Additionally, we test the ability of the assembly sequence to complete a
+      pattern by stimulating only a fraction of the neurons in the first group
+      (Figure~\ref{fig4}). Analogously to the full stimulation, the quality of
+      replay is measured.
+
+    \textbf{3. Spontaneous activity.}
+      In the last phase of the simulations, no specific input is applied to the
+      assemblies. As during the first phase of the simulation, the network is
+      driven solely by the constant-current input $I^{ \rm const}=200 \,\rm pA$
+      applied to each neuron, and plasticity is switched off.
+
+      During this state, we quantify spontaneous replay (Figure~\ref{fig5}).
+      Whenever the last assembly is activated and if this activation has
+      propagated through at least three previous assemblies, we consider this
+      event as a spontaneous replay. Here, we apply the quality measure of
+      replay, where bursty replays are disregarded. Additionally, we quantify
+      the dynamic state of the network by the firing rate, the irregularity of
+      firing, and the synchrony of a few selected groups from the sequence.
+      The irregularity is measured as the average coefficient of variation of
+      inter-spike intervals of the neurons within a group. As a measure of
+      synchrony between 2 neurons, we use the cross-correlation coefficient of
+      their spike trains binned in 5-ms windows. The group synchrony is the
+      average synchrony between all pairs of neurons in a group.
+    %\end{list}
+
+  \subsection{Estimating response times of neurons and the network}
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    How quickly do the neurons that receive a synchronous pulse packet react
+    during a replay? Following the arguments of
+    \cite{Diesmann1999}, the response time is not determined by the membrane time
+    constant of the neuron, but rather by the time it takes the neurons to
+    reach threshold in response to the pulse packet. An analytical calculation
+    can hence be obtained by considering the membrane potential dynamics in
+    Equation~\ref{eq:IF}. Let us assume that a neuron is at some initial voltage
+    $V_0$. How fast does the neuron reach the threshold voltage when an
+    external excitatory conductance $G^{\rm inj}$ is applied to the membrane?
+    We can express the membrane potential $V(t)$ explicitly:
+    \[
+      V = (V_0 - V^*)\exp^{-\frac{t}{\tau^*}} + V^*
+    \]
+    where the ``driving'' voltage is
+    \[
+      V^* = \frac{
+      G^{\rm leak}V^{\rm rest} + G^EV^E + G^IV^I + I^{\rm ext} + G^{\rm inj}V^E}
+      {G^{\rm leak} + G^E + G^I + G^{\rm inj}}
+    \]
+    and the time constant is
+    \[
+      \tau^* = \frac{G^{\rm leak}}{G^{\rm leak} + G^E + G^I + G^{\rm inj}}\tau_{m}
+      \, .
+    \]
+    Here, $\tau_{m} =C/G^{\rm leak} = 20\,\rm ms$ is the leak time constant
+    from Equation~\ref{eq:IF}. The time that is needed for a neuron with initial
+    membrane potential $V_0$ to reach the voltage threshold $V^{\rm th}$ is:
+    \[
+      t^{\rm AP} = \tau^*\log \left( \frac{V_0 - V^*}{V^{\rm th} - V^*} \right) \,.
+    \]
+    Substituting with parameter values corresponding to the simulations ($G^E =
+    0.6 \,\rm nS$, $G^I = 5 \,\rm nS$, $G^{\rm leak} = 10 \,\rm nS$, $G^{\rm
+    inj}=3 \,\rm nS$, $V_0=-51 \,\rm mV$), we obtain $t^{\rm AP}=1.4 \,\rm ms$.
+    Here, for $G^{\rm inj}$ we use a typical value of the peak excitatory
+    conductance during a replay.
+
+    We also measured the activation time of the assemblies during pulse
+    propagation in the simulated balanced network. A stimulation with step
+    conductance $G^{\rm inj}$ applied to a group of random neurons leads to a
+    fast increase in firing rates (20\%-to-80\% rise time is $1 \,\rm ms$ ).
+
+    In summary, in agreement with the literature \citep{Gerstner1995,
+    vanVreeswijk1996, vanVreeswijk1998}, the response time of the modeled network
+    is indeed fast, i.e., faster than the membrane time constant
+    $\tau_{m}=20\,\rm ms$ and the inter-spike interval (ISI $\sim 12 \,\rm ms$
+    when $G^{\rm inj}$ is injected).
+
+  \subsection{Estimating conditions for successful replay}
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    An analytical description of conditions for successful replay is not easy
+    to obtain. The most appropriate ansatz would be a generalization of the
+    pulse-packet description of \cite{Goedeke2008}, which
+    is unfortunately not trivial and beyond the scope of this paper. Instead,
+    we choose a phenomenological approach and portray the network dynamics
+    during replay by a linear dynamical system, which could be thought of as a
+    linearization of a more accurate model. This ansatz allows to estimate a
+    lower bound for the connectivities required for a successful replay.
+
+    The dynamics of an assembly $i$ (Figure~\ref{fig1}A,~B) in the AI state is
+    approximated by two differential equations:
+    \begin{equation}
+      \begin{split}
+        \tau \frac{\text{d}r_{i}^E}{\text{d}t} &= - r_{i}^E + w_{\rm rc} \, r_{i}^E -kw_{\rm rc} \, r_{i}^I + \xi_{i}^{E}(t)\\
+        \tau \frac{\text{d}r_{i}^I}{\text{d}t} &= - r_{i}^I + w_{\rm rc} \, r_{i}^E -kw_{\rm rc} \, r_{i}^I \\
+      \end{split}
+      \label{eq:EI_dynamics}
+    \end{equation}
+    where $r_{i}^E$ and $r_{i}^I$ are the deviations of the population firing
+    rates of the excitatory (E) and inhibitory (I) populations from the
+    spontaneous firing rates $r_0^E$ and $r_0^I$, respectively. The parameter
+    $w_{\rm rc}$ and the term $-kw_{\rm rc}$ represent the respective strengths
+    of the excitatory and the inhibitory recurrent projections. The constant
+    $k$ describes the relative strength of the recurrent inhibition vs.
+    excitation; for a balanced network, we assume that inhibition balances or
+    dominates excitation, e.g., $k \geq 1$. The weight $w_{\rm rc}$ is
+    proportional to the average number $M \, p_{\rm rc}$ of recurrent synapses
+    a neuron receives, and proportional to the synaptic strength $g^E$. The
+    function $\xi_{i}^E$ describes the external input to the assembly from the
+    rest of the network. In this mean-field analysis, we neglect the influence
+    of the noise on the network dynamics. Activities $r_{i}^E$ and $r_{i}^I$
+    are assumed to approach the steady state $0$ with a time constant $\tau$.
+    Based on the discussion in the previous subsection, we assume this time
+    constant to be much faster than the membrane time constant. 
+
+    The excitatory assemblies are sequentially connected, and we denote the
+    strength of the feedforward projections as $w_{\rm ff}$. The feedforward
+    drive can be represented as an external input to an assembly:
+    \[
+      \xi_{i}^{E}
+    =  w_{\rm ff} \, r_{i-1}^{E} \text{, for $i>1$.}
+    \]
+    Taking into account the feedforward input to population $i$ from the
+    preceding excitatory population $i-1$, Equation~\ref{eq:EI_dynamics} can be
+    rewritten as
+    \begin{equation}
+      \tau \frac{\text{d} \boldsymbol{r}_{i}}{\text{d}t} = \begin{pmatrix} -1+w_{\rm rc} &-kw_{\rm rc} \\ w_{\rm rc} &-1-kw_{\rm rc}\\ \end{pmatrix}\boldsymbol{r_{i}} + \begin{pmatrix} w_{\rm ff} \, r_{i-1}^E \\ 0 \end{pmatrix} \text{, for $i>1$}
+      \label{eq:EI_coupled}
+    \end{equation}
+    where $\boldsymbol{r}_i = \begin{pmatrix} r_i^E \\ r_i^I \end{pmatrix}$ is
+    the 2-dimensional vector of firing rates in group $i$.
+
+    Assuming that the time duration of a pulse packet in group $i-1$ is much
+    longer than the population time constant $\tau$ in group $i$, we consider
+    the solution of the stationary state ($\tau \frac{\text{d}
+    \boldsymbol{r}_{i}}{\text{d}t} =0$) as an adequate approximation. By
+    setting the left-hand side of Equation~\ref{eq:EI_coupled} to zero, we can
+    express the firing rate $r^E_i$ as a function of $r^E_{i-1}$:
+    
+    \begin{equation} 
+      r_{i}^E = \left[ \frac{1+kw_{\rm rc}}{1+(k-1)w_{\rm rc}}  \right] w_{\rm ff} \, r_{i-1}^E =  \kappa\, r_{i-1}^E \,,
+            \label{eq:ri_linear1}
+    \end{equation}
+    where $\kappa$ is the ``effective feedforward connectivity''.  
+    
+    Interestingly, the recurrent connections effectively scale up the
+    efficiency of the feedforward connections and facilitate the propagation of
+    activity. Assuming that $(k-1) w_{rc}\ll1$, that is, either small
+    recurrent connectivity~$w_{rc}$ or an approximately balanced
+    state~$k\approx 1$, we can linearize in $w_{rc}$:
+    \begin{equation}
+      \kappa \approx w_{\rm ff}(1+w_{\rm rc}) \,.
+      \label{eq:kappa_def}
+    \end{equation}
+    For small $\kappa$, i.e. $\kappa \ll 1$, even large changes of the firing
+    rate in group $i-1$ do not alter the rate in group $i$. For $\kappa<1$, the
+    pulse packet will steadily decrease while propagating from one group to
+    another as $r_i^E < r_{i-1}^E$. On the other hand, if $\kappa=1$, the
+    propagation of a pulse packet is expected to be marginally stable. In the
+    case of $\kappa > 1$, any fluctuation of firing rate in one assembly will
+    lead to a larger fluctuation in the following assembly.
+      
+    To connect the analytical calculations to the numerical simulations, we
+    again note that a total connection strength is proportional to the number
+    of inputs a neuron is receiving (e.g., the product of group size $M$ and
+    connection probability) and proportional to the synaptic strength:
+    \begin{equation}
+      w_{\rm rc} = c \, M p_{\rm rc} \, g^E \,\text{      and      } \, w_{ \rm ff} = c \, M p_{\rm ff} \, g_{\rm ff}^{E} ,\,
+      \label{eq:weights_linear}
+    \end{equation}
+    where $M$ is the group size, and $p_{\rm rc}$ and $p_{\rm ff}$ are the
+    recurrent and feedforward connectivities, respectively. $g^E$ is the
+    conductance of an excitatory recurrent synapse within a group, and $g_{\rm
+    ff}^E$ is the conductance of feedforward synapses between groups. Unless
+    stated otherwise, we assume $g_{\rm ff}^E=g^E$. The parameter $c$ is
+    related to the slope of the neurons' input-output transfer function, but
+    given the phenomenological nature of the theoretical treatment, an accurate
+    \emph{ab initio} calculation of $c$ is non-trivial. Instead, we use it as a
+    fitting parameter. Using the critical value $\kappa(p_{\rm rc}=0.08,~p_{\rm
+    ff}=0.04)=1$ extracted from the simulation results (Figure~\ref{fig3}), we
+    find $c = 0.25 \, {\rm nS}^{-1}$. This value of $c$ is used in all further
+    analytical estimations for the effective connectivity $\kappa$. 
+    
+%    However, this procedure does not show us how $c$
+%    depends on various parameters, e.g., conductances, time constants, network
+%    size, etc. Therefore, the next subsection deals with deriving an explicit
+%    expression for the transfer function slope $c$.
+%     
+    In summary, the lower bound for the connectivities for a successful replay
+    can be described as 
+    \[
+      p_{\rm rc} = \frac{1}{cMg^E} \left( \frac{1}{cMp_{\rm ff}g_{\rm ff}^E} - 1\right) \,,
+    \]
+    which is represented as a black line in Figures~\ref{fig3}~and~\ref{fig5}.
+    For Figures~\ref{fig6}~and~\ref{fig7}, the black line is calculated
+    analogously using the same constant $c = 0.25 \, {\rm nS}^{-1}$.
+
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  \subsection*{Calculating the slope $c$}
+%  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%    In the previous section, the constant $c$ was manually fitted to a value of
+%    $0.25 \, {\rm nS}^{-1}$ to match analytical and numerical results. Here we
+%    express $c$ analytically by utilizing a non-linear neuronal model and by
+%    using the parameter values from the simulations.
+%
+%    The resting firing rate $\rho$ of a neuronal population that is in an
+%    asynchronous irregular (AI) regime can be expressed as a function of the
+%    mean $\mu$ and the standard deviation $\sigma$ of the membrane potential
+%    distribution \cite{Ricciardi77, Amit97, Brunel2000, Gerstner2002}:
+%    \[
+%      \mu = \sum_{k} J_k \rho_k
+%    \]
+%    \begin{equation}
+%      \sigma = \sqrt{\sum_{k} J^{\rm 2}_k \rho_k} \,\,\,\,,
+%    \label{eq:sigma_general}
+%    \end{equation}
+%    where the sums over $k$ run over the different synaptic contributions,
+%    $\rho_k$ is the corresponding presynaptic firing rate, and $J_k$ and
+%    $J^{\rm 2}_k$ are the integrals over time of the PSP and the square of the
+%    PSP from input $k$, respectively. Here PSPs are estimated for the
+%    conductance-based integrate-and-fire neuron from Eq~\ref{eq:IF} for voltage
+%    values near the firing threshold $V^{\rm th}$,
+%    \[
+%      J_k = \int_t{ \rm PSP}(t){\rm d} t = \tau^{\rm syn} (V^{\rm syn} - V^{\rm th}) \frac{g_k^{\rm syn}}{G^{\rm leak}}
+%    \]
+%    \[
+%      J^{2}_k = \int_t{ {\rm PSP}^2(t)}{\rm d}t = \frac{\left(\tau^{\rm syn} g_k^{\rm syn} (V^{\rm syn} - V^{\rm th}) \right)^2}{2(\tau + \tau^{\rm syn}) \left(G^{\rm leak} \right)^2} ,
+%    \]
+%    where $\tau$ is the membrane time constant, $\tau^{\rm syn}$ is the
+%    synaptic time constant, $V^{\rm syn}$ is the synaptic reversal potential,
+%    and $g_k^{\rm syn}$ is the synaptic conductance of connection $k$.
+%    Connections can be either excitatory or inhibitory.
+%
+%    Here we consider a network with random connections only, and look at a
+%    subpopulation of size $M$, where $M \ll N^E$. For a more convenient
+%    analytical treatment, the recurrent connections within the group are
+%    neglected. This assumption does not affect the estimation of the transfer
+%    function slope, as $c$ is independent on the type of inputs. The firing
+%    rate-fluctuations of the neuronal group are calculated as in
+%    Eq~\ref{eq:ri_linear1}:
+%    \begin{equation}
+%      r = c M g^E r_{\rm ext}.
+%      \label{eq:rcmg}
+%    \end{equation}
+%
+%    The membrane potential of an excitatory neuron from this subpopulation has
+%    several contributions: $N^Ep_{\rm rand}$ excitatory inputs with firing rate
+%    $\rho_0$ and efficacy $J^E$; inhibitory inputs due to the background
+%    connectivity: $N^I p_{\rm rand} J^{EI} \rho_0^I$; injected constant
+%    current: $I^{\rm ext}/G^{\rm leak}$; and input from an external group:
+%    $M_{\rm ext} J^E_{\rm ext} \rho_{\rm ext} $. In summary, we find:
+%    \[
+%      \mu = N^E p_{\rm rand} J^E \rho_0 + N^I p_{\rm rand} J^{EI} \rho_0^I + M_{\rm ext} J^E_{\rm ext} \rho_{\rm ext} + \frac{I^{\rm ext}}{G^{\rm leak}} .
+%    \]
+%    The standard deviation of the membrane potential is then, accordingly:
+%    \[
+%      \sigma^2 = N^E p_{\rm rand} J^{E^2} \rho_0 + N^I p_{\rm rand} J^{EI^2} \rho_0^I + M_{\rm ext} J^{E^2}_{\rm ext} \rho_{\rm ext} .
+%    \]
+%    %Here we note that such expression $\rho=f(\mu,\sigma)$ is implicit as in the case of recurrent connections, $\mu$ and $\sigma$ are functions on $\rho$ itself.
+%    %The firing rate can be expressed by the solution of the first passage time....
+%    %The firing rate can be estimated from the mean interspike interval
+%    In the case of uncorrelated inputs, the following approximation can be used
+%    for the firing rate estimation \cite{Ricciardi77, Amit97, Brunel2000,
+%    Gerstner2002}:
+%    \begin{equation}
+%      \rho = \Big(\tau_{\rm rp} + \tau \sqrt{\pi} \int_{\frac{V^{\rm rest}-\mu}{\sigma}}^{\frac{V^{\rm th}-\mu}{\sigma}} e^{u^2} \big( 1+ {\rm erf}(u) \big) {\rm d}u \Big)^{-1},
+%      \label{eq:nn0}
+%    \end{equation}
+%    where $\tau_{\rm rp}$ is the refractory period, and $V^{\rm th}$
+%    and $V^{\rm rest}$ are membrane threshold and reset potential, respectively
+%    (see also section ``Neural Model'').
+%
+%    To find the constant $c$ used in the linear model, we estimate the firing
+%    rate $\rho$ from Eq~\ref{eq:nn0} and substitute in Eq~\ref{eq:rcmg},
+%    assuming a linear relation between firing-rate fluctuations:
+%    \begin{equation}
+%      \rho(\rho_{\rm ext}) - \rho_{0} = c M_{\rm ext} g^E (\rho_{\rm ext} - 0) \, ,
+%      \label{eq:ri_linear2}
+%    \end{equation}
+%    and find:
+%    \begin{equation}
+%      c = \frac{\rho(\rho_{\rm ext}) - \rho_0}{ c M_{\rm ext} g^E \rho_{\rm ext}}.
+%      \label{eq:c1}
+%    \end{equation}
+%
+%    Before calculating the constant $c$ according to the method presented
+%    above, a preliminary step needs to be taken. As we set the firing rate of
+%    the excitatory population in the network to a fixed value $\rho_0 = 5\,
+%    {\rm spikes/sec}$, there are two variables remaining unknown: the firing
+%    rate of the inhibitory population $\rho_0^I$ and the
+%    inhibitory-to-excitatory synaptic conductance $g_{\rm rand}^{EI}$ that
+%    changes due to synaptic plasticity. Therefore, we first solve a system of 2
+%    equations for the firing rates of the excitatory and the inhibitory
+%    populations expressed as in Eq~\ref{eq:nn0}. Once the unknowns $\rho_0^I$
+%    and $g_{\rm rand}^{EI}$ are calculated, we can estimate $\rho(\rho_{\rm
+%    ext})$ and $c$ according to the method presented above. We note that the
+%    analytically calculated values of $g_{\rm rand}^{EI}$ and $\rho_0^I$ match
+%    the measured values in the simulations.
+%
+%    The value we get after applying the above mentioned method for estimation
+%    of $c$ is $0.13\,{\rm nS}^{-1}$. The fit corresponding to the
+%    estimate of $c$ is shown in Fig~\ref{fig3} with a white dashed line. It is
+%    worth noting that a slightly more involved calculation relying on the
+%    estimate $c=\frac{1}{Mg} \frac{\partial r}{\partial r_{ext}}$ gives a
+%    similar result, concretely $c = 0.11\,{\rm nS}^{-1}$.
+%
+%    Although the analytically calculated value $c$ is a factor of 2 smaller
+%    than the manual fit $c=0.25\,{\rm nS}^{-1}$, it is in the same order of
+%    magnitude and not too far from describing the results for critical
+%    connectivity from the simulations.
+%    %Although it is not a perfect fit, the line is qualitatively similar and not too far from describing the minimal connectivities.
+%    %There are number of reasons that could account for the mismatch between both approaches.
+%    %The linear model, for example, neglects a number of properties: e.g., non-linearities in the input-output relations, different time constants for excitatory and inhibitory conductances.
+%    %Moreover, the non-linear model is valid under the assumptions of uncorrelated inputs.
+%    %Therefore the constant $c$ estimated here is valid only for the resting AI network state.
+%
+%    The method applied above finds the slope of the transfer function for
+%    stationary firing rates.  However, the spiking network replay is a fast and
+%    brief event, where a transient input in one assembly evokes a transient
+%    change in the output firing rate.  The value discrepancy suggests that the
+%    transfer function of transients is even steeper than at the resting AI
+%    state.
+
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  \subsection{Calculating the slope $c$}
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    In the previous section, the constant $c$ was manually fitted to a value of
+    $0.25 \, {\rm nS}^{-1}$ to match analytical and numerical results. Here we
+    express $c$ analytically by utilizing a non-linear neuronal model and by
+    using the parameter values from the simulations.
+
+    The resting firing rate $\rho$ of a neuronal population that is in an
+    asynchronous irregular (AI) regime can be expressed as a function of the
+    mean $\mu$ and the standard deviation $\sigma$ of the membrane potential
+    distribution \citep{Ricciardi2013, Amit1997, Brunel2000, Gerstner2002}:
+    \[
+      \mu = \sum_{k} J_k \rho_k
+    \]
+    \begin{equation}
+      \sigma = \sqrt{\sum_{k} J^{\rm 2}_k \rho_k} \,\,\,\,,
+    \label{eq:sigma_general}
+    \end{equation}
+    where the sums over $k$ run over the different synaptic contributions,
+    $\rho_k$ is the corresponding presynaptic firing rate, and $J_k$ and
+    $J^{\rm 2}_k$ are the integrals over time of the PSP and the square of the
+    PSP from input $k$, respectively. Here PSPs are estimated for the
+    conductance-based integrate-and-fire neuron from Equation~\ref{eq:IF} for voltage
+    values near the firing threshold $V^{\rm th}$,
+    \[
+      J_k = \int_t{ \rm PSP}(t){\rm d} t = \tau^{\rm syn} (V^{\rm syn} - V^{\rm th}) \frac{g_k^{\rm syn}}{G^{\rm leak}}
+    \]
+    \[
+      J^{2}_k = \int_t{ {\rm PSP}^2(t)}{\rm d}t = \frac{\left(\tau^{\rm syn} g_k^{\rm syn} (V^{\rm syn} - V^{\rm th}) \right)^2}{2(\tau + \tau^{\rm syn}) \left(G^{\rm leak} \right)^2} ,
+    \]
+    where $\tau$ is the membrane time constant, $\tau^{\rm syn}$ is the
+    synaptic time constant, $V^{\rm syn}$ is the synaptic reversal potential,
+    and $g_k^{\rm syn}$ is the synaptic conductance of connection $k$.
+    Connections can be either excitatory or inhibitory.
+
+    Here we consider a network with random connections only, and look at a
+    subpopulation of size $M$, where $M \ll N^E$. For a more convenient
+    analytical treatment, the recurrent connections within the group are
+    neglected. This assumption does not affect the estimation of the transfer
+    function slope, as $c$ is independent on the type of inputs. The firing
+    rate-fluctuations of the neuronal group are calculated as in
+    Equation~\ref{eq:ri_linear1}:
+    \begin{equation}
+      r = c M g^E r_{\rm ext}.
+      \label{eq:rcmg}
+    \end{equation}
+
+    The membrane potential of an excitatory neuron from this subpopulation has
+    several contributions: $N^Ep_{\rm rand}$ excitatory inputs with firing rate
+    $\rho_0$ and efficacy $J^E$; inhibitory inputs due to the background
+    connectivity: $N^I p_{\rm rand} J^{EI} \rho_0^I$; injected constant
+    current: $I^{\rm ext}/G^{\rm leak}$; and input from an external group:
+    $M_{\rm ext} J^E_{\rm ext} \rho_{\rm ext} $. In summary, we find:
+    \[
+      \mu = N^E p_{\rm rand} J^E \rho_0 + N^I p_{\rm rand} J^{EI} \rho_0^I + M_{\rm ext} J^E_{\rm ext} \rho_{\rm ext} + \frac{I^{\rm ext}}{G^{\rm leak}} .
+    \]
+    The standard deviation of the membrane potential is then, accordingly:
+    \[
+      \sigma^2 = N^E p_{\rm rand} J^{E^2} \rho_0 + N^I p_{\rm rand} J^{EI^2} \rho_0^I + M_{\rm ext} J^{E^2}_{\rm ext} \rho_{\rm ext} .
+    \]
+    %Here we note that such expression $\rho=f(\mu,\sigma)$ is implicit as in the case of recurrent connections, $\mu$ and $\sigma$ are functions on $\rho$ itself.
+    %The firing rate can be expressed by the solution of the first passage time....
+    %The firing rate can be estimated from the mean interspike interval
+    In the case of uncorrelated inputs, the following approximation can be used
+    for the firing rate estimation \citep{Ricciardi2013, Amit1997, Brunel2000,
+    Gerstner2002}:
+    \begin{equation}
+      \rho = \Big(\tau_{\rm rp} + \tau \sqrt{\pi} \int_{\frac{V^{\rm rest}-\mu}{\sigma}}^{\frac{V^{\rm th}-\mu}{\sigma}} e^{u^2} \big( 1+ {\rm erf}(u) \big) {\rm d}u \Big)^{-1},
+      \label{eq:nn0}
+    \end{equation}
+    where $\tau_{\rm rp}$ is the refractory period, and $V^{\rm th}$ and
+    $V^{\rm rest}$ are membrane threshold and reset potential, respectively
+    (see also section ``Neural Model'').
+
+    To find the constant $c$ used in the linear model, we estimate the firing
+    rate $\rho$ from Equation~\ref{eq:nn0} and substitute in Equation~\ref{eq:rcmg},
+    assuming a linear relation between firing-rate fluctuations:
+    \begin{equation}
+      \rho(\rho_{\rm ext}) - \rho_{0} = c M_{\rm ext} g^E (\rho_{\rm ext} - 0) \, ,
+      \label{eq:ri_linear2}
+    \end{equation}
+    and find:
+    \begin{equation}
+      c = \frac{\rho(\rho_{\rm ext}) - \rho_0}{ c M_{\rm ext} g^E \rho_{\rm ext}}.
+      \label{eq:c1}
+    \end{equation}
+
+    Before calculating the constant $c$ according to the method presented
+    above, a preliminary step needs to be taken. As we set the firing rate of
+    the excitatory population in the network to a fixed value $\rho_0 = 5\,
+    {\rm spikes/sec}$, there are two variables remaining unknown: the firing
+    rate of the inhibitory population $\rho_0^I$ and the
+    inhibitory-to-excitatory synaptic conductance $g_{\rm rand}^{EI}$ that
+    changes due to synaptic plasticity. Therefore, we first solve a system of 2
+    equations for the firing rates of the excitatory and the inhibitory
+    populations expressed as in Equation~\ref{eq:nn0}. Once the unknowns $\rho_0^I$
+    and $g_{\rm rand}^{EI}$ are calculated, we can estimate $\rho(\rho_{\rm
+    ext})$ and $c$ according to the method presented above. We note that the
+    analytically calculated values of $g_{\rm rand}^{EI}$ and $\rho_0^I$ match
+    the measured values in the simulations.
+
+    The value we get after applying the above mentioned method for estimation
+    of $c$ is $0.13\,{\rm nS}^{-1}$. The fit corresponding to the
+    estimate of $c$ is shown in Figure~\ref{fig3} with a white dashed line. It is
+    worth noting that a slightly more involved calculation relying on the
+    estimate $c=\frac{1}{Mg} \frac{\partial r}{\partial r_{ext}}$ gives a
+    similar result, concretely $c = 0.11\,{\rm nS}^{-1}$.
+
+    Although the analytically calculated value $c$ is a factor of 2 smaller
+    than the manual fit $c=0.25\,{\rm nS}^{-1}$, it is in the same order of
+    magnitude and not too far from describing the results for critical
+    connectivity from the simulations.
+    %Although it is not a perfect fit, the line is qualitatively similar and not too far from describing the minimal connectivities.
+    %There are number of reasons that could account for the mismatch between both approaches.
+    %The linear model, for example, neglects a number of properties: e.g., non-linearities in the input-output relations, different time constants for excitatory and inhibitory conductances.
+    %Moreover, the non-linear model is valid under the assumptions of uncorrelated inputs.
+    %Therefore the constant $c$ estimated here is valid only for the resting AI network state.
+
+    The method applied above finds the slope of the transfer function for
+    stationary firing rates.  However, the spiking network replay is a fast and
+    brief event, where a transient input in one assembly evokes a transient
+    change in the output firing rate.  The value discrepancy suggests that the
+    transfer function of transients is even steeper than at the resting AI
+    state.
+
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  \subsection{Scaling the network size}
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    So far we have been dealing with networks of fixed size $N^E=20,000$
+    neurons. How does the network size affect the embedding of assembly
+    sequences? Is it possible to change the network size but keep the assembly
+    size fixed?
+
+    Scaling the network size while keeping the connectivity $p_{\rm rand}$
+    constant leads to a change in the number of inputs that a neuron receives,
+    and therefore, affects the membrane potential distributions.  To compare
+    replays in networks with different sizes $N^E$ but identical $M$, we need
+    to assure that the signal-to-noise ratio is kept constant, and the easiest
+    way is to keep both the signal and the noise constant, which requires to
+    change connectivities $p_{\rm rc}$ and $p_{\rm ff}$ and conductances.
+    
+    While scaling the network from the default network size $N^E=20,000$ to a
+    size $\widetilde{N}^E=\gamma N^E$, we see that the noise $\sigma$ scales as
+    $ \sim g \sqrt{\gamma N^E}$ (Equation~\ref{eq:sigma_general}). To keep the input
+    current fluctuations constant as we change $\widetilde{N}^E$, all synaptic
+    conductances are rescaled with a factor of $1/\sqrt{\gamma}$:
+    $\widetilde{g}=g/\sqrt{\gamma}$ \citep{vanVreeswijk1996}. However, such a
+    synaptic scaling leads to a change in the coupling between assemblies of
+    fixed size $M$, which is proportional to the conductance. Therefore, the
+    connectivities $p_{\rm rc}$ and $p_{\rm ff}$ are scaled with
+    $\sqrt{\gamma}$ to compensate the conductance decrease, leading to a
+    constant coupling ($cM\widetilde{p}_{\rm rc}\widetilde{g}^E = cMp_{\rm
+    rc}g^E$ and $cM\widetilde{p}_{\rm ff}\widetilde{g}^E = cMp_{\rm ff}g^E$),
+    and hence, a constant signal-to-noise ratio.
+
+    What is the impact of such a scaling on the network capacity to store
+    sequences? The number of connections needed to store a sequence is changed
+    by a factor $\sqrt{\gamma}$ as we change $p_{\rm rc}$ and $p_{\rm ff}$.
+    However, the number of background connections to each neuron is scaled with
+    $\gamma$, resulting in sparser memory representations in larger networks.
+    More precisely, for a neuron participating in the sequence, the ratio of
+    excitatory memory connections to the total number of excitatory connections
+    is 
+    \[
+      u=\frac{(p_{\rm rc}+p_{\rm ff})\sqrt{\gamma}M}{(p_{\rm rc}+p_{\rm ff})\sqrt{\gamma}M + p_{\rm rand} \gamma N^E } . 
+    \]
+    Therefore, the proportion of connections needed for an association is
+    scaled as $1/\sqrt{\gamma}$ for $\widetilde{N}^E \gg M$. To give a few
+    numbers, $u$ is equal to 0.23 for $\widetilde{N}^E=20,000$, and $u=0.09$
+    for $\widetilde{N}^E = 180,000$. Other parameter values are: $M=500$,
+    $p_{\rm rc}=p_{\rm ff}=0.06$, $p_{\rm rand}=0.01$.
+
+    The chosen scaling rule is applicable for networks of simpler units such as
+    binary neurons or current-based integrate-and-fire neurons \citep{Amit1997,
+    vanVreeswijk1998}. This scaling is not valid in a strict mathematical
+    framework for very large networks ($\widetilde{N}^E \rightarrow \infty$)
+    consisting of conductance-based integrate-and-fire neurons (see
+    \cite{Renart2007} for a detailed discussion). Simulations results, however,
+    reveal that replays are possible in network sizes up to $2 \cdot 10^5$
+    neurons.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

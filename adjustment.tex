@@ -1,0 +1,202 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Load additional packages %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% use pdf or images
+\newcommand{\usepdfpics}{1}
+
+% Bibliography
+\usepackage[round]{natbib} %was[numbers]
+% Math packages and example envoronment
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{amsthm}
+\usepackage{thmtools}
+\usepackage{algorithmic}
+%\usepackage{esint}
+% \DeclareMathAlphabet{\mathscr}{OT1}{pzc}%
+%                                  {m}{it}
+%\usepackage[utopia]{mathdesign}
+%\usepackage[OMLmathrm,OMLmathbf]{isomath}
+%\usepackage{mathabx} % creates nicer integral symbols
+\usepackage{tocstyle} % needed to adjust spacing betwen toc number and title
+\usetocstyle{standard}
+% this one is too fancy?
+% \usepackage{titletoc}
+% \titlecontents{chapter}[1.5em]{\addvspace{1pc}\bfseries}{\contentslabel{5em}}{}
+%     {\titlerule*[0.3pc]{.}\contentspage}
+\usepackage{upgreek}
+\usepackage{mathrsfs}
+\usepackage{mathtools}
+\usepackage{bbm}
+\usepackage{makeidx}
+\makeindex
+\usepackage{appendix} % removes appendix numbering?
+\usepackage[small]{caption}
+
+%%%%%%%%%%%%%%%%%%%%%
+% added by klesk NC %
+%%%%%%%%%%%%%%%%%%%%%
+\usepackage{verbatim}
+\graphicspath{{figs/}}
+
+\makeatletter
+\renewcommand{\fnum@figure}{Figure \thefigure}
+\makeatother
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Add special math environments %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \theoremstyle{definition}
+% \newtheorem{example}{Example}
+\declaretheorem[style=definition]{example}
+
+%\renewcommand\thmcontinues[1]{Continued}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Redefine section headdings %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+% section easier to reference with \S
+% \renewcommand{\thechapter}{\arabic{chapter}\rm}
+%\renewcommand{\thesection}{\S\arabic{chapter}.\arabic{section}\rm}
+%\renewcommand{\thesubsection}{\S\arabic{chapter}.\arabic{section}.\arabic{subsection}}
+%\renewcommand{\thesubsubsection}{\Roman{subsubsection}}
+% \makeatletter
+%   \renewcommand\l@subsection{\@dottedtocline{2}{1.5em}{8em}}
+% \makeatother
+
+%\renewcommand{\captionfont}{\small\slshape}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Adjust figure caption style %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% English caption label and font size changed
+\addto\captionsenglish{% 
+  \renewcommand{\figurename}{Fig.} 
+  % does not work 
+  %\renewcommand{\captionfont}{\small} 
+}
+% \captionnamefont{\bfseries}
+% \captiontitlefont{\small} 
+
+
+% indenting
+\parindent0ex
+
+\addtokomafont{disposition}{\rmfamily} 
+\addtokomafont{title}{\rmfamily}
+
+% set all math to small symbols (saving space)
+%\everymath={\textstyle}
+%\DeclareMathSizes{display size}{text size}{script size}{scriptscript size}.
+\everymath=\expandafter{\the\everymath\textstyle}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% provide custom commands %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\bra}{\langle}
+\newcommand{\cv}{\boldsymbol}
+\newcommand{\chdens}{\varrho}
+\newcommand{\dd}{{\mathrm d}}
+\newcommand{\fd}{{\updelta}}
+\newcommand{\fft}[1]{{\tilde #1}}
+\newcommand{\half}{{\textstyle\frac12}}
+\newcommand{\imag}{\text{i}}
+\newcommand{\ket}{\rangle}
+\newcommand{\mtx}{\boldsymbol}
+\newcommand{\orbsol}[1]{#1_0}
+\newcommand{\pd}{\partial}
+\newcommand{\ve}{\varepsilon}
+\newcommand{\supzero}{{(0)}}
+\newcommand{\supone}{{(1)}}
+\newcommand{\suptwo}{{(2)}}
+\newcommand{\oth}{{(0)}}
+\newcommand{\ith}{{(1)}}
+\newcommand{\iith}{{(2)}}
+\newcommand{\tAP}{t^\text{AP}}
+\newcommand{\tilr}{{\tilde{r}}}
+\newcommand{\tils}{{\tilde{s}}}
+\newcommand{\tilt}{{\tilde{t}}}
+\newcommand{\tp}{{\mathsf{T}}}
+\def\updownharpoons{\upharpoonleft\!\downharpoonright}
+% some notation
+\newcommand{\entropy}{{\mathcal H}}
+\newcommand{\fisherI}{\mathcal I}
+\newcommand{\fpop}{{\mathcal F}}
+\newcommand{\K}{{\text{K}^+}}
+\newcommand{\Na}{{\text{Na}^+}}
+\newcommand{\Cl}{{\text{Cl}^-}}
+\newcommand{\chDiffu}{\mtx D^\mathrm{c}}
+\newcommand{\ndim}{d}
+\newcommand{\gK}{\bar g_\mathrm{K}}
+\newcommand{\gNa}{\bar g_\mathrm{Na}}
+\newcommand{\gL}{\bar g_\mathrm{L}}
+\newcommand{\EK}{E_\mathrm{K}}
+\newcommand{\ENa}{E_\mathrm{Na}}
+\newcommand{\EL}{E_\mathrm{L}}
+\newcommand{\dcI}{I_\mathrm{DC}}
+\newcommand{\nspikes}{{N_\text{sp}}}
+\newcommand{\ntrials}{{N_\text{trials}}}
+\newcommand{\period}{{T_\text{p}}}
+\newcommand{\barperiod}{{\bar T_\text{p}}}
+\newcommand{\pot}{\Phi}
+\newcommand{\tilZ}{\cv{\tilde Z}}
+\newcommand{\str}{y}
+\newcommand{\spt}{\tau^{\text{sp}}}
+\newcommand{\isi}{\tau^{\text{sp}}}
+\newcommand{\orb}{\cv v_0}
+\newcommand{\stim}{x}
+\newcommand{\rate}{r}
+\newcommand{\stdZ}{\cv{\check Z}}
+\newcommand{\transinfo}{{\mathcal M}}
+% Mathematical operators
+\DeclareMathOperator*{\argmin}{argmin}
+\DeclareMathOperator{\bn}{Bn}
+\DeclareMathOperator{\coh}{coh}
+\DeclareMathOperator{\coefvar}{CV}
+\DeclareMathOperator{\diag}{diag}
+\DeclareMathOperator{\erf}{erf}
+\DeclareMathOperator{\mean}{mean}
+\DeclareMathOperator{\res}{Res}
+\DeclareMathOperator{\sinc}{sinc}
+\DeclareMathOperator{\sta}{STA}
+\DeclareMathOperator{\stc}{STC}
+\DeclareMathOperator{\var}{var}
+\DeclareMathOperator*{\tsint}{{\textstyle\int}}
+\DeclareMathOperator*{\tssum}{{\textstyle\sum}}
+\DeclareMathOperator*{\tsiint}{{\textstyle\iint}}
+\DeclareMathOperator*{\rlharp}{\rightleftharpoons}
+% English text abreviations
+\newcommand{\eg}{{\textit{e.g.}}}
+\newcommand{\ie}{{\textit{i.e.}}}
+\newcommand{\cf}{{\textit{cf.}}}
+\newcommand{\rhs}{r.h.s.}
+\newcommand{\viz}{{\textit{viz.}}}
+\newcommand{\wrt}{w.r.t.}
+\long\def\comment#1{}
+
+% set the language for figures etc
+\selectlanguage{english}
+
+% mathfont
+\let\oldsum\sum
+\renewcommand{\sum}{\mathop{\textstyle\oldsum\limits}}
+\let\oldint\int
+\renewcommand{\int}{\mathop{\textstyle\oldint\limits}}
+\let\oldiint\iint
+\renewcommand{\iint}{\mathop{\textstyle\oldiint\limits}}
+\let\oldiiint\iiint
+\renewcommand{\iiint}{\mathop{\textstyle\oldiiint\limits}}
+\let\oldiiiint\iiiint
+\renewcommand{\iiiint}{\mathop{\textstyle\oldiiiint\limits}}
+
+% \DeclareMathSizes {t-size} {mt-size} {s-size} {ss-size}
+% \DeclareMathSizes{10}{10}{10}{8}
+% \renewcommand\displaystyle\textstyle
+%\newcommand{\SUM}[2]{\overset{#1}{\underset{#2}{\mathop{\sum}}}}
+
+
+\newcommand{\lyxline}[1][1pt]{%
+  \par\noindent%
+  \rule[.5ex]{\linewidth}{#1}\par}
