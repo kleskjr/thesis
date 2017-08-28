@@ -10,7 +10,7 @@
   hypothetical disinhibitory circuit that can generate the population bursts in
   the CA areas of the hippocampus. The main theme addressed here is how the
   GABAergic transmission modulates the incidence of sharp-wave ripple events.
-  In particular, it is unknown how gabazine, a $\rm GABA_A$ receptor antagonist
+  In particular, it is unknown how gabazine, a $\rm GABA_A$ receptor antagonist,
   suppresses the generation of sharp-wave ripples. Analyzing data from
   \textit{in-vitro} recordings and dissecting the 2-population model \textit{in
   silico} and analytically gives a few possible explanation of the gabazine
@@ -912,7 +912,7 @@
         correlations ($p<0.001$) before gabazine application (before), during
         application (during), and aggregated data from a whole recording (all).
         \textbf{bottom:} Serial correlations coefficients between time interval
-        since last event and the following SWR (interval-peak) peak are plotted
+        since last event and the following SWR peak (interval-peak) are plotted
         against recorded incidence; arrows show the change after gabazine
         application. Insignificant correlations are considered to be 0.
              }
@@ -967,7 +967,7 @@
       \includegraphics[width =35pc]{gabazine_sim.eps}
       \caption{
         Gabazine {\it in silico} increases the rate of spontaneous replays.
-        Decreasing all inhibitory conductances (at $21^{\rm th}\, \rm second$
+        Decreasing all inhibitory conductances (at $21^{\rm st}\, \rm second$
         by 5\%) leads to an increase in the incidence of spontaneous replays in
         balanced-network simulations. The two upper panels show raster plots of
         subpopulations of excitatory (Exc) and inhibitory (Inh) neurons, where
@@ -1017,13 +1017,14 @@
     decrease the incidence of modeled events.
 
     As a toy example in numerical simulation, I consider the extreme case where
-    gabazine affects the inhibitory-to-inhibitory synapses only. \textit{
-    In-silico} gabazine indeed decreases the firing rate of the excitatory
-    neurons (Figure~\ref{fig:gabazine_sim_giionly}, top panel). However, the network shows
-    also a decrease in the firing rate of the inhibitory population as well.
-    How is it possible that excitatory neurons receiving weaker inhibition
-    (smaller input from inhibitory population), fire less? To better understand
-    the effects of gabazine, further, I present an analytical approach.
+    gabazine affects the inhibitory-to-inhibitory synapses only.
+    \textit{In-silico} gabazine indeed decreases the firing rate of the
+    excitatory neurons (Figure~\ref{fig:gabazine_sim_giionly}, top panel).
+    However, the network shows also a decrease in the firing rate of the
+    inhibitory population as well.  How is it possible that excitatory neurons
+    receiving weaker inhibition (smaller input from inhibitory population),
+    fire less? To better understand the effects of gabazine, further, I present
+    an analytical approach.
     
     \begin{figure}
       \center
@@ -1033,7 +1034,7 @@
         synapses decreases the rate of spontaneous replays. \textbf{top:}
         Spontaneous replays occur during the peaks of the excitatory and
         inhibitory firing rates. Decreasing the inhibitory-to-inhibitory
-        conductances (at $21^{\rm th}\, \rm second$ by 5\%) decreases the
+        conductances (at $21^{\rm st}\, \rm second$ by 5\%) decreases the
         firing rates and abolishes the spontaneous replays in balanced-network
         simulations. \textbf{bottom:} Gabazine applied only on
         inhibitory-to-inhibitory synapses can result in decrease of excitatory
@@ -1267,7 +1268,7 @@
         represent the mean and the standard deviation of the amplitude peak in
         a minute time window. Analogously, the forth panel shows the SWR
         duration in milliseconds. The panels on the bottom row show all events
-        before (left) and during (middle) drug application overlaid in gray,
+        before, during, and after drug application overlaid in gray,
         and the mean wave-forms are in black. The right-most panel shows a
         comparison between the mean events from before and during SCH
         application.
@@ -1279,8 +1280,8 @@
     of spontaneous SWRs from all slices ($\sim 50\%$ on average). The drug
     effects are visible already in the first minute after the application and
     saturate around 2-3 minutes later (Figure~\ref{gB_summ}, top panel). To
-    better assess the effects of SCH further, the analysis focuses on the
-    events in 5-minutes long time windows, i.e., in the intervals [-5, 0]
+    better assess the effects of SCH, further, the analysis focuses on the
+    events in 5-minute long time windows, i.e., in the intervals [-5, 0]
     minutes, that is before and [2, 7] minutes, that is during drug
     application. Comparing the data from these two intervals shows that SCH
     increases the incidence in every recording (10/12 show a significant
@@ -1411,7 +1412,7 @@
         Sharp-waves ripples with larger peak amplitudes evoke stronger
         hyperpolarization. {\bf top:} Big events (30 \% of the largest SWR
         events) are associated with a well-pronounced slow hyperpolarization.
-        Smaller events (30\% of the smallest SWs) did not evoke a $\rm
+        Smaller events (30\% of the smallest SWRs) did not evoke a $\rm
         GABA_B$-associated response. The difference of membrane potentials
         prior to events is a recording artifact (see the Methods section). {\bf
         bottom:} There is no correlation between the depolarisation of a cell
@@ -1560,17 +1561,18 @@
       affecting the disinhibitory pathway can be tested experimentally, once
       the mIN population is identified.
 
-    \subsubsection{Hypothesis on how gabazine affects the serial correlations} 
-      What is the mechanism of the observed gabazine-mediated increase of the
-      interval-peak correlations in the majority of slices? This observation is
-      puzzling: for a decreased incidence, one would expect decreased
-      correlations because of the longer time for synaptic recovery from STD.
-      However, the hypothesised higher firing rate of PVBCs (after gabazine)
-      leads to a stronger synaptic depression, and thus, to a longer recovery
-      time of the PVBC afferent synapses. But, on the other hand the time
-      interval between events is also increased. It is feasible that gabazine
-      affects the STD recovery time of the PVBC-PC synapses to a larger
-      degree than the increase on the inter-SWR time interval.
+    \subsubsection{Hypothesis on how gabazine affects the serial correlations}
+    What is the mechanism of the observed gabazine-mediated increase of the
+    interval-peak correlations in the majority of slices? This observation is
+    puzzling: for a decreased incidence, one would expect decreased
+    correlations because of the longer time for synaptic recovery from STD.
+    However, the hypothesised higher firing rate of PVBCs (after gabazine)
+    leads to a stronger synaptic depression, and thus, to a longer recovery
+    time of the PVBC afferent synapses (PVBC-PC, particularly). This implies
+    that in `control' \textit{in-vitro} experiments, the STD after SWR events
+    is not saturated to its maximal value.
+      %to a larger
+      %degree than the increase on the inter-SWR time interval.
       
       %--- make up a figure sketch of the idea: STP, PVBC FR --- here or in the discussion
       %Local gabazine puff decreases the SWR peaks in Schilinglof, but is also

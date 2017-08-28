@@ -2,6 +2,10 @@
 \label{chap:asss}
 
 \section{Summary}
+\footnote{The work presented in this chapter is published as a manuscript in
+PLoS Computational Biology, titled ``Memory replay in balanced recurrent
+networks'' \citep{Chenkov2017}. This project was a collaboration with Henning
+Sprekeler and Richard Kempter.}
   Synaptic plasticity is the basis for learning and memory, and many
   experiments indicate that memories are imprinted in synaptic connections.
   However, basic mechanisms of how such memories are retrieved and consolidated
@@ -34,7 +38,7 @@
   sequences''.
 
   The notion of Hebbian assemblies has triggered a huge number of experimental
-  studies (reviewed in \citep{Wallace2010}), but relatively few experiments have
+  studies (reviewed by \citealp{Wallace2010}), but relatively few experiments have
   been dedicated to the idea of assembly sequences \citep{Kruskal2013,
   Almeida2014}. Many theoretical studies focused on feedforward networks,
   also known as synfire chains \citep{Abeles1991, Diesmann1999, Aviel2002,
@@ -88,6 +92,7 @@
   depicted in Figure~\ref{fig1}C.
 
     \begin{figure}[!h]
+      \center
       \includegraphics[width=32pc]{figs/Fig1.eps}
       \caption{{\bf Network connectivity.}
         \textbf{A:} Schematic of an assembly $i$ consisting of an excitatory
@@ -116,6 +121,7 @@
   irregular (AI) firing (Figure~\ref{fig2}C).
 
   \begin{figure}[!h]
+      \center
     \includegraphics[width=32pc]{figs/Fig2.eps}
     \caption{{\bf Example of 1 second network activity.} The first $250 \,\rm
       ms$ depict the dynamics of a network with random and recurrent
@@ -212,22 +218,24 @@
     preserved while the background activity deviates from the AI state, or the
     whole network is involved in the events. To disregard such events, the
     quality measure punishes replays that (1) evoke bursting of neurons within
-    assemblies during activation or (2) activate the whole network (for details
-    see Materials and Methods). 
+    assemblies during activation or (2) activate the whole network (for details,
+    see Section~\ref{sec:asss_sim}).
 
     \begin{figure}[!h]
+      \center
       \includegraphics[width=32pc]{figs/Fig3.eps}
       \caption{{\bf Evoked replay.}
         Assembly-sequence activation as a function of the feedforward $p_{\rm
         ff}$ and the recurrent $p_{\rm rc}$ connectivities. The color code
         denotes the quality of replay, that is, the number of subsequent groups
-        firing without bursting (see Materials and Methods). The black curve
-        corresponds to the critical connectivity required for a replay where
-        the slope $c$ of the transfer function (See Materials and Methods and
-        Equation~\ref{eq:kappa2}) is matched manually to fit the simulation results
-        for connectivities $p_{\rm rc}=0.08$ and $p_{\rm ff}=0.04$. The slope
-        $c$ is also estimated analytically (dashed white line). The raster
-        plots (\textbf{a-f}) illustrate the dynamic regimes observed for
+        firing without bursting (see Materials and Methods,
+        Section~\ref{sec:asss_sim}). The black curve corresponds to the
+        critical connectivity required for a replay where the slope $c$ of the
+        transfer function (see Section~\ref{sec:asss_calc} and
+        Equation~\ref{eq:kappa2}) is matched manually to fit the simulation
+        results for connectivities $p_{\rm rc}=0.08$ and $p_{\rm ff}=0.04$. The
+        slope $c$ is also estimated analytically (dashed white line). The
+        raster plots (\textbf{a-f}) illustrate the dynamic regimes observed for
         different connectivity values; neurons above the gray line belong to
         the background neurons.
       }
@@ -248,8 +256,8 @@
     for a successful propagation decreases with increasing recurrent
     connectivity because assemblies of excitatory and inhibitory neurons can
     increase small fluctuations of the input through ``balanced amplification''
-    \citep{Murphy2009, Hennequin2012} as summarized in Materials and methods,
-    section ``Balancing the Network''.
+    \citep{Murphy2009, Hennequin2012} as summarized in Materials and Methods,
+    Section~\ref{sec:asss_bal}.
 
     For high feedforward ($p_{\rm ff} \gtrsim 0.10$) but low recurrent ($p_{\rm
     rc} \lesssim  0.10$) connectivity, the replay has low quality. In this
@@ -302,18 +310,20 @@
 
     We note that the number of excitatory synapses that is needed for an
     association, $M^2(p_{\rm rc}+p_{\rm ff})$, weakly depends on the position
-    on the line $\kappa = 1$. By solving $\argmin_{ p_{\rm rc}, p_{\rm ff} \in
-    \kappa=1} M^2(p_{\rm rc} + p_{\rm ff})$ we find that the minimum number of
-    new connections required for a replay is obtained for $p_{\rm rc}= 0$
-    because lines for which $p_{\rm rc} + p_{\rm ff} = \rm const$ have slope of
-    $-1$ in Figure~\ref{fig3}, and the slope of the line defined by
-    $\kappa=1$ is more negative. For example, when $p_{\rm rc}=0.0$,
-    we need 40 new synapses; for $p_{\rm rc}=0.05$, we need 50 new synapses;
-    and for $p_{\rm rc}=0.2$, 111 synapses are required for a new association.
-    However, as feedforward connections might be created/facilitated on demand
-    in one-shot learning, it is advantageous to keep their number low at the
-    cost of higher recurrent connectivity, which has more time to develop {\em
-    prior} to the learning. We extend this arguments further in the Discussion.
+    on the line $\kappa = 1$. By solving 
+    \[\argmin_{ p_{\rm rc}, p_{\rm ff} \in
+    \kappa=1} M^2(p_{\rm rc} + p_{\rm ff})\]
+    we find that the minimum number of new connections required for a replay is
+    obtained for $p_{\rm rc}= 0$ because lines for which $p_{\rm rc} + p_{\rm
+    ff} = \rm const$ have slope of $-1$ in Figure~\ref{fig3}, and the slope of
+    the line defined by $\kappa=1$ is more negative. For example, when $p_{\rm
+    rc}=0.0$, we need 40 new synapses; for $p_{\rm rc}=0.05$, we need 50 new
+    synapses; and for $p_{\rm rc}=0.2$, 111 synapses are required for a new
+    association.  However, as feedforward connections might be
+    created/facilitated on demand in one-shot learning, it is advantageous to
+    keep their number low at the cost of higher recurrent connectivity, which
+    has more time to develop {\em prior} to the learning. We extend this
+    arguments further in the Discussion, Section~\ref{sec:asss_disc}.
 
     In summary, the recurrent connections within an assembly play a crucial
     role in integrating and amplifying the input to the assembly. This
@@ -347,6 +357,7 @@
     ff}=0.05$).
 
     \begin{figure}[!h]
+      \center
       \includegraphics[width=32pc]{figs/Fig4.eps}
       \caption{{\bf Pattern completion.}
         \textbf{A:} Quality of replay after partial activation of the first
@@ -435,6 +446,7 @@
     epileptiform bursting activity (Figure~\ref{fig5}A, rasters c and d).
 
     \begin{figure}[!h]
+      \center
       \includegraphics[width=32pc]{figs/Fig5_con.pdf}
       \caption{{\bf Spontaneous network activity.}
         \textbf{A:} The rate of spontaneous sequence activation is measured in
@@ -624,6 +636,7 @@
     Figure~\ref{fig6}A).
 
     \begin{figure}[!h]
+      \center
       \includegraphics[width=32pc]{figs/Fig6.eps}
       \caption{{\bf Assembly-sequence activation for various group sizes and
         connectivities.}
@@ -661,7 +674,7 @@
     Because the recurrent and the feedforward connectivities are equal ($p_{\rm
     ff} = p_{\rm rc} = p$), the inhibition is always strong enough and does not
     allow epileptiform bursting activity. This behavior is reflected in a
-    rather low maximal value of the (CV$<$1.4) compared to the results from
+    rather low maximal value of the ($\rm CV<1.4$) compared to the results from
     Figure~\ref{fig5}, where the CV could exceed values of $4$ for low $p_{\rm
     rc}$. The measured firing rates in the last assembly are at the target
     firing rate of $\rho_0=5 \, \rm spikes/sec$ for parameter values around and
@@ -678,7 +691,7 @@
     activity. However, for this to happen, the group size $M$ must be much
     smaller than the network size $N^E$. Here $N^E$ was fixed to 20,000
     neurons for easier comparison of scenarios, but results are also valid for
-    larger networks (see Materials and Methods). The good agreement between
+    larger networks (see Materials and Methods, Section~\ref{sec:asss_resize}). The good agreement between
     the mean-field theory and the numerical results suggests that the crucial
     parameter for assembly-sequence replay is the total input one neuron is
     receiving, e.g., the number of input synapses.
@@ -710,6 +723,7 @@
     the essential parameter for replay.
 
     \begin{figure}[!h]
+      \center
       \includegraphics[width=32pc]{figs/Fig7.eps}
       \caption{{\bf Feedforward conductance versus feedforward connectivity.}
         \textbf{A:} Quality of replay as a function of connectivity and synaptic
@@ -769,7 +783,7 @@
     reverse replay \citep{Foster2006, Diba2007}. The direction of this replay
     also depended on the context, i.e., when the animal was at the beginning of
     the path, forward replays prevailed; while after traversing the path, more
-    reverse replays were detected (but see \cite{Karlsson2009}). This suggests
+    reverse replays were detected (but see \citealp{Karlsson2009}). This suggests
     that the replay activity might be cued by the sensory input experienced at
     the current location of the animal.
 
@@ -788,6 +802,7 @@
     remains local for each group.
 
     \begin{figure}[!h]
+      \center
       \includegraphics[width=32pc]{figs/Fig8.eps}
       \caption{{\bf Symmetric assembly sequence.}
         \textbf{A:} Schematic of an assembly sequence with symmetric connections
@@ -836,7 +851,7 @@
     replay. An extension of the model including lateral inhibition and
     short-term plasticity would possibly enable theta sequences that span in
     one direction only \citep{Romani2015}. Such an extension is, however, beyond
-    the scope of the current manuscript.
+    the scope of the current project.
 %RK 15.05.15 Here is an idea that we could simulate and test in the near future (but not for this manuscript before resubmission): We could try to simulate ``theta sequences'' during exploration, i.e., short replays of sequences. This scenario could be achived possibly by a constant-current injection to the place-specific group (as in the first and last 500 ms of the simulation) and an oscillating (theta) inhibitory current to the whole population. An open question then would be to explain forward-only replay during exploration, which might require some further adaptation mechanism to prevent reverse replay. One candidate could be synaptic short-term depression of excitatory synapses. I think that there exists a Tsodyks paper on this topic (mainly on phase precession) already...  
         
     At the end of the track, we retract the global external current to return
@@ -876,6 +891,7 @@
     of propagation.
 
 \section{Discussion} 
+\label{sec:asss_disc}
   We revived Hebb's idea on assembly sequences (or ``phase sequences'') where
   activity in a recurrent neural network propagates through assemblies
   \citep{Hebb49}, a dynamics that could underlie the recall and consolidation of
@@ -970,7 +986,7 @@
     with strong synapses.
 
     Other computational models have focused more on different aspects of the
-    SWR events. \cite{Taxidis2012}, for example, have proposed a
+    SWR events. \cite{Taxidis2012}, for example, proposed a
     hippocampal model where a CA3 network rhythmically generates bursts of
     activity, which propagate to a predominantly inhibitory CA1 network that
     generates fast ripple oscillations. The ripple generation by inhibitory
@@ -987,7 +1003,7 @@
     Another class of models that aims to explain the origin of SWR events
     relies on the electrical coupling between axons of pyramidal cells in the
     CA3/CA1 regions \citep{Draguhn1998, Schmitz2001, Traub2012}. In a numerical
-    model \citep{Vladimirov2013} it has been shown that the axonal plexus could
+    model, \cite{Vladimirov2013} showed that the axonal plexus could
     explain the occurrence of SWs, the fast ripple oscillation, and moreover,
     account for the forward and reverse replay of sequences. Nevertheless,
     anatomical data to show the existence of such connections is still scarce
@@ -1038,7 +1054,7 @@
     then $M^2 p_{\rm ff} > 5,000$, which is a relatively small number compared
     to the total number of background synapses $\left( N^E \right)^2 p_{\rm
     rand}= 4 \cdot 10^6$ for $N^E=20,000$ and $p_{\rm rand}=0.01$. Scaling up
-    the network accordingly (see Materials and Methods) to the size of a rodent
+    the network accordingly (see Section~\ref{sec:asss_resize}) to the size of a rodent
     CA3 network, i.e., $N^E = 240,000$ (a typical number for the rat
     hippocampus, e.g., \citealp{West1991, Rapp1996}), the number of new associative
     synapses is $M^2 p_{\rm ff} > 17,000$, while the total connections are more
@@ -1078,7 +1094,7 @@
 
     Several plasticity rules have been successfully applied in learning
     sequences \citep{Bush2010, Waddington2012, Brea2013, Kruskal2013,
-    Rezende2014, Scarpetta2015, Jahnke2015}. However, these studies focused
+    Rezende2014, Scarpetta2014, Jahnke2015}. However, these studies focused
     purely on sequence replay and did not take into account its interaction
     with a balanced, asynchronous irregular background state.
 
@@ -1123,14 +1139,14 @@
     in which these sequences are represented. This finding challenges the
     standard framework according to which sequences are imprinted during
     exploration of the environment, i.e., the two-stage memory model
-    \citep{Buzsaki1989}. An alternative model was presented by Sen Cheng
-    \citep{ChengS2013} proposing that the recurrent CA3 synaptic weights are
+    \citep{Buzsaki1989}. An alternative model by
+    \cite{ChengS2013} proposes that the recurrent CA3 synaptic weights are
     relatively constant during learning, and no plasticity in CA3 is required
     during the formation of new memories. According to the CRISP model
     \citep{ChengS2013}, the storage of sequences is an intrinsic property of the
     CA3 network, and these sequences are formed offline prior to utilization
     due to the maturation of newly generated granule cells in the dentate
-    gyrus. The model presented in this manuscript concerns the storage of
+    gyrus. The model presented in this chapter concerns the storage of
     sequences in a recurrent network and is not in contradiction with the idea
     of preexisting sequences.
 
@@ -1169,6 +1185,7 @@
 %\section*{Supporting Information}
 
 \section{Materials and Methods}
+\label{sec:asss_MM}
   The network simulations as well as the data analyses were performed in Python
   (www.python.org). The neural network was implemented in Brian
   \citep{Goodman2009}. For managing the simulation environment and data
@@ -1279,10 +1296,11 @@
     overlapping assemblies and longer sequences indicate that our approach is
     in line with previous results on memory capacity \citep{Leibold2006,
     Leibold2008, Trengove2013}. Advancing the theory of memory capacity is,
-    however, beyond the scope of this manuscript.
+    however, beyond the scope of this chapter.
     
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   \subsection{Balancing the network}
+  \label{sec:asss_bal}
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     A naive implementation of the heterogeneous network as described above
     leads, in general, to dynamics characterized by large population bursts of
@@ -1365,6 +1383,7 @@
 
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   \subsection{Simulations and data analysis}
+  \label{sec:asss_sim}
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     Each network simulation consists of 3 main phases:\\
     %\begin{list}{\labelitemi}{\leftmargin=0em}
@@ -1749,6 +1768,7 @@
 
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   \subsection{Calculating the slope $c$}
+  \label{sec:asss_calc}
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     In the previous section, the constant $c$ was manually fitted to a value of
     $0.25 \, {\rm nS}^{-1}$ to match analytical and numerical results. Here we
@@ -1875,6 +1895,7 @@
 
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   \subsection{Scaling the network size}
+  \label{sec:asss_resize}
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     So far we have been dealing with networks of fixed size $N^E=20,000$
     neurons. How does the network size affect the embedding of assembly

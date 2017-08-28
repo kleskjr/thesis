@@ -3,7 +3,7 @@
   The aim of this final chapter is to put into perspective the problems that
   have been analysed so far. In particular, what is the relevance of the
   assembly sequence in the framework of the disinhibitory 3-population model?
-  Moreover, I openly discuss some ideas that have occurred spontaneously over
+  Moreover, I openly discuss some ideas that have spontaneously occurred over
   the course of the last few years.
   %in SWRs, of the real replay, preplay..
   %if stuff gets binded to predifined seqs, why and how?
@@ -12,275 +12,187 @@
   Neural assemblies connected in a feedforward manner can explain the replay of
   behaviour sequences observed in the hippocampus. The sequence replay can be
   evoked by an external input cue, or occur spontaneously. As described in
-  Chapter~\ref{chap:asss}, a spontaneous replay requires higher
-  connectivities between assemblies than the evoked replay. Moreover, the
-  spontaneous replay largely depends on the network excitability, and small
-  change of the net input can shift to or from spontaneous replay regime. For
-  example, a decrease of the total input to the network abolishes spontaneous
-  events, while an increase of the input facilitates them. However, such
-  circuitry relying on two populations, an excitatory and an inhibitory one,
-  cannot account for the inhibitory-evoked SWRs observed \textit{in vitro}
+  Chapter~\ref{chap:asss}, a spontaneous replay requires higher connectivities
+  between assemblies than the evoked replay. Moreover, the spontaneous replay
+  largely depends on the network excitability, and a small change of the net
+  input can shift to or from spontaneous replay regime. For example, decreasing
+  the total input to the network abolishes spontaneous events, while an
+  increase of the input facilitates them. However, such circuitry relying on
+  two populations (an excitatory and an inhibitory one) cannot account for the
+  inhibitory-evoked SWRs observed \textit{in vitro}
   \citep[e.g.,][]{Schlingloff2014, Kohus2016}. Therefore, in
   Chapter~\ref{chap:swr}, I described a phenomenological model of a hippocampal
-  network consisting of 3 populations. The underlying idea is that the
-  activation of one inhibitory population activates a disinhibitory circuit,
-  leading to a population burst. An ultimate goal, that has not been achieved
-  in this thesis, is to combine these two models (e.g., the assembly sequence
-  and the 3-population model) into a single framework. Is the high-firing rate
-  regime during a population burst going to dramatically decrease the
-  connectivities required for a replay?
+  network consisting of 3 populations (one excitatory and two inhibitory
+  populations). The underlying idea is that the activation of one inhibitory
+  population activates a disinhibitory circuit, leading to a population burst.
+  An ultimate goal, that has not been achieved in this thesis, is to combine
+  these two models (e.g., the assembly sequence and the 3-population model)
+  into a single framework. Is the high--firing--rate regime during a population
+  burst going to dramatically decrease the connectivities required for a
+  replay?
 
-  A possible limitation of the assembly-sequence model is the fact that it
-  relies on `rigid' assemblies of neurons that are uniformly connected among
-  themselves. Experimental data about the synaptic organisation in hippocampus,
-  as well as in the cortex, shows heavily skewed distributions of synaptic
-  strength and connectivity \citep[e.g.,][]{Takahashi2010, Buzsaki2014,
-  Cossell2015}. Lognormal distributions of connectivities and synaptic weights
-  between neurons would be a more plausible model for a cell assembly. Then, a
-  few `central' neurons will fire reliably during assembly activation, while
-  the participation of the `periphery' neurons will depend more on the strength
-  and the type of input stimulation. To what degree such modification of the
-  model will affect the results of sequence replay is not known.
+  A possible limitation of the presented assembly-sequence model is the fact
+  that it relies on `rigid' assemblies of neurons that are uniformly connected
+  among themselves. Experimental data on the synaptic organisation in
+  hippocampus, as well as in the cortex, show heavily skewed distributions of
+  synaptic strength and connectivity \citep[e.g.,][]{Takahashi2010,
+  Buzsaki2014, Cossell2015}. Lognormal distributions of connectivities and
+  synaptic weights between neurons would be a more plausible model for a cell
+  assembly. Then, a few `central' neurons will fire reliably during assembly
+  activation, while the participation of the `periphery' neurons will depend
+  more on the strength and the type of input stimulation. To what degree such
+  modification of the model will affect the results of sequence replay is not
+  known.
   %different neurons can join the neurons depending on the context, the modalities, and the evoked depth of the concept
-
-\section{Testing the 3-population hypothesis \textit{in vitro}}
-
-  however, is it the ultimate and the only model?
-  multiple types of SWs; same or different mechanisms? in vitro ripple can go from 180 to 300 hz
-  - buzsaki2015: diff SWs during diff behaviours..
-  - in-vitro experiments show various incedences 0.1 to 10?
-  - various ripple frequences
-  - reference on diff SWs Hofer2015, wasnt there some ref on diff SWRs in vivo?
-  - weather it's always the same circuit is not clear, in studies we have to study a particular 
-  in-vitro model and treat carefully results from other in-vitro models. Maybe some benchmarks for 
-  classifying the type of SW are observed..
-  - some epileptic burst can be also classified as SWRs
-  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-  % state of the modelling 
-  to understand SWs, these experiments are the key.  measuring the FRs of IN
-  populations, refines the parameters of the model, or changes the model
-  what are the open questions:
-  - we can make models that mimic different behaviours but they will always
-  lie on assumptions die to the complexity of the circuit (2pop model can
-  already explain gabazine in 2 ways), the way to go is to know how the
-  effects on different neural populations pv, pc, dti......
-
-  replay of ASS during SWRs; inhib can modulate which assemblies are played, or at least bias
-
-  Experiment suggestions: -
-  - quantify network effects of gabazine:
-  - measure and compare PC firing before and during gabazine administration
-  - same for PVBC and the mysterious INs
-  - identify the INs that inhibit PC firing between events.
-  %
-  dsad 
-
-  bannon2017: adenosine and hebbian plasticity
-
 
 \section{Further implications of the disinhibitory circuit}
   %here theta: theta seqs...?
   The 3-population hypothesis is a plausible general mechanism for achieving
   multistability of local networks. Particularly, a disinhibitory pathway can
-  lead to a rapid activation of the excitatory network upon command.  Such
+  lead to a rapid activation of the excitatory network upon command. Such a
   mechanism might underlie the gating of spontaneous activity not only in the
   hippocampus, but also in local cortical networks. \cite{Luczak2013} suggested
   that the sensory cortex is constantly processing the inputs in a background,
   low-firing rate regime, i.e., the `down state'. Upon a top-down request from
   higher-order areas, the sensory cortex switches to an `up state', and thus,
   gates the sensory information upstream. Such up states might be achieved
-  through rapid disinhibition.
+  through a rapid disinhibition.
 
   A line of research from Brecht lab points out to the plausibility of the
-  disinhibitory hypothesis in the cortex. \cite{Brecht2004} has shown that a
-  repetitive stimulation of a single pyramidal neurons in the rat motor cortex
-  can evoke whisker movement. The stimulation evoked a marked change of pattern
-  activity reflected in the field potential and increased firing of the fast
-  spiking, putative inhibitory interneurons \citep{Houweling2007, Doron2014}.
-  Moreover, stimulation of fast spiking, putative inhibitory interneurons in
-  somatosensory cortex led to stronger effects detected in the animal's
-  behaviour compared to a stimulation of principal cells \citep{Doron2014}.
-  The stimulations were typically followed by a `long-lasting' inhibition of
-  firing rates measured in the microcircuit \citep{Doron2014}. However,
-  experiments targeting the disinhibitory neurons would address explicitly the
-  question of disinhibition in cortical networks.
+  disinhibitory hypothesis in cortical networks. \cite{Brecht2004} has shown
+  that a repetitive stimulation of a single pyramidal neurons in the rat motor
+  cortex can evoke whisker movement. The stimulation evoked a marked change of
+  pattern activity reflected in the field potential and increased firing of the
+  fast spiking, putative inhibitory interneurons \citep{Houweling2007,
+  Doron2014}. Moreover, stimulation of fast spiking, putative inhibitory
+  interneurons in somatosensory cortex led to stronger effects detected in the
+  animal's behaviour compared to a stimulation of principal cells
+  \citep{Doron2014}. The stimulations were typically followed by a
+  `long-lasting' inhibition of firing rates measured in the microcircuit
+  \citep{Doron2014}. Experiments targeting the disinhibitory neurons would
+  address explicitly the question of disinhibition in cortical networks.
   
-  in hp, similar effects can be achieved also with theta: theta seqs are at particular phase of
-  theta, when there is more excitation; are theta seqs intrinsic, maybe not.. not that small time delays
-  what is the role the oscillation gamma, ripple?
-  givin a particular window of opportunity, when the inputs are also optimized for that window; no need
-  to integrate over long intervals, which is not possible
-  ripple discretizes the float of information
-  discrete assemblies are more efficient ? or there is always some level of interplay between assemblies?
-  embedded assemblies? or multiple assemblies that integrate inputs and act like neurons; in the case of ripples they are more prominent
+  %in hp, similar effects can be achieved also with theta: theta seqs are at particular phase of
+  %theta, when there is more excitation; are theta seqs intrinsic, maybe not.. not that small time delays
+  %what is the role the oscillation gamma, ripple?
+  %givin a particular window of opportunity, when the inputs are also optimized for that window; no need
+  %to integrate over long intervals, which is not possible
+  %ripple discretizes the float of information
+  %discrete assemblies are more efficient ? or there is always some level of interplay between assemblies?
+  %embedded assemblies? or multiple assemblies that integrate inputs and act like neurons; in the case of ripples they are more prominent
 
-  participation or does it only give windows of opportunity for firing?
-  information on the order of PC firing can be transfered also through the inhib population.
-  giving certain times during the ripple windows...(ref on inhib propagation of activity norman?)
+  %participation or does it only give windows of opportunity for firing?
+  %information on the order of PC firing can be transfered also through the inhib population.
+  %giving certain times during the ripple windows...(ref on inhib propagation of activity norman?)
 
-  % role of ripples
-  norman2006: algorithm relying on inhibitory learning that facilitates weak memories
-  and punishes the activation of competitor memories
+  %% role of ripples
+  %norman2006: algorithm relying on inhibitory learning that facilitates weak memories
+  %and punishes the activation of competitor memories
 
-\section{Why hippocampal replay?}
+\section{Why a hippocampal replay?}
   According to the standard 2-stage memory model, behaviour sequences are
   imprinted in the CA3 recurrent networks upon experience \citep{Marr1971,
-  Buzsaki1989}. However, such view has been challenged in the last years as a
-  number of reports show that hippocampal replay is not a simple function of
+  Buzsaki1989}. However, such view has been challenged in the last years as
+  reports have shown that the hippocampal replay is not a simple function of
   experience \citep[e.g.,][]{Gupta2010}. Even more explicitly,
   \cite{Dragoi2011, Dragoi2013} showed that sequences are replayed in the
   hippocampus already prior to the first exposure of the environment which
-  these sequences represent. Dragoi suggested\footnote{The event was a public
-  talk at BCCN-Berlin in 2013?} that the role of CA3 is to create blank
-  sequences that are mapped later to experience. \cite{ChengS2013} proposed the
-  CRISP model which goes along these lines. According to the model, CA3
-  sequences are formed offline prior to utilization due to the maturation of
-  newly generated granule cells in the dentate gyrus. During the first exposure
-  to the environment, granule cells that carry sparse information about the
+  these sequences represent. What could be the role of the observed replays? 
+  
+  Dragoi suggested\footnote{The episodic event took place during a public talk
+  at BCCN-Berlin in 2013.} that the role of CA3 is to create blank sequences
+  that are mapped later to experience. \cite{ChengS2013} proposed the CRISP
+  model which goes along these lines. According to the model, CA3 sequences are
+  formed offline prior to utilization due to the maturation of newly generated
+  granule cells in the dentate gyrus. During the first exposure to the
+  environment, granule cells that carry sparse information about the
   environment are instantly mapped to the CA3 sequences via the mossy fibers.
   While this is a plausible explanation of how the hippocampal input is mapped
-  to the blank hippocampal sequences, it is unclear how the hippocampal output
-  during the offline replay is mapped back to the context it represents. Such
-  mapping would require highly plastic synapses that are able to encode
-  information in a single trial of experience. \cite{ChengS2013} hypothesises
-  that the internal sequences are mapped back to the context information via
-  the feedforward synapses from CA1 to the deep EC layers.
+  to the blank hippocampal sequences, it is not clear how the hippocampal output
+  during a following offline replay is mapped back to the context it
+  represents. Such mapping would require highly plastic synapses that are able
+  to encode information in a single experience. \cite{ChengS2013} hypothesises
+  that the internal sequences are mapped back to the behavioural information
+  via the feedforward synapses from CA1 to the deep EC layers. Such learning
+  might be facilitated by the preplays that occur prior to experience. In this
+  way, the internal CA3 sequences would not be purely blank, but are already
+  integrated with activity patterns in the deep layers of the EC.
 
-  Many questions remain unanswered to date about the origin and function of the
-  hippocampal replay. If sequence replays are intrinsic property of the CA3
-  region, then two links have to be created on demand upon learning: context
-  --> CA3 sequence; and CA3 sequence --> context.  
+  %EC replay inde[endent of CA1?
 
-  one option is that sequences are there, but elements are attached to the seq,
-  this will require much less creation of new synapses and assemblies.
-  scale-free assembly with new members joining, then each further replay will
-  consolidate the new elements into the assembly...
+
+  %clear up the rest
+
+  %one option is that sequences are there, but elements are attached to the seq,
+  %this will require much less creation of new synapses and assemblies.
+  %scale-free assembly with new members joining, then each further replay will
+  %consolidate the new elements into the assembly...
   
-  However, in vivo SWR replays
-  might be modulated by external inputs, from EC, or subiculum..  If external
-  information drives the replay, then there is no need for rapid hp output
-  mapping..?
 
-  Another possible link between the input and the output of the hippocampus can
-  also happen in the EC, on the synapses between the superficial and deep
-  layers.
+  %Many questions remain unanswered to date about the origin and function of the
+  %hippocampal replay. If sequence replays are intrinsic property of the CA3
+  %region, then two links have to be created on demand upon learning: context
+  %--> CA3 sequence; and CA3 sequence --> context.  
 
+  %However, in vivo SWR replays
+  %might be modulated by external inputs, from EC, or subiculum..  If external
+  %information drives the replay, then there is no need for rapid hp output
+  %mapping..?
 
-here in the last pages, I will track a hypothetical experiment (geist experiment???)
-jennifer and oma..
-
-jenifer and oma are heavily connected; in the context of neuroscience, one concept is
-likely to evoke the other ; outside of the context, probably not as much connected
-  connection between abstract concepts, fast and to the point
-  - our linear thinking is kind of boring and limiting. is there a way out?
-  conceptualized knowledge is linear; thinking relies on the distributed net of concepts that can bring surprises;
-  once we live in the hp, however, it's linear
-  implicit knowledge is non-linear
-  we linearize and consolidate patches of linearized associations...the resulting network of concepts might be quite complez and of different quality as presented in hp
+  %Another possible link between the input and the output of the hippocampus can
+  %also happen in the EC, on the synapses between the superficial and deep
+  %layers.
 
 
-  distributed...place cells -> grids
+%here in the last pages, I will track a hypothetical experiment (geist experiment???)
+%jennifer and oma..
+
+%jenifer and oma are heavily connected; in the context of neuroscience, one concept is
+%likely to evoke the other ; outside of the context, probably not as much connected
+  %connection between abstract concepts, fast and to the point
+  %- our linear thinking is kind of boring and limiting. is there a way out?
+  %conceptualized knowledge is linear; thinking relies on the distributed net of concepts that can bring surprises;
+  %once we live in the hp, however, it's linear
+  %implicit knowledge is non-linear
+  %we linearize and consolidate patches of linearized associations...the resulting network of concepts might be quite complez and of different quality as presented in hp
+%
+
+  %distributed...place cells -> grids
 
 %propse experiment: find the cheese neuron in DG and activate it each time animal at a place
 %can work with any object neuron, and then associate the object with cheese, and let the animal in that env with virtual object again :)
 
-  probably in hippocampus can become as sparse and sharp as they can. Further downstream (upstreams) assemblies are getting blurrier and more mixed.
+  %probably in hippocampus can become as sparse and sharp as they can. Further downstream (upstreams) assemblies are getting blurrier and more mixed.
 
-  sparse info at the input, then smears out in the cortex but is also sparse in the hp. that's how we create declarative representations or memories of abstract ideas that do are not necessary present to the brain by the sensory system; a place, or a word describing the tree we see. these 
-  - the input is not sparse actually, as uniform as it gets
+  %sparse info at the input, then smears out in the cortex but is also sparse in the hp. that's how we create declarative representations or memories of abstract ideas that do are not necessary present to the brain by the sensory system; a place, or a word describing the tree we see. these 
+  %- the input is not sparse actually, as uniform as it gets
 
-  assembly sequences in simpler neural systems might be more prevailing?
+  %assembly sequences in simpler neural systems might be more prevailing?
 
-  can the sparseness have a few dimensions, what I mean is that from orientation-maps the further levels of visual processing go to more complex representations that in a way are sparser? are they?
+  %can the sparseness have a few dimensions, what I mean is that from orientation-maps the further levels of visual processing go to more complex representations that in a way are sparser? are they?
 
-  jennifer aniston neuron..what is the advantage of such coding
-  for making a link between abstract concepts (aniston and our grandma), maybe it's good to make this link 
-  at the highest abstraction, rather than at the level of subabstractions..
+  %jennifer aniston neuron..what is the advantage of such coding
+  %for making a link between abstract concepts (aniston and our grandma), maybe it's good to make this link 
+  %at the highest abstraction, rather than at the level of subabstractions..
 
-  while my grandma is associated with the house that I used to visit her at,
-  with the stories that she used to tell me, or more generally with any memory and experience
-  that has numereous emotianal attachments to it and that shapes me as a self.
-  jeniffer aniston is connected mostly with some TV show, such as friends or
-  other cheesy romantic movie, and possibly with remote memories while seening
-  these shows.
+  %while my grandma is associated with the house that I used to visit her at,
+  %with the stories that she used to tell me, or more generally with any memory and experience
+  %that has numereous emotianal attachments to it and that shapes me as a self.
+  %jeniffer aniston is connected mostly with some TV show, such as friends or
+  %other cheesy romantic movie, and possibly with remote memories while seening
+  %these shows.
+%
+  %so what happens when i connect my grandma and aniston in a typical mnemonic
+  %task?
 
-  so what happens when i connect my grandma and aniston in a typical mnemonic
-  task?
-
-  while revoking their representations, multiple areas in the cortex are boiling
-  by igniting assemblies that constitute the mental concepts. These assemblies
-  can be distributed over the whole cortex and represent various concepts such
-  as events, people, emotions, etc. To create links between this diverse zoo of
-  concepts should be a tricky task, prune to errors due to noise.. However, in
-  the hippocampus, the representations are on the highest level: between oma
-  and aniston; the question is how this connection `backpropagates' to the
-  founding concepts. While we don't know the answer to this question, some relatively
-  recent finding from the EC might give a hint. Grid cells in EC, major input/output of the hippocampus.
-
-
-\section{Extension of the assembly}
-  %extension of the comp model.
-  A more rigid mathematical description has been attempted 
-  replay is neither static nor instant; a new mathematical description is necessary
-  the linear description was pretty good in the
-  parameter space tested in this work
-  despite the efforts, more rigid math was not achieved:
-  however 2pop is just part of he picture, how it fits with 3pop?
-
-
-
-%memory pyramid sprarse-> distributed 
-\section{experiments, diff dwr models..}
-  % IN vitro model
-  why different ripples in ca3 and ca1????
-\section{randoms}
-
-  - why thiopental and gabazine have similar effect on incidence despite
-  their in a way opposite functions on inhibition; because of toinc inhib?
-  both result in release of GABA from the presynaptic cleft?
-
-
-  %%%%%%%%%%%%%%
-  connection with oscillations:
-  %%%%%%%%%%%%%%
-  here we assume AI state, however the brain likes to oscillate. Different frequency of oscillations are hypotheisised to give a band for communications between assemblies.[ref on communication through resonance]. 
-
-  on fast and slow time scales of learning and plasticity how they match? theta, gama, PP, spwrs
-
-  swr interplay with phase precession
-
-  amazing compression of time, but why hippocampus? for declarative memories, only? look at HM, he was good and happy; decision making was intact, feeling basically everything without the fucking declarative memories. A few example of learned words however show that it's not the hippocampus monopole in learning, although not efficiently. So what else? no time no memory! no memory, no time? 
-  it's not the memories that define us per se but the memories can nevertheless change the personality on a slower time scale. without new memories time just passes and we are death at some moment. with memories on the other side we live in the float of life and keep updating our representation of this float in a way that is often beneficial for the survival. and just then we die :). time wasn't worthless whatever the outcome though!
-
-  of course this is only a theory which is being tested and refined over the last years. we keep looking into cracking it and diving deeper, by 
-
-  distal dendrites context, how children cannot separate context with info-> develops with time...
-  same assemblies can have different meanings in different contexts..
-
-
-  mindwandering affects our memories? why not? interesting question! people imagining an learning certain action can do as IF THEY Have done the ac
-
-  hp: thoughts
-  - we are taking snapshots of the flow around us and try to integrate them with our
-  understanding of the world in our memory
-  -there is certain symmetry in time, we are in the middle, and there are 2 directions.
-  -time is intimate to us. after getting through the events of the past, we are
-  standing in motion in the current moment and moving with variable (but
-  positive) speed to the future.
-  live without past and without future
-
-  - nakashiba: ca3 output blocked: no learning and less sws (maybe next subsec)
-  in the hip
-  gridsmm
-
-  ideas for experiments:
-  mouse runs in an environment for the first time, place cells are detected and recorded
-  check for connectivity, connection strength between themselves, let the mouse explore many many times more
-  check again for change in connectivity.
-  do this also for grid cells
-
-
-
+  %while revoking their representations, multiple areas in the cortex are boiling
+  %by igniting assemblies that constitute the mental concepts. These assemblies
+  %can be distributed over the whole cortex and represent various concepts such
+  %as events, people, emotions, etc. To create links between this diverse zoo of
+  %concepts should be a tricky task, prune to errors due to noise.. However, in
+  %the hippocampus, the representations are on the highest level: between oma
+  %and aniston; the question is how this connection `backpropagates' to the
+  %founding concepts. While we don't know the answer to this question, some relatively
+  %recent finding from the EC might give a hint. Grid cells in EC, major input/output of the hippocampus.
 
 
